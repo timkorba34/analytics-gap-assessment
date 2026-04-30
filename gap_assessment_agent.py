@@ -271,6 +271,45 @@ def add_table_from_records(doc, records):
 
             row[i].text = value
 
+from docx import Document
+from io import BytesIO
+import streamlit as st
+
+def create_word_doc(data):
+    doc = Document()
+
+    doc.add_heading("Analytics Gap Assessment", 0)
+
+    doc.add_heading("Executive Summary", level=1)
+    doc.add_paragraph(data.get("executive_summary", ""))
+
+    doc.add_heading("Current State", level=1)
+    doc.add_paragraph(data.get("current_state", ""))
+
+    doc.add_heading("Business Pain Points", level=1)
+    for item in data.get("business_pain_points", []):
+        doc.add_paragraph(item, style="List Bullet")
+
+    doc.add_heading("Analytics Gaps", level=1)
+    for item in data.get("analytics_gaps", []):
+        doc.add_paragraph(item, style="List Bullet")
+
+    doc.add_heading("Recommended Use Cases", level=1)
+    for item in data.get("recommended_use_cases", []):
+        doc.add_paragraph(item, style="List Bullet")
+
+    doc.add_heading("Roadmap", level=1)
+    for item in data.get("roadmap", []):
+        doc.add_paragraph(item, style="List Bullet")
+
+    doc_io = BytesIO()
+    doc.save(doc_io)
+    doc_io.seek(0)
+
+    return doc_io
+
+    
+
 def build_docx(data, client_name):
     doc = Document()
 
@@ -392,6 +431,8 @@ if st.button("Generate Word Assessment"):
             docx_file = build_docx(data, client_name)
 
         st.success("Assessment generated.")
+
+        word_file = create_word_doc(data)
 
         st.download_button(
             label="Download Word Assessment",
