@@ -6,6 +6,10 @@ from docx import Document
 import PyPDF2
 import pandas as pd
 
+import os
+import streamlit as st
+from openai import OpenAI
+
 client = OpenAI(api_key="OPENAI_API_KEY") or os.getenv("OPEN_API_KEY")
 
 if not api_key:
