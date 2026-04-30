@@ -536,7 +536,7 @@ def build_ppt(data, client_name):
     prs.save(output)
     output.seek(0)
 
-return output
+    return output
     
 def build_exec_email(data, client_name):
     summary = data.get("executive_summary_text", "")
