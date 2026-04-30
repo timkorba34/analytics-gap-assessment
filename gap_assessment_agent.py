@@ -109,6 +109,35 @@ def read_uploaded_files(files):
 
 
 # --------------------
+# OpenAI Retry Helper
+# --------------------
+from openai import RateLimitError, APIError, APITimeoutError
+import time
+import json
+
+def call_openai_with_retry(messages, model="gpt-4o-mini"):
+    for attempt in range(3):
+        try:
+            return client.chat.completions.create(
+                model=model,
+                messages=messages,
+                temperature=0.2,
+                max_tokens=4000
+            )
+
+        except RateLimitError:
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+            else:
+                st.error("OpenAI rate limit reached. Check billing/quota or reduce upload size.")
+                return None
+
+        except (APIError, APITimeoutError) as e:
+            st.error(f"OpenAI API error: {str(e)}")
+            return None
+
+
+# --------------------
 # Generate Assessment JSON
 # --------------------
 def generate_assessment_json(client_name, industry, assessment_type, notes, file_content):
@@ -164,164 +193,27 @@ stakeholder_interview_summary
 responsibility_gaps
 key_observations_text
 
-Appendix sections are REQUIRED and must be populated using reasonable inferred values from discovery notes.
-
-Minimum rows required:
-
-appendix_reporting_inventory = minimum 8 rows
-appendix_reporting_overlap_analysis = minimum 5 rows
-appendix_data_source_mapping = minimum 8 rows
-appendix_critical_reports = minimum 6 rows
-analytics_ownership_overview = minimum 6 rows
-stakeholder_interview_summary = minimum 6 rows
-
-Only use "To be validated" in one specific field when necessary, never for entire section.
-
-Required table structures:
-
-engagement_scope_summary:
-[
-  {{"Area": "...", "In Scope": "...", "Assessment Focus": "..."}}
-]
-
-analytics_environment_snapshot:
-[
-  {{"Area": "POS", "Current Tool / Process": "...", "Observed Issue": "...", "Business Impact": "..."}}
-]
-
-analytics_complexity_snapshot:
-[
-  {{"Complexity Driver": "...", "Current Observation": "...", "Impact": "...", "Severity": "..."}}
-]
-
-gap_severity_heatmap:
-[
-  {{"Gap Domain": "...", "Current State": "...", "Severity": "High/Medium/Low", "Business Impact": "...", "Recommended Action": "..."}}
-]
-
-current_architecture_summary:
-[
-  {{"Layer": "...", "Current State": "...", "Gap / Limitation": "...", "Future-State Consideration": "..."}}
-]
-
-reporting_landscape_summary:
-[
-  {{"Reporting Area": "...", "Current Method": "...", "Issue": "...", "Improvement Opportunity": "..."}}
-]
-
-s4_impact_summary:
-[
-  {{"Area": "...", "Impact": "Not applicable unless SAP/S4 is identified", "Validation Needed": "..."}}
-]
-
-gap_analysis_summary:
-[
-  {{"Gap": "...", "Evidence from Discovery": "...", "Business Impact": "...", "Priority": "..."}}
-]
-
-improvement_opportunity_summary:
-[
-  {{"Opportunity": "...", "Description": "...", "Expected Value": "...", "Priority": "..."}}
-]
-
-potential_impact_summary:
-[
-  {{"Value Lever": "...", "Potential Impact": "...", "How It Helps": "..."}}
-]
-
-recommended_focus_areas:
-[
-  {{"Focus Area": "...", "Why It Matters": "...", "Recommended Next Step": "..."}}
-]
-appendix_reporting_inventory:
-[
- {{"Report Name":"Daily Sales by Store","Business Owner":"Operations","Current Tool":"Excel","Frequency":"Daily","Pain Point":"Manual consolidation","Priority":"High"}}
-]
-
-appendix_reporting_overlap_analysis:
-[
- {{"Metric":"Sales by Store","Found In":"POS export / Finance file / Manager tracker","Issue":"Multiple versions of truth","Recommendation":"Centralize metric ownership"}}
-]
-
-appendix_data_source_mapping:
-[
- {{"Source System":"Toast POS","Data Type":"Transactions","Refresh Frequency":"Daily","Current Method":"CSV Export","Future Method":"API Integration"}}
-]
-
-appendix_critical_reports:
-[
- {{"Report":"Daily Flash Sales","Business Impact":"High","Consumers":"CEO / Ops","Current State":"Manual","Future State":"Automated Dashboard"}}
-]
-
-analytics_ownership_overview:
-[
- {{"Domain":"Sales Reporting","Current Owner":"Regional Managers","Future Owner":"Analytics COE","Gap":"No formal ownership"}}
-]
-
-stakeholder_interview_summary:
-[
- {{"Stakeholder":"Owner","Priority":"Growth visibility","Pain Point":"No single dashboard","Need":"Daily KPIs"}}
-]
-
-
 Rules:
 - Return ONLY valid JSON. No markdown.
 - Every table field must be an array of objects.
 - Do not return nested objects inside table fields.
 - Do not return Python-style lists as strings.
-- If data is unavailable, still create 3-5 reasonable assessment rows using "To be validated" only in the Evidence / Validation Needed column.
 - Do not include S/4HANA content unless SAP, ECC, or S/4HANA is mentioned in the notes.
 - For non-SAP clients, set S/4HANA sections to "Not applicable based on current discovery inputs."
-- Avoid generic consulting language. Tie every gap and recommendation to the client facts.
+- Avoid generic consulting language.
+- Tie every gap and recommendation to the client facts.
 - Use business-friendly language for executives.
-- All narrative text fields must be detailed and presentation-ready.
-- Each narrative section should contain 2-3 strong paragraphs.
-- Narratives must explain:
-  1. Current state observations
-  2. Why the issue matters
-  3. Business risks / impacts
-  4. Likely root causes
-  5. Future-state opportunity
-  6. Recommended path forward
-
-- Avoid generic filler language.
-- Tie commentary to the client discovery notes.
-- Write like a senior consulting advisor preparing material for executives.
 """
 
-from openai import RateLimitError, APIError, APITimeoutError
-import time
+    messages = [
+        {"role": "system", "content": "Return only valid JSON. No markdown."},
+        {"role": "user", "content": prompt}
+    ]
 
-def call_openai_with_retry(messages, model="gpt-4o-mini"):
-    for attempt in range(3):
-        try:
-            return client.chat.completions.create(
-                model=model,
-                messages=messages,
-                temperature=0.2,
-                max_tokens=4000
-            )
+    response = call_openai_with_retry(messages)
 
-        except RateLimitError:
-            if attempt < 2:
-                time.sleep(2 ** attempt)
-            else:
-                st.error("OpenAI rate limit reached. Check API billing/quota or reduce upload size.")
-                return None
-
-        except (APIError, APITimeoutError) as e:
-            st.error(f"OpenAI API error: {str(e)}")
-            return None
-
-    
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "Return only valid JSON. No markdown."},
-            {"role": "user", "content": prompt}
-        ],
-        temperature=0.2
-    )
+    if response is None:
+        return {}
 
     raw = response.choices[0].message.content.strip()
 
@@ -329,7 +221,6 @@ def call_openai_with_retry(messages, model="gpt-4o-mini"):
         raw = raw.replace("```json", "").replace("```", "").strip()
 
     return json.loads(raw)
-
 
 # --------------------
 # Word Helpers
