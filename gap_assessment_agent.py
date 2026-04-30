@@ -412,7 +412,7 @@ def build_ppt(data, client_name):
 
     tx = slide.shapes.add_textbox(Inches(0.5), Inches(1.5), Inches(12), Inches(4))
     tf = tx.text_frame
-    p = tf.add_paragraph()
+    p = tf.paragraphs[0]
     p.text = data.get("executive_summary_text", "Executive summary unavailable.")
     p.font.size = Pt(18)
 
@@ -432,15 +432,15 @@ def build_ppt(data, client_name):
     elif not isinstance(gaps, list):
         gaps = []
 
-for gap in gaps[:6]:
-    p = tf.add_paragraph()
+    for gap in gaps[:6]:
+        p = tf.add_paragraph()
 
-    if isinstance(gap, dict):
-        p.text = f"• {gap.get('Gap','Gap')} – {gap.get('Business Impact','')}"
-    else:
-        p.text = f"• {str(gap)}"
+        if isinstance(gap, dict):
+            p.text = f"• {gap.get('Gap', 'Gap')} – {gap.get('Business Impact', '')}"
+        else:
+            p.text = f"• {str(gap)}"
 
-    p.font.size = Pt(16)
+        p.font.size = Pt(16)
 
     # Slide 3 Recommendations
     slide = prs.slides.add_slide(prs.slide_layouts[5])
@@ -450,7 +450,7 @@ for gap in gaps[:6]:
     tf = tx.text_frame
 
     focus = data.get("recommended_focus_areas", [])
-    
+
     if isinstance(focus, str):
         focus = [{"Focus Area": focus, "Recommended Next Step": ""}]
     elif isinstance(focus, dict):
@@ -458,22 +458,22 @@ for gap in gaps[:6]:
     elif not isinstance(focus, list):
         focus = []
 
-for item in focus[:6]:
-    p = tf.add_paragraph()
+    for item in focus[:6]:
+        p = tf.add_paragraph()
 
-    if isinstance(item, dict):
-        p.text = f"• {item.get('Focus Area','')} – {item.get('Recommended Next Step','')}"
-    else:
-        p.text = f"• {str(item)}"
+        if isinstance(item, dict):
+            p.text = f"• {item.get('Focus Area', '')} – {item.get('Recommended Next Step', '')}"
+        else:
+            p.text = f"• {str(item)}"
 
-    p.font.size = Pt(16)
+        p.font.size = Pt(16)
 
-output = io.BytesIO()
-prs.save(output)
-output.seek(0)
+    output = io.BytesIO()
+    prs.save(output)
+    output.seek(0)
 
-return output
-
+    return output
+    
 def build_exec_email(data, client_name):
     summary = data.get("executive_summary_text", "")
     
