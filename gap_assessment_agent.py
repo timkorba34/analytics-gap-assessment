@@ -10,7 +10,7 @@ client = OpenAI(api_key="OPENAI_API_KEY")
 
 st.set_page_config(page_title="AI Gap Assessment Builder", layout="wide")
 
-st.title("AI Gap Assessment Builder Agent")
+st.title("Analytics Modernization Assessment Copilot")
 st.caption("Upload discovery inputs and generate a client-ready Word gap assessment.")
 
 client_name = st.text_input("Client Name")
