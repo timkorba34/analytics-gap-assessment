@@ -50,7 +50,7 @@ assessment_type = st.selectbox(
 
 uploaded_files = st.file_uploader(
     "Upload Discovery Notes / Supporting Files",
-    type=["txt", "csv", "pdf"],
+    type=["txt", "csv", "pdf", "xls", "xlsx"],
     accept_multiple_files=True
 )
 
