@@ -426,11 +426,11 @@ def build_ppt(data, client_name):
     gaps = data.get("gap_analysis_summary", [])
 
     if isinstance(gaps, str):
-    gaps = [{"Gap": gaps, "Business Impact": ""}]
-elif isinstance(gaps, dict):
-    gaps = [gaps]
-elif not isinstance(gaps, list):
-    gaps = []
+        gaps = [{"Gap": gaps, "Business Impact": ""}]
+    elif isinstance(gaps, dict):
+        gaps = [gaps]
+    elif not isinstance(gaps, list):
+        gaps = []
 
 for gap in gaps[:6]:
     p = tf.add_paragraph()
@@ -452,11 +452,11 @@ for gap in gaps[:6]:
     focus = data.get("recommended_focus_areas", [])
 
    if isinstance(focus, str):
-    focus = [{"Focus Area": focus, "Recommended Next Step": ""}]
-elif isinstance(focus, dict):
-    focus = [focus]
-elif not isinstance(focus, list):
-    focus = []
+        focus = [{"Focus Area": focus, "Recommended Next Step": ""}]
+    elif isinstance(focus, dict):
+        focus = [focus]
+    elif not isinstance(focus, list):
+        focus = []
 
 for item in focus[:6]:
     p = tf.add_paragraph()
