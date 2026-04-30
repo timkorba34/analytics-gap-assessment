@@ -6,7 +6,13 @@ from docx import Document
 import PyPDF2
 import pandas as pd
 
-client = OpenAI(api_key="OPENAI_API_KEY")
+client = OpenAI(api_key="OPENAI_API_KEY") or os.getenv("OPEN_API_KEY")
+
+if not api_key:
+    st.error("OPEN_AI_KEY is missing.  Add it in Streamlit Cloud Secrets.")
+    st.stop()
+
+client = OpenAI(api_key=api_key)
 
 st.set_page_config(page_title="AI Gap Assessment Builder", layout="wide")
 
