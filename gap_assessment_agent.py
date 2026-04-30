@@ -69,17 +69,41 @@ def read_uploaded_files(files):
     for file in files:
         content += f"\n\n--- FILE: {file.name} ---\n"
 
-        if file.type == "text/plain":
-            content += file.read().decode("utf-8", errors="ignore")
+        file_name = file.name.lower()
 
-        elif file.type == "text/csv":
-            df = pd.read_csv(file)
-            content += df.to_string(index=False)
+        try:
+            if file_name.endswith(".txt") or file.type == "text/plain":
+                content += file.read().decode("utf-8", errors="ignore")
 
-        elif file.type == "application/pdf":
-            reader = PyPDF2.PdfReader(file)
-            for page in reader.pages:
-                content += page.extract_text() or ""
+            elif file_name.endswith(".csv") or file.type == "text/csv":
+                df = pd.read_csv(file)
+                content += df.to_string(index=False)
+
+            elif file_name.endswith(".xlsx"):
+                excel_file = pd.ExcelFile(file, engine="openpyxl")
+                for sheet_name in excel_file.sheet_names:
+                    df = pd.read_excel(excel_file, sheet_name=sheet_name)
+                    content += f"\n\n--- SHEET: {sheet_name} ---\n"
+                    content += df.to_string(index=False)
+
+            elif file_name.endswith(".xls"):
+                excel_file = pd.ExcelFile(file, engine="xlrd")
+                for sheet_name in excel_file.sheet_names:
+                    df = pd.read_excel(excel_file, sheet_name=sheet_name)
+                    content += f"\n\n--- SHEET: {sheet_name} ---\n"
+                    content += df.to_string(index=False)
+
+            elif file_name.endswith(".pdf") or file.type == "application/pdf":
+                reader = PyPDF2.PdfReader(file)
+                for i, page in enumerate(reader.pages, start=1):
+                    content += f"\n\n--- PAGE {i} ---\n"
+                    content += page.extract_text() or ""
+
+            else:
+                content += f"\nUnsupported file type: {file.type}"
+
+        except Exception as e:
+            content += f"\nError reading file: {str(e)}"
 
     return content
 
