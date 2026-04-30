@@ -146,21 +146,84 @@ def generate_assessment_json(client_name, industry, assessment_type, notes, file
     file_content = file_content[:12000]
     
     prompt = f"""
-You are a senior enterprise consulting partner creating an analytics gap assessment.
+prompt = f"""
+You are a senior consulting partner from a top-tier advisory firm delivering a paid executive assessment for a client.
+
+Your writing style must feel premium, strategic, commercial, and boardroom-ready.
+
+Never sound generic, robotic, repetitive, or AI-generated.
+
+The final output must feel like a deliverable a client would pay $50,000+ for.
+
+CLIENT INFORMATION
 
 Client Name: {client_name}
 Industry: {industry}
 Assessment Type: {assessment_type}
 
-Discovery Notes:
+DISCOVERY NOTES
+
 {notes}
 
-Supporting File Content:
+SUPPORTING FILE CONTENT
+
 {file_content}
 
-Return ONLY valid JSON.
+OBJECTIVE
 
-Create JSON with these exact keys:
+Create a premium executive analytics assessment in JSON format.
+
+The document must first explain the company, what it has accomplished, where complexity has increased, and why leadership requested this assessment now.
+
+Then identify reporting, analytics, governance, technology, and decision-support gaps.
+
+Then recommend practical next steps tied to business value.
+
+WRITING REQUIREMENTS
+
+Write like an experienced consulting executive.
+
+Use specific business language such as:
+growth, margin pressure, operating visibility, scalability, decision-making speed, reporting trust, working capital, service levels, operational efficiency, transformation readiness.
+
+Tie all observations directly to likely client realities.
+
+For manufacturing clients, naturally reference:
+plants, supply chain, production, inventory, OTIF, forecasting, downtime, scrap, yield, procurement, distribution, acquisitions.
+
+Do NOT use generic filler statements such as:
+"significant opportunities exist"
+"the company faces challenges"
+"there are several gaps"
+
+Be specific and commercial.
+
+ENGAGEMENT OVERVIEW MUST INCLUDE:
+
+1. What the company does
+2. What it has accomplished / growth journey
+3. Why complexity increased
+4. Why now is the right time for assessment
+5. Why analytics matters to leadership now
+
+EXECUTIVE SUMMARY MUST INCLUDE:
+
+1. Current state reality
+2. Main risks
+3. Business consequences
+4. Biggest value opportunities
+5. Immediate recommended actions
+
+TABLES MUST BE CONSULTING QUALITY
+
+Every table must contain meaningful columns with business value.
+
+Example:
+Stakeholder | Current Pain Point | Risk | Requested Capability | Priority
+
+RETURN ONLY VALID JSON
+
+Required keys:
 
 engagement_overview_text
 engagement_scope_summary
@@ -197,16 +260,18 @@ stakeholder_interview_summary
 responsibility_gaps
 key_observations_text
 
-Rules:
-- Return ONLY valid JSON. No markdown.
-- Every table field must be an array of objects.
-- Do not return nested objects inside table fields.
-- Do not return Python-style lists as strings.
-- Do not include S/4HANA content unless SAP, ECC, or S/4HANA is mentioned in the notes.
-- For non-SAP clients, set S/4HANA sections to "Not applicable based on current discovery inputs."
-- Avoid generic consulting language.
-- Tie every gap and recommendation to the client facts.
-- Use business-friendly language for executives.
+RULES
+
+- Return valid JSON only
+- No markdown
+- No code fences
+- No empty sections
+- If data is missing, infer realistic executive-quality content
+- Every table field must be an array of objects
+- Narrative sections must be premium quality and client-ready
+- Recommendations must be practical, phased, and tied to ROI
+- Avoid repeating the same wording
+- Sound like a paid consulting advisor
 """
 
     messages = [
