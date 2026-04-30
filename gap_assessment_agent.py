@@ -7,6 +7,9 @@ from docx import Document
 import PyPDF2
 import pandas as pd
 
+from pptx import Presentation
+from pptx.util import Inches, Pt
+
 
 # --------------------
 # Page Setup
@@ -454,11 +457,87 @@ def build_docx(data, client_name):
 
     return output
 
+def build_ppt(data, client_name):
+    prs = Presentation()
+    prs.slide_width = Inches(13.333)
+    prs.slide_height = Inches(7.5)
+
+    # Slide 1 Title
+    slide = prs.slides.add_slide(prs.slide_layouts[5])
+    slide.shapes.title.text = f"{client_name} Analytics Gap Assessment"
+
+    tx = slide.shapes.add_textbox(Inches(0.5), Inches(1.5), Inches(12), Inches(4))
+    tf = tx.text_frame
+    p = tf.add_paragraph()
+    p.text = data.get("executive_summary_text", "Executive summary unavailable.")
+    p.font.size = Pt(18)
+
+    # Slide 2 Key Gaps
+    slide = prs.slides.add_slide(prs.slide_layouts[5])
+    slide.shapes.title.text = "Key Analytics Gaps"
+
+    tx = slide.shapes.add_textbox(Inches(0.5), Inches(1.2), Inches(12), Inches(5))
+    tf = tx.text_frame
+
+    gaps = data.get("gap_analysis_summary", [])
+
+    for gap in gaps[:6]:
+        p = tf.add_paragraph()
+        p.text = f"• {gap.get('Gap','Gap')} – {gap.get('Business Impact','')}"
+        p.font.size = Pt(16)
+
+    # Slide 3 Recommendations
+    slide = prs.slides.add_slide(prs.slide_layouts[5])
+    slide.shapes.title.text = "Recommended Next Steps"
+
+    tx = slide.shapes.add_textbox(Inches(0.5), Inches(1.2), Inches(12), Inches(5))
+    tf = tx.text_frame
+
+    focus = data.get("recommended_focus_areas", [])
+
+    for item in focus[:6]:
+        p = tf.add_paragraph()
+        p.text = f"• {item.get('Focus Area','')} – {item.get('Recommended Next Step','')}"
+        p.font.size = Pt(16)
+
+    output = io.BytesIO()
+    prs.save(output)
+    output.seek(0)
+
+    return output
+
+def build_exec_email(data, client_name):
+    summary = data.get("executive_summary_text", "")
+    
+    email = f"""
+Subject: {client_name} Analytics Gap Assessment – Executive Summary
+
+Team,
+
+We completed the initial analytics gap assessment for {client_name}.
+
+Key observations:
+{summary}
+
+Top priorities identified:
+1. Centralize reporting and KPI visibility
+2. Improve data integration across systems
+3. Enable forecasting and operational analytics
+4. Build scalable analytics foundation for growth
+
+Recommended next step:
+Conduct a focused strategy workshop and roadmap session to prioritize quick wins and transformation initiatives.
+
+Regards,
+Consulting Team
+"""
+    return email
+
 
 # --------------------
 # Generate Button
 # --------------------
-if st.button("Generate Word Assessment"):
+if st.button("Generate Assessment Outputs"):
     if not client_name:
         st.warning("Enter a client name first.")
     else:
@@ -473,16 +552,49 @@ if st.button("Generate Word Assessment"):
                 file_content
             )
 
-        with st.spinner("Creating Word document..."):
-            docx_file = build_docx(data, client_name)
-
-        safe_client_name = client_name.replace(" ", "_").replace("'", "").replace("/", "_")
+        safe_client_name = (
+            client_name.replace(" ", "_")
+            .replace("'", "")
+            .replace("/", "_")
+        )
 
         st.success("Assessment generated.")
+
+        # --------------------
+        # Word Document
+        # --------------------
+        with st.spinner("Creating Word document..."):
+            docx_file = build_docx(data, client_name)
 
         st.download_button(
             label="Download Word Assessment",
             data=docx_file.getvalue(),
             file_name=f"{safe_client_name}_Gap_Assessment.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
+
+        # --------------------
+        # PowerPoint Deck
+        # --------------------
+        with st.spinner("Creating PowerPoint deck..."):
+            ppt_file = build_ppt(data, client_name)
+
+        st.download_button(
+            label="Download PowerPoint Deck",
+            data=ppt_file.getvalue(),
+            file_name=f"{safe_client_name}_Gap_Assessment_Deck.pptx",
+            mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        )
+
+        # --------------------
+        # Executive Summary Email
+        # --------------------
+        with st.spinner("Creating Executive Summary Email..."):
+            email_text = build_exec_email(data, client_name)
+
+        st.download_button(
+            label="Download Executive Summary Email",
+            data=email_text,
+            file_name=f"{safe_client_name}_Executive_Summary_Email.txt",
+            mime="text/plain"
         )
