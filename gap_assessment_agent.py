@@ -137,12 +137,73 @@ stakeholder_interview_summary
 responsibility_gaps
 key_observations_text
 
+Required table structures:
+
+engagement_scope_summary:
+[
+  {"Area": "...", "In Scope": "...", "Assessment Focus": "..."}
+]
+
+analytics_environment_snapshot:
+[
+  {"Area": "POS", "Current Tool / Process": "...", "Observed Issue": "...", "Business Impact": "..."}
+]
+
+analytics_complexity_snapshot:
+[
+  {"Complexity Driver": "...", "Current Observation": "...", "Impact": "...", "Severity": "..."}
+]
+
+gap_severity_heatmap:
+[
+  {"Gap Domain": "...", "Current State": "...", "Severity": "High/Medium/Low", "Business Impact": "...", "Recommended Action": "..."}
+]
+
+current_architecture_summary:
+[
+  {"Layer": "...", "Current State": "...", "Gap / Limitation": "...", "Future-State Consideration": "..."}
+]
+
+reporting_landscape_summary:
+[
+  {"Reporting Area": "...", "Current Method": "...", "Issue": "...", "Improvement Opportunity": "..."}
+]
+
+s4_impact_summary:
+[
+  {"Area": "...", "Impact": "Not applicable unless SAP/S4 is identified", "Validation Needed": "..."}
+]
+
+gap_analysis_summary:
+[
+  {"Gap": "...", "Evidence from Discovery": "...", "Business Impact": "...", "Priority": "..."}
+]
+
+improvement_opportunity_summary:
+[
+  {"Opportunity": "...", "Description": "...", "Expected Value": "...", "Priority": "..."}
+]
+
+potential_impact_summary:
+[
+  {"Value Lever": "...", "Potential Impact": "...", "How It Helps": "..."}
+]
+
+recommended_focus_areas:
+[
+  {"Focus Area": "...", "Why It Matters": "...", "Recommended Next Step": "..."}
+]
+
 Rules:
-- Follow the exact structure of the uploaded gap assessment template.
-- If a specific metric is not available in the notes, use "To be validated".
-- All narrative fields should be polished consulting language.
-- All table fields must be arrays of objects.
-- Keep tone executive, clear, and professional.
+- Return ONLY valid JSON. No markdown.
+- Every table field must be an array of objects.
+- Do not return nested objects inside table fields.
+- Do not return Python-style lists as strings.
+- If data is unavailable, still create 3-5 reasonable assessment rows using "To be validated" only in the Evidence / Validation Needed column.
+- Do not include S/4HANA content unless SAP, ECC, or S/4HANA is mentioned in the notes.
+- For non-SAP clients, set S/4HANA sections to "Not applicable based on current discovery inputs."
+- Avoid generic consulting language. Tie every gap and recommendation to the client facts.
+- Use business-friendly language for executives.
 """
 
     response = client.chat.completions.create(
