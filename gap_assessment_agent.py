@@ -472,7 +472,7 @@ for item in focus[:6]:
     prs.save(output)
     output.seek(0)
 
-    return output
+return output
 
 def build_exec_email(data, client_name):
     summary = data.get("executive_summary_text", "")
