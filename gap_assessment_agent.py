@@ -425,10 +425,22 @@ def build_ppt(data, client_name):
 
     gaps = data.get("gap_analysis_summary", [])
 
-    for gap in gaps[:6]:
-        p = tf.add_paragraph()
+    if isinstance(gaps, str):
+    gaps = [{"Gap": gaps, "Business Impact": ""}]
+elif isinstance(gaps, dict):
+    gaps = [gaps]
+elif not isinstance(gaps, list):
+    gaps = []
+
+for gap in gaps[:6]:
+    p = tf.add_paragraph()
+
+    if isinstance(gap, dict):
         p.text = f"• {gap.get('Gap','Gap')} – {gap.get('Business Impact','')}"
-        p.font.size = Pt(16)
+    else:
+        p.text = f"• {str(gap)}"
+
+    p.font.size = Pt(16)
 
     # Slide 3 Recommendations
     slide = prs.slides.add_slide(prs.slide_layouts[5])
@@ -439,10 +451,22 @@ def build_ppt(data, client_name):
 
     focus = data.get("recommended_focus_areas", [])
 
-    for item in focus[:6]:
-        p = tf.add_paragraph()
+   if isinstance(focus, str):
+    focus = [{"Focus Area": focus, "Recommended Next Step": ""}]
+elif isinstance(focus, dict):
+    focus = [focus]
+elif not isinstance(focus, list):
+    focus = []
+
+for item in focus[:6]:
+    p = tf.add_paragraph()
+
+    if isinstance(item, dict):
         p.text = f"• {item.get('Focus Area','')} – {item.get('Recommended Next Step','')}"
-        p.font.size = Pt(16)
+    else:
+        p.text = f"• {str(item)}"
+
+    p.font.size = Pt(16)
 
     output = io.BytesIO()
     prs.save(output)
