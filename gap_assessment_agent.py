@@ -137,6 +137,19 @@ stakeholder_interview_summary
 responsibility_gaps
 key_observations_text
 
+Appendix sections are REQUIRED and must be populated using reasonable inferred values from discovery notes.
+
+Minimum rows required:
+
+appendix_reporting_inventory = minimum 8 rows
+appendix_reporting_overlap_analysis = minimum 5 rows
+appendix_data_source_mapping = minimum 8 rows
+appendix_critical_reports = minimum 6 rows
+analytics_ownership_overview = minimum 6 rows
+stakeholder_interview_summary = minimum 6 rows
+
+Only use "To be validated" in one specific field when necessary, never for entire section.
+
 Required table structures:
 
 engagement_scope_summary:
@@ -193,6 +206,36 @@ recommended_focus_areas:
 [
   {{"Focus Area": "...", "Why It Matters": "...", "Recommended Next Step": "..."}}
 ]
+appendix_reporting_inventory:
+[
+ {{"Report Name":"Daily Sales by Store","Business Owner":"Operations","Current Tool":"Excel","Frequency":"Daily","Pain Point":"Manual consolidation","Priority":"High"}}
+]
+
+appendix_reporting_overlap_analysis:
+[
+ {{"Metric":"Sales by Store","Found In":"POS export / Finance file / Manager tracker","Issue":"Multiple versions of truth","Recommendation":"Centralize metric ownership"}}
+]
+
+appendix_data_source_mapping:
+[
+ {{"Source System":"Toast POS","Data Type":"Transactions","Refresh Frequency":"Daily","Current Method":"CSV Export","Future Method":"API Integration"}}
+]
+
+appendix_critical_reports:
+[
+ {{"Report":"Daily Flash Sales","Business Impact":"High","Consumers":"CEO / Ops","Current State":"Manual","Future State":"Automated Dashboard"}}
+]
+
+analytics_ownership_overview:
+[
+ {{"Domain":"Sales Reporting","Current Owner":"Regional Managers","Future Owner":"Analytics COE","Gap":"No formal ownership"}}
+]
+
+stakeholder_interview_summary:
+[
+ {{"Stakeholder":"Owner","Priority":"Growth visibility","Pain Point":"No single dashboard","Need":"Daily KPIs"}}
+]
+
 
 Rules:
 - Return ONLY valid JSON. No markdown.
@@ -204,6 +247,19 @@ Rules:
 - For non-SAP clients, set S/4HANA sections to "Not applicable based on current discovery inputs."
 - Avoid generic consulting language. Tie every gap and recommendation to the client facts.
 - Use business-friendly language for executives.
+- All narrative text fields must be detailed and presentation-ready.
+- Each narrative section should contain 2-3 strong paragraphs.
+- Narratives must explain:
+  1. Current state observations
+  2. Why the issue matters
+  3. Business risks / impacts
+  4. Likely root causes
+  5. Future-state opportunity
+  6. Recommended path forward
+
+- Avoid generic filler language.
+- Tie commentary to the client discovery notes.
+- Write like a senior consulting advisor preparing material for executives.
 """
 
     response = client.chat.completions.create(
