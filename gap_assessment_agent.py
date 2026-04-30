@@ -439,7 +439,7 @@ if st.button("Generate Word Assessment"):
 
         st.download_button(
             label="Download Word Assessment",
-            data=docx_file,
-            file_name=f"{safe_client_name}_Gap_Assessment.docx",
+            data=word_file.getvalue(),
+            file_name="Gap_Assessment.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         )
