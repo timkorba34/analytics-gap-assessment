@@ -77,21 +77,21 @@ def read_uploaded_files(files):
 
             elif file_name.endswith(".csv") or file.type == "text/csv":
                 df = pd.read_csv(file)
-                content += df.to_string(index=False)
+                content += df.head(25).to_string(index=False)
 
             elif file_name.endswith(".xlsx"):
                 excel_file = pd.ExcelFile(file, engine="openpyxl")
                 for sheet_name in excel_file.sheet_names:
                     df = pd.read_excel(excel_file, sheet_name=sheet_name)
                     content += f"\n\n--- SHEET: {sheet_name} ---\n"
-                    content += df.to_string(index=False)
+                    content += df.head(20).to_string(index=False)
 
             elif file_name.endswith(".xls"):
                 excel_file = pd.ExcelFile(file, engine="xlrd")
                 for sheet_name in excel_file.sheet_names:
                     df = pd.read_excel(excel_file, sheet_name=sheet_name)
                     content += f"\n\n--- SHEET: {sheet_name} ---\n"
-                    content += df.to_string(index=False)
+                    content += df.head(20).to_string(index=False)
 
             elif file_name.endswith(".pdf") or file.type == "application/pdf":
                 reader = PyPDF2.PdfReader(file)
@@ -122,7 +122,7 @@ def call_openai_with_retry(messages, model="gpt-4o-mini"):
                 model=model,
                 messages=messages,
                 temperature=0.2,
-                max_tokens=4000
+                max_tokens=2500
             )
 
         except RateLimitError:
@@ -141,6 +141,10 @@ def call_openai_with_retry(messages, model="gpt-4o-mini"):
 # Generate Assessment JSON
 # --------------------
 def generate_assessment_json(client_name, industry, assessment_type, notes, file_content):
+
+    notes = notes[:4000]
+    file_content = file_content[:12000]
+    
     prompt = f"""
 You are a senior enterprise consulting partner creating an analytics gap assessment.
 
