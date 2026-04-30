@@ -468,9 +468,9 @@ for item in focus[:6]:
 
     p.font.size = Pt(16)
 
-    output = io.BytesIO()
-    prs.save(output)
-    output.seek(0)
+output = io.BytesIO()
+prs.save(output)
+output.seek(0)
 
 return output
 
