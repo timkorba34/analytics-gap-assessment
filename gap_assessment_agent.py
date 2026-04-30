@@ -289,6 +289,31 @@ Rules:
 - Write like a senior consulting advisor preparing material for executives.
 """
 
+from openai import RateLimitError, APIError, APITimeoutError
+import time
+
+def call_openai_with_retry(messages, model="gpt-4o-mini"):
+    for attempt in range(3):
+        try:
+            return client.chat.completions.create(
+                model=model,
+                messages=messages,
+                temperature=0.2,
+                max_tokens=4000
+            )
+
+        except RateLimitError:
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+            else:
+                st.error("OpenAI rate limit reached. Check API billing/quota or reduce upload size.")
+                return None
+
+        except (APIError, APITimeoutError) as e:
+            st.error(f"OpenAI API error: {str(e)}")
+            return None
+
+    
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
