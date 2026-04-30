@@ -141,57 +141,57 @@ Required table structures:
 
 engagement_scope_summary:
 [
-  {"Area": "...", "In Scope": "...", "Assessment Focus": "..."}
+  {{"Area": "...", "In Scope": "...", "Assessment Focus": "..."}}
 ]
 
 analytics_environment_snapshot:
 [
-  {"Area": "POS", "Current Tool / Process": "...", "Observed Issue": "...", "Business Impact": "..."}
+  {{"Area": "POS", "Current Tool / Process": "...", "Observed Issue": "...", "Business Impact": "..."}}
 ]
 
 analytics_complexity_snapshot:
 [
-  {"Complexity Driver": "...", "Current Observation": "...", "Impact": "...", "Severity": "..."}
+  {{"Complexity Driver": "...", "Current Observation": "...", "Impact": "...", "Severity": "..."}}
 ]
 
 gap_severity_heatmap:
 [
-  {"Gap Domain": "...", "Current State": "...", "Severity": "High/Medium/Low", "Business Impact": "...", "Recommended Action": "..."}
+  {{"Gap Domain": "...", "Current State": "...", "Severity": "High/Medium/Low", "Business Impact": "...", "Recommended Action": "..."}}
 ]
 
 current_architecture_summary:
 [
-  {"Layer": "...", "Current State": "...", "Gap / Limitation": "...", "Future-State Consideration": "..."}
+  {{"Layer": "...", "Current State": "...", "Gap / Limitation": "...", "Future-State Consideration": "..."}}
 ]
 
 reporting_landscape_summary:
 [
-  {"Reporting Area": "...", "Current Method": "...", "Issue": "...", "Improvement Opportunity": "..."}
+  {{"Reporting Area": "...", "Current Method": "...", "Issue": "...", "Improvement Opportunity": "..."}}
 ]
 
 s4_impact_summary:
 [
-  {"Area": "...", "Impact": "Not applicable unless SAP/S4 is identified", "Validation Needed": "..."}
+  {{"Area": "...", "Impact": "Not applicable unless SAP/S4 is identified", "Validation Needed": "..."}}
 ]
 
 gap_analysis_summary:
 [
-  {"Gap": "...", "Evidence from Discovery": "...", "Business Impact": "...", "Priority": "..."}
+  {{"Gap": "...", "Evidence from Discovery": "...", "Business Impact": "...", "Priority": "..."}}
 ]
 
 improvement_opportunity_summary:
 [
-  {"Opportunity": "...", "Description": "...", "Expected Value": "...", "Priority": "..."}
+  {{"Opportunity": "...", "Description": "...", "Expected Value": "...", "Priority": "..."}}
 ]
 
 potential_impact_summary:
 [
-  {"Value Lever": "...", "Potential Impact": "...", "How It Helps": "..."}
+  {{"Value Lever": "...", "Potential Impact": "...", "How It Helps": "..."}}
 ]
 
 recommended_focus_areas:
 [
-  {"Focus Area": "...", "Why It Matters": "...", "Recommended Next Step": "..."}
+  {{"Focus Area": "...", "Why It Matters": "...", "Recommended Next Step": "..."}}
 ]
 
 Rules:
