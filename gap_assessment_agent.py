@@ -6,6 +6,7 @@ from docx import Document
 import PyPDF2
 import pandas as pd
 
+
 import os
 
 client = OpenAI(api_key="OPENAI_API_KEY") or os.getenv("OPEN_API_KEY")
