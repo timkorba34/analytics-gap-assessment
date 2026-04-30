@@ -435,9 +435,11 @@ if st.button("Generate Word Assessment"):
 
         word_file = create_word_doc(data)
 
+        safe_client_name = client_name.replace(" ", "_").replace("'", "").replace("/","_")
+
         st.download_button(
             label="Download Word Assessment",
             data=docx_file,
-            file_name=f"{client_name}_Gap_Assessment.docx",
+            file_name=f"{safe_client_name}_Gap_Assessment.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         )
