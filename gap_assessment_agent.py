@@ -7,10 +7,10 @@ import PyPDF2
 import pandas as pd
 
 import os
-import streamlit as st
-from openai import OpenAI
 
 client = OpenAI(api_key="OPENAI_API_KEY") or os.getenv("OPEN_API_KEY")
+
+api_key = st.secrets.get("OPENAI_API_KEY", None)
 
 if not api_key:
     st.error("OPEN_AI_KEY is missing.  Add it in Streamlit Cloud Secrets.")
