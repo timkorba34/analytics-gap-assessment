@@ -146,7 +146,6 @@ def generate_assessment_json(client_name, industry, assessment_type, notes, file
     file_content = file_content[:12000]
     
     prompt = f"""
-prompt = f"""
 You are a senior consulting partner from a top-tier advisory firm delivering a paid executive assessment for a client.
 
 Your writing style must feel premium, strategic, commercial, and boardroom-ready.
@@ -537,7 +536,7 @@ def build_ppt(data, client_name):
     prs.save(output)
     output.seek(0)
 
-    return output
+return output
     
 def build_exec_email(data, client_name):
     summary = data.get("executive_summary_text", "")
