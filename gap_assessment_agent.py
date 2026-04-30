@@ -453,9 +453,9 @@ for gap in gaps[:6]:
 
    if isinstance(focus, str):
         focus = [{"Focus Area": focus, "Recommended Next Step": ""}]
-    elif isinstance(focus, dict):
+   elif isinstance(focus, dict):
         focus = [focus]
-    elif not isinstance(focus, list):
+   elif not isinstance(focus, list):
         focus = []
 
 for item in focus[:6]:
