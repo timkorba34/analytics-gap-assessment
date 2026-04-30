@@ -450,12 +450,12 @@ for gap in gaps[:6]:
     tf = tx.text_frame
 
     focus = data.get("recommended_focus_areas", [])
-
-   if isinstance(focus, str):
+    
+    if isinstance(focus, str):
         focus = [{"Focus Area": focus, "Recommended Next Step": ""}]
-   elif isinstance(focus, dict):
+    elif isinstance(focus, dict):
         focus = [focus]
-   elif not isinstance(focus, list):
+    elif not isinstance(focus, list):
         focus = []
 
 for item in focus[:6]:
