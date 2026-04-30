@@ -122,7 +122,8 @@ def call_openai_with_retry(messages, model="gpt-4o-mini"):
                 model=model,
                 messages=messages,
                 temperature=0.2,
-                max_tokens=2500
+                max_tokens=4000,
+                response_format={"type": "json_object"}
             )
 
         except RateLimitError:
@@ -274,7 +275,7 @@ RULES
 """
 
     messages = [
-        {"role": "system", "content": "Return only valid JSON. No markdown."},
+        {"role": "system", "content": "You must return a single valid JSON object only. No markdown, no commentary, no code fences."},
         {"role": "user", "content": prompt}
     ]
 
@@ -285,10 +286,12 @@ RULES
 
     raw = response.choices[0].message.content.strip()
 
-    if raw.startswith("```"):
-        raw = raw.replace("```json", "").replace("```", "").strip()
-
-    return json.loads(raw)
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        st.error("The AI response was not valid JSON. Showing raw response for debugging:")
+        st.code(raw[:4000])
+    return {}
 
 # --------------------
 # Word Helpers
