@@ -638,30 +638,17 @@ Consulting Team
 # Generate Button
 # --------------------
 if st.button("Generate Assessment Outputs", key="main_generate_btn"):
+
     if not client_name:
         st.warning("Enter a client name first.")
-    else:
-        if st.button("Generate Assessment Outputs"):
-            if not client_name:
-                st.warning("Enter a client name first.")
-        else:
-            file_content = read_uploaded_files(uploaded_files)
 
-        if client_name:
+    else:
+        file_content = read_uploaded_files(uploaded_files)
+
+        if client_name.strip():
             company_research = research_company(client_name, industry)
         else:
             company_research = ""
-
-        with st.spinner("Generating assessment content..."):
-            data = generate_assessment_json(
-                client_name,
-                industry,
-                assessment_type,
-                notes,
-                file_content,
-                company_research
-            )
-        company_research = research_company(client_name, industry)
 
         with st.spinner("Generating assessment content..."):
             data = generate_assessment_json(
@@ -680,20 +667,6 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
         )
 
         st.success("Assessment generated.")
-
-        # --------------------
-        # Word Document
-        # --------------------
-        with st.spinner("Creating Word document..."):
-            docx_file = build_docx(data, client_name)
-
-        st.download_button(
-            label="Download Word Assessment",
-            data=docx_file.getvalue(),
-            file_name=f"{safe_client_name}_Gap_Assessment.docx",
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        )
-
         # --------------------
         # PowerPoint Deck
         # --------------------
