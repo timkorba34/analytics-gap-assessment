@@ -9,6 +9,7 @@ import pandas as pd
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
+from tavily import TavilyClient
 
 
 # --------------------
@@ -30,6 +31,18 @@ if not api_key:
     st.stop()
 
 client = OpenAI(api_key=api_key)
+
+#----------------------
+# Tavili Setup
+#______________________
+
+
+
+tavily_api_key = st.secrets.get("TAVILY_API_KEY", None) or os.getenv("TAVILY_API_KEY")
+
+tavily_client = None
+if tavily_api_key:
+    tavily_client = TavilyClient(api_key=tavily_api_key)
 
 
 # --------------------
@@ -115,6 +128,8 @@ from openai import RateLimitError, APIError, APITimeoutError
 import time
 import json
 
+response_format={"type": "json_object"}
+
 def call_openai_with_retry(messages, model="gpt-4o-mini"):
     for attempt in range(3):
         try:
@@ -137,11 +152,41 @@ def call_openai_with_retry(messages, model="gpt-4o-mini"):
             st.error(f"OpenAI API error: {str(e)}")
             return None
 
+# --------------------
+# Research Company Information
+# --------------------
+
+def research_company(company_name, industry):
+    if not tavily_client or not company_name:
+        return ""
+
+    query = f"{company_name} company overview industry products revenue locations acquisitions strategy {industry}"
+
+    try:
+        results = tavily_client.search(
+            query=query,
+            search_depth="basic",
+            max_results=5
+        )
+
+        research_text = ""
+
+        for item in results.get("results", []):
+            title = item.get("title", "")
+            url = item.get("url", "")
+            content = item.get("content", "")
+
+            research_text += f"\nTitle: {title}\nURL: {url}\nSummary: {content}\n"
+
+        return research_text[:6000]
+
+    except Exception as e:
+        return f"Company research unavailable: {str(e)}"
 
 # --------------------
 # Generate Assessment JSON
 # --------------------
-def generate_assessment_json(client_name, industry, assessment_type, notes, file_content):
+def generate_assessment_json(client_name, industry, assessment_type, notes, file_content, company_research):
 
     notes = notes[:4000]
     file_content = file_content[:12000]
@@ -160,6 +205,10 @@ CLIENT INFORMATION
 Client Name: {client_name}
 Industry: {industry}
 Assessment Type: {assessment_type}
+
+PUBLIC COMPANY RESEARCH
+
+{company_research}
 
 DISCOVERY NOTES
 
@@ -197,6 +246,22 @@ Do NOT use generic filler statements such as:
 "there are several gaps"
 
 Be specific and commercial.
+
+Do not create nested dictionaries inside table cells.
+
+Every table must be a list of flat row objects.
+
+Bad:
+[{"stakeholders": [{"name": "CFO", "role": "Finance"}]}]
+
+Good:
+[
+  {"Stakeholder": "CFO", "Role": "Finance", "Current Pain Point": "Delayed margin visibility", "Business Risk": "Slow pricing decisions", "Requested Capability": "Weekly profitability dashboard", "Priority": "High"}
+]
+
+Use clean column names with spaces and title case.
+Never use one-column tables.
+Never return fields like "gaps", "opportunities", "ownership", "interviews", or "reporting_inventory" as a single nested column.
 
 ENGAGEMENT OVERVIEW MUST INCLUDE:
 
@@ -577,6 +642,7 @@ if st.button("Generate Assessment Outputs"):
         st.warning("Enter a client name first.")
     else:
         file_content = read_uploaded_files(uploaded_files)
+        company_research = research_company(client_name, industry)
 
         with st.spinner("Generating assessment content..."):
             data = generate_assessment_json(
@@ -584,7 +650,8 @@ if st.button("Generate Assessment Outputs"):
                 industry,
                 assessment_type,
                 notes,
-                file_content
+                file_content,
+                company_research
             )
 
         safe_client_name = (
