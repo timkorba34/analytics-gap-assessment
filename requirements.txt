@@ -6,3 +6,4 @@ pandas
 python-pptx
 openpyxl
 xlrd==2.0.1
+tavily-python
