@@ -637,7 +637,7 @@ Consulting Team
 # --------------------
 # Generate Button
 # --------------------
-if st.button("Generate Assessment Outputs"):
+if st.button("Generate Assessment Outputs", key="main_generate_btn"):
     if not client_name:
         st.warning("Enter a client name first.")
     else:
