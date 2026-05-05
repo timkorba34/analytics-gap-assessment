@@ -46,6 +46,19 @@ if tavily_api_key:
 
 
 # --------------------
+# Initialize Session State
+# --------------------
+if "assessment_data" not in st.session_state:
+    st.session_state.assessment_data = None
+
+if "word_doc" not in st.session_state:
+    st.session_state.word_doc = None
+
+if "ppt_file" not in st.session_state:
+    st.session_state.ppt_file = None
+
+
+# --------------------
 # UI Inputs
 # --------------------
 client_name = st.text_input("Client Name")
@@ -649,14 +662,8 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
 
     if not client_name:
         st.warning("Enter a client name first.")
-
     else:
         file_content = read_uploaded_files(uploaded_files)
-
-        if client_name.strip():
-            company_research = research_company(client_name, industry)
-        else:
-            company_research = ""
 
         with st.spinner("Generating assessment content..."):
             data = generate_assessment_json(
@@ -668,35 +675,48 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
                 company_research
             )
 
-        safe_client_name = (
-            client_name.replace(" ", "_")
-            .replace("'", "")
-            .replace("/", "_")
-        )
+        st.session_state.assessment_data = data
 
-        st.success("Assessment generated.")
-        # --------------------
-        # PowerPoint Deck
-        # --------------------
-        with st.spinner("Creating PowerPoint deck..."):
-            ppt_file = build_ppt(data, client_name)
+        if data:
+            with st.spinner("Creating Word document..."):
+                st.session_state.word_doc = build_docx(data, client_name)
 
-        st.download_button(
-            label="Download PowerPoint Deck",
-            data=ppt_file.getvalue(),
-            file_name=f"{safe_client_name}_Gap_Assessment_Deck.pptx",
-            mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
-        )
+            with st.spinner("Creating PowerPoint deck..."):
+                st.session_state.ppt_file = build_ppt(data, client_name)
 
-        # --------------------
-        # Executive Summary Email
-        # --------------------
-        with st.spinner("Creating Executive Summary Email..."):
-            email_text = build_exec_email(data, client_name)
+            with st.spinner("Creating Executive Summary Email..."):
+                st.session_state.email_text = build_exec_email(data, client_name)
 
-        st.download_button(
-            label="Download Executive Summary Email",
-            data=email_text,
-            file_name=f"{safe_client_name}_Executive_Summary_Email.txt",
-            mime="text/plain"
-        )
+            st.success("Assessment outputs generated successfully.")
+        else:
+            st.error("Assessment generation failed.")
+
+# --------------------
+# Download Buttons
+# --------------------
+if st.session_state.word_doc:
+    st.download_button(
+        label="Download Word Document",
+        data=st.session_state.word_doc.getvalue() if hasattr(st.session_state.word_doc, "getvalue") else st.session_state.word_doc,
+        file_name=f"{safe_client_name}_Gap_Assessment_Report.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        key="download_word_doc"
+    )
+
+if st.session_state.ppt_file:
+    st.download_button(
+        label="Download PowerPoint Deck",
+        data=st.session_state.ppt_file.getvalue() if hasattr(st.session_state.ppt_file, "getvalue") else st.session_state.ppt_file,
+        file_name=f"{safe_client_name}_Gap_Assessment_Deck.pptx",
+        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        key="download_ppt_file"
+    )
+
+if st.session_state.email_text:
+    st.download_button(
+        label="Download Executive Summary Email",
+        data=st.session_state.email_text,
+        file_name=f"{safe_client_name}_Executive_Summary_Email.txt",
+        mime="text/plain",
+        key="download_exec_email"
+    )
