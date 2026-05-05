@@ -867,6 +867,55 @@ def validate_output(data):
     return True
 
 # --------------------
+# Output Validation
+# --------------------
+def validate_output(data):
+    required_keys = [
+        "executive_summary_text",
+        "gap_analysis_summary",
+        "appendix_reporting_inventory",
+        "appendix_s4_impact_analysis",
+        "appendix_reporting_overlap_analysis",
+        "appendix_data_source_mapping",
+        "appendix_critical_reports",
+        "analytics_ownership_overview",
+        "analytics_responsibility_model",
+        "stakeholder_interview_summary",
+        "responsibility_gaps",
+        "top_priorities",
+        "implementation_roadmap"
+    ]
+
+    if not data:
+        return False
+
+    for key in required_keys:
+        value = data.get(key)
+
+        if value is None:
+            return False
+
+        if isinstance(value, str):
+            if not value.strip():
+                return False
+            if "to be validated" in value.lower():
+                return False
+
+        if isinstance(value, list):
+            if len(value) == 0:
+                return False
+            if "to be validated" in str(value).lower():
+                return False
+
+        if isinstance(value, dict):
+            if len(value) == 0:
+                return False
+            if "to be validated" in str(value).lower():
+                return False
+
+    return True
+
+# --------------------
 # Generate Button
 # --------------------
 if st.button("Generate Assessment Outputs", key="main_generate_btn"):
@@ -877,27 +926,27 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
         file_content = read_uploaded_files(uploaded_files)
 
         with st.spinner("Generating assessment content..."):
-            max_retries = 2
-            data = None
+    max_retries = 3
+    data = None
 
-            for attempt in range(max_retries + 1):
-                data = generate_assessment_json(
-                    client_name,
-                    industry,
-                    assessment_type,
-                    notes,
-                    file_content,
-                    company_research
-                )
-
-                if validate_output(data):
-                    break
-                else:
-                    st.warning(f"Regenerating output (attempt {attempt + 1}) due to missing sections...")
-
-            if not validate_output(data):
-                st.error("Failed to generate complete assessment after retries.")
-                data = {}
+        for attempt in range(max_retries + 1):
+            data = generate_assessment_json(
+                client_name,
+                industry,
+                assessment_type,
+                notes,
+                file_content,
+                company_research
+            )
+    
+            if validate_output(data):
+                break
+            else:
+                st.warning(f"Regenerating output attempt {attempt + 1}: missing sections or placeholder text found.")
+    
+        if not validate_output(data):
+            st.error("Failed to generate a complete assessment after retries.")
+            data = {}
 
         st.session_state.assessment_data = data
 
