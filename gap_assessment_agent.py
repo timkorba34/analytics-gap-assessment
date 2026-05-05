@@ -48,15 +48,16 @@ if tavily_api_key:
 # --------------------
 # Initialize Session State
 # --------------------
-if "assessment_data" not in st.session_state:
-    st.session_state.assessment_data = None
+defaults = {
+    "assessment_data": None,
+    "word_doc": None,
+    "ppt_file": None,
+    "email_text": None,
+}
 
-if "word_doc" not in st.session_state:
-    st.session_state.word_doc = None
-
-if "ppt_file" not in st.session_state:
-    st.session_state.ppt_file = None
-
+for key, value in defaults.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
 
 # --------------------
 # UI Inputs
@@ -81,6 +82,8 @@ uploaded_files = st.file_uploader(
 )
 
 notes = st.text_area("Paste Additional Notes", height=250)
+
+safe_client_name = client_name.strip().replace(" ", "_") if client_name else "Client"
 
 
 # --------------------
@@ -699,7 +702,7 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
 # --------------------
 # Download Buttons
 # --------------------
-if st.session_state.word_doc:
+if st.session_state.get("word_doc"):
     st.download_button(
         label="Download Word Document",
         data=st.session_state.word_doc.getvalue() if hasattr(st.session_state.word_doc, "getvalue") else st.session_state.word_doc,
@@ -708,7 +711,7 @@ if st.session_state.word_doc:
         key="download_word_doc"
     )
 
-if st.session_state.ppt_file:
+if st.session_state.get("ppt_file"):
     st.download_button(
         label="Download PowerPoint Deck",
         data=st.session_state.ppt_file.getvalue() if hasattr(st.session_state.ppt_file, "getvalue") else st.session_state.ppt_file,
@@ -717,7 +720,7 @@ if st.session_state.ppt_file:
         key="download_ppt_file"
     )
 
-if st.session_state.email_text:
+if st.session_state.get("email_text"):
     st.download_button(
         label="Download Executive Summary Email",
         data=st.session_state.email_text,
