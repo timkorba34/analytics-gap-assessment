@@ -823,28 +823,27 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
         file_content = read_uploaded_files(uploaded_files)
 
         with st.spinner("Generating assessment content..."):
+            max_retries = 2
+            data = None
 
-        max_retries = 2
-        data = None
+            for attempt in range(max_retries + 1):
+                data = generate_assessment_json(
+                    client_name,
+                    industry,
+                    assessment_type,
+                    notes,
+                    file_content,
+                    company_research
+                )
 
-    for attempt in range(max_retries + 1):
-        data = generate_assessment_json(
-            client_name,
-            industry,
-            assessment_type,
-            notes,
-            file_content,
-            company_research
-        )
+                if validate_output(data):
+                    break
+                else:
+                    st.warning(f"Regenerating output (attempt {attempt + 1}) due to missing sections...")
 
-        if validate_output(data):
-            break
-        else:
-            st.warning(f"Regenerating output (attempt {attempt + 1}) due to missing sections...")
-
-    if not validate_output(data):
-        st.error("Failed to generate complete assessment after retries.")
-        data = {}
+            if not validate_output(data):
+                st.error("Failed to generate complete assessment after retries.")
+                data = {}
 
         st.session_state.assessment_data = data
 
