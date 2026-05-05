@@ -256,6 +256,20 @@ Tie all observations directly to likely client realities.
 For manufacturing clients, naturally reference:
 plants, supply chain, production, inventory, OTIF, forecasting, downtime, scrap, yield, procurement, distribution, acquisitions.
 
+All tables must be rendered as clean tabular structures with column headers and rows.
+
+Do NOT return Python dictionaries or JSON-style inline objects.
+
+Each table must be formatted as an array of flat row objects that can be directly rendered into a professional table.
+
+Each row must contain:
+- Business context
+- Impact
+- Priority
+- Action (where applicable)
+
+Avoid generic labels like "gaps" or "opportunities" as single columns.
+
 Do NOT use generic filler statements such as:
 "significant opportunities exist"
 "the company faces challenges"
