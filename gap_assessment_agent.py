@@ -5,6 +5,7 @@ from openai import OpenAI
 from docx import Document
 import PyPDF2
 import pandas as pd
+import io
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
