@@ -190,7 +190,7 @@ def generate_assessment_json(client_name, industry, assessment_type, notes, file
 
     notes = notes[:4000]
     file_content = file_content[:12000]
-    
+
     prompt = f"""
 You are a senior consulting partner from a top-tier advisory firm delivering a paid executive assessment for a client.
 
@@ -258,7 +258,7 @@ Bad:
 
 Good:
 [
-  {"Stakeholder": "CFO", "Role": "Finance", "Current Pain Point": "Delayed margin visibility", "Business Risk": "Slow pricing decisions", "Requested Capability": "Weekly profitability dashboard", "Priority": "High"}
+  {{"Stakeholder": "CFO", "Role": "Finance", "Current Pain Point": "Delayed margin visibility", "Business Risk": "Slow pricing decisions", "Requested Capability": "Weekly profitability dashboard", "Priority": "High"}}
 ]
 
 Use clean column names with spaces and title case.
@@ -342,8 +342,14 @@ RULES
 """
 
     messages = [
-        {"role": "system", "content": "You must return a single valid JSON object only. No markdown, no commentary, no code fences."},
-        {"role": "user", "content": prompt}
+        {
+            "role": "system",
+            "content": "You must return a single valid JSON object only. No markdown, no commentary, no code fences."
+        },
+        {
+            "role": "user",
+            "content": prompt
+        }
     ]
 
     response = call_openai_with_retry(messages)
@@ -358,7 +364,7 @@ RULES
     except json.JSONDecodeError:
         st.error("The AI response was not valid JSON. Showing raw response for debugging:")
         st.code(raw[:4000])
-    return {}
+        return {}
 
 # --------------------
 # Word Helpers
