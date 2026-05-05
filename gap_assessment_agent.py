@@ -654,6 +654,11 @@ Consulting Team
 """
     return email
 
+# --------------------
+# Company Research Default
+# --------------------
+company_research = ""
+
 
 # --------------------
 # Generate Button
