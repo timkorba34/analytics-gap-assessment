@@ -234,6 +234,60 @@ SUPPORTING FILE CONTENT
 
 {file_content}
 
+BUSINESS CONTEXT DERIVATION (MANDATORY)
+
+Before writing the assessment, infer the company’s operating model based on:
+- discovery notes
+- uploaded files
+- company research
+
+Identify:
+- how the company makes money
+- core business functions (e.g., sales, operations, supply chain, finance)
+- key operational processes
+- likely sources of complexity
+
+This inferred context must be used throughout the entire assessment.
+
+Do NOT write generic statements that could apply to any company.
+
+OPERATIONAL SPECIFICITY REQUIREMENT
+
+Every issue must include:
+
+- Where it shows up in the business (function/process)
+- What is happening operationally
+- Who is impacted
+- What decision is affected
+
+Generic statements such as "fragmented landscape" or "inefficiencies exist" are not allowed unless tied to a specific business process.
+
+GENERIC LANGUAGE PROHIBITION
+
+The following types of statements are not allowed:
+
+- "fragmented landscape"
+- "opportunities exist"
+- "lack of visibility"
+- "inefficiencies in reporting"
+
+Unless immediately followed by:
+- a specific process
+- a specific function
+- a specific business consequence
+
+If not, rewrite the statement.
+
+INFERENCE REQUIREMENT
+
+If discovery inputs are limited, you must:
+
+- infer realistic operational scenarios
+- use common patterns seen in similar businesses
+- make reasonable consulting assumptions
+
+Do NOT default to vague or generic language.
+
 
 OBJECTIVE
 
