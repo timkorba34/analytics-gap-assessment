@@ -317,6 +317,36 @@ Use clean column names with spaces and title case.
 Never use one-column tables.
 Never return fields like "gaps", "opportunities", "ownership", "interviews", or "reporting_inventory" as a single nested column.
 
+MANDATORY COMPLETENESS RULE
+
+Every required key must contain meaningful content.
+
+- No empty arrays
+- No empty strings
+- No "To be validated"
+- No placeholder text
+
+If information is not available, infer realistic consulting-level content.
+
+Do not skip sections under any circumstance.
+
+CRITICAL REQUIREMENT – ROADMAP
+
+The implementation_roadmap section is mandatory.
+
+You MUST return:
+
+Phase 1 (0–6 weeks)
+Phase 2 (6–12 weeks)
+Phase 3 (12+ weeks)
+
+Each phase must include:
+- Key Actions
+- Business Outcomes
+- Dependencies
+
+If this section is missing, the response is invalid.
+
 BUSINESS TRANSLATION REQUIREMENT
 
 Every issue identified must include:
@@ -396,6 +426,16 @@ Do not invent unrealistic numbers.
 Use reasonable, experience-based estimates tied to the issue.
 
 RETURN ONLY VALID JSON
+
+STRICT TABLE FORMAT
+
+All table outputs MUST be arrays of objects using consistent columns.
+
+Do not switch formats between sections.
+
+Do not return narrative where a table is expected.
+
+Inconsistent structure is not allowed.
 
 Required keys:
 
@@ -757,6 +797,22 @@ company_research = ""
 
 
 # --------------------
+# Output Validation
+# --------------------
+def validate_output(data):
+    required_keys = [
+        "executive_summary_text",
+        "top_priorities",
+        "implementation_roadmap"
+    ]
+
+    for key in required_keys:
+        if key not in data or not data[key]:
+            return False
+
+    return True
+
+# --------------------
 # Generate Button
 # --------------------
 if st.button("Generate Assessment Outputs", key="main_generate_btn"):
@@ -767,14 +823,28 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
         file_content = read_uploaded_files(uploaded_files)
 
         with st.spinner("Generating assessment content..."):
-            data = generate_assessment_json(
-                client_name,
-                industry,
-                assessment_type,
-                notes,
-                file_content,
-                company_research
-            )
+
+    max_retries = 2
+    data = None
+
+    for attempt in range(max_retries + 1):
+        data = generate_assessment_json(
+            client_name,
+            industry,
+            assessment_type,
+            notes,
+            file_content,
+            company_research
+        )
+
+        if validate_output(data):
+            break
+        else:
+            st.warning(f"Regenerating output (attempt {attempt + 1}) due to missing sections...")
+
+    if not validate_output(data):
+        st.error("Failed to generate complete assessment after retries.")
+        data = {}
 
         st.session_state.assessment_data = data
 
