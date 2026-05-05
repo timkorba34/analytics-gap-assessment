@@ -252,7 +252,9 @@ Do not create nested dictionaries inside table cells.
 Every table must be a list of flat row objects.
 
 Bad:
-[{"stakeholders": [{"name": "CFO", "role": "Finance"}]}]
+[
+  {{"stakeholders": [{{"name": "CFO", "role": "Finance"}}]}}
+]
 
 Good:
 [
