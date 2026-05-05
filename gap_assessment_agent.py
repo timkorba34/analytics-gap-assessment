@@ -234,6 +234,7 @@ SUPPORTING FILE CONTENT
 
 {file_content}
 
+
 OBJECTIVE
 
 Create a premium executive analytics assessment in JSON format.
@@ -268,6 +269,27 @@ Each row must contain:
 - Priority
 - Action (where applicable)
 
+Do not use generic columns like "Category" or "Gap".
+
+Each row must read like a consulting insight, not a label.
+
+MANDATORY POINT OF VIEW
+
+You are not summarizing findings.
+
+You are diagnosing the business.
+
+You must take a clear position on:
+
+- What is actually broken
+- Where it shows up operationally
+- Why it matters financially
+- What leadership should prioritize first
+
+Avoid neutral language.
+
+Write with conviction as if presenting to a CFO and COO.
+
 Avoid generic labels like "gaps" or "opportunities" as single columns.
 
 Do NOT use generic filler statements such as:
@@ -295,6 +317,17 @@ Use clean column names with spaces and title case.
 Never use one-column tables.
 Never return fields like "gaps", "opportunities", "ownership", "interviews", or "reporting_inventory" as a single nested column.
 
+BUSINESS TRANSLATION REQUIREMENT
+
+Every issue identified must include:
+
+1. Where it shows up in the business (function/process)
+2. What is happening today
+3. The consequence (delay, inefficiency, cost, risk)
+4. Why it matters (margin, cash flow, service levels, growth)
+
+Do not describe issues without tying them to real business impact.
+
 ENGAGEMENT OVERVIEW MUST INCLUDE:
 
 1. What the company does
@@ -311,12 +344,56 @@ EXECUTIVE SUMMARY MUST INCLUDE:
 4. Biggest value opportunities
 5. Immediate recommended actions
 
-TABLES MUST BE CONSULTING QUALITY
+TABLE STRUCTURE REQUIREMENT
 
-Every table must contain meaningful columns with business value.
+All tables must follow this structure:
 
-Example:
-Stakeholder | Current Pain Point | Risk | Requested Capability | Priority
+Business Area
+Current State
+Where It Breaks
+Business Impact
+Why It Matters
+Recommended Action
+Priority
+
+TOP PRIORITIES REQUIREMENT
+
+Identify the top 5 actions leadership should take.
+
+Each must include:
+
+- What to do
+- Why it matters
+- Business impact
+- Time horizon (Immediate / Near-Term / Mid-Term)
+
+These should feel like executive decisions, not suggestions.
+
+ROADMAP REQUIREMENT
+
+Create a phased roadmap:
+
+Phase 1 (0–6 weeks): Quick wins and stabilization
+Phase 2 (6–12 weeks): Foundation build
+Phase 3 (12+ weeks): Scale and advanced capabilities
+
+Each phase must include:
+- Key actions
+- Business outcomes
+- Dependencies
+
+VALUE QUANTIFICATION REQUIREMENT
+
+Where possible, estimate impact using directional ranges:
+
+- Time reduction (e.g., 20–40%)
+- Cost savings
+- Margin improvement
+- Working capital impact
+
+Do not invent unrealistic numbers.
+
+Use reasonable, experience-based estimates tied to the issue.
 
 RETURN ONLY VALID JSON
 
@@ -356,6 +433,8 @@ analytics_responsibility_model
 stakeholder_interview_summary
 responsibility_gaps
 key_observations_text
+top_priorities
+implementation_roadmap
 
 RULES
 
