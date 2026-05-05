@@ -490,6 +490,31 @@ Do not return narrative where a table is expected.
 
 Inconsistent structure is not allowed.
 
+APPENDIX REQUIREMENT
+
+Appendix sections are mandatory and must be populated.
+
+Do not return "To be validated."
+
+If source data is incomplete, infer realistic assessment content using consulting assumptions.
+
+Each appendix must contain at least 3 rows.
+
+appendix_reporting_inventory must include:
+Report Name, Business Function, Frequency, Current Owner, Current Issue, Recommended Disposition
+
+appendix_s4_impact_analysis must include:
+Process Area, Current Reporting Dependency, S/4HANA Impact, Risk Level, Required Action
+
+appendix_reporting_overlap_analysis must include:
+Report / Dashboard, Overlap Area, Duplicative Source, Business Risk, Recommended Action
+
+appendix_data_source_mapping must include:
+Data Source, Business Function, Current Usage, Integration Issue, Future-State Recommendation
+
+appendix_critical_reports must include:
+Critical Report, Executive Owner, Business Purpose, Risk If Unavailable, Modernization Priority
+
 Required keys:
 
 engagement_overview_text
