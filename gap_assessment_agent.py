@@ -536,10 +536,10 @@ def build_docx(data, client_name, assessment_type):
         add_table_from_records(doc, data.get("top_priorities", []))
         add_paragraph(doc, data.get("top_priorities_text", ""))
 
-    if data.get("implementation_roadmap"):
-        add_heading(doc, "Implementation Roadmap", 2)
-        add_table_from_records(doc, data.get("implementation_roadmap", []))
-        add_paragraph(doc, data.get("implementation_roadmap_text", ""))    
+    if data.get("S/4HANA Analytics Readiness Roadmap"):
+        add_heading(doc, "S/4HANA Analytics Readiness Roadmap", 2)
+        add_table_from_records(doc, data.get("s4_analytics_roadmap", []))
+        add_paragraph(doc, data.get("s4_analytics_roadmap_text", ""))    
 
     # --------------------
     # Analytics Gap Assessment
@@ -852,15 +852,19 @@ ASSESSMENT_FRAMEWORKS = {
             "executive_summary_text",
             "top_priorities",
             "top_priorities_text",
-            "implementation_roadmap",
-            "implementation_roadmap_text"
+            "s4_analytics_roadmap",
+            "s4_analytics_roadmap_text"
         ],
         "instructions": """
 top_priorities must be a table array with exactly 5 rows:
 Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
 
-implementation_roadmap must be a table array with exactly 3 rows:
-Phase, Timeline, Key Actions, Business Outcome, Dependencies
+s4 analytics roadmap must represent the recommended phased execution plan AFTER the assessment.
+
+The roadmap should focus on implementing the recommended analytics, reporting, governance, and S/4HANA readiness improvements.
+
+Columns:
+Phase, Timeline, Strategic Objective, Key Activities, Expected Outcome, Business Value, Dependencies
 """
     },
     {
@@ -957,7 +961,7 @@ All *_text and *_summary keys must be 1-2 paragraph narratives.
                     "executive_summary_text",
                     "modernization_drivers",
                     "top_priorities",
-                    "implementation_roadmap"
+                    "s4_analytics_roadmap"
                 ],
                 "instructions": """
 Focus on why modernization is needed, what needs to change, and the phased path forward.
@@ -965,8 +969,12 @@ Focus on why modernization is needed, what needs to change, and the phased path 
 modernization_drivers columns:
 Driver, Current Constraint, Business Impact, Modernization Response, Priority
 
-implementation_roadmap must include:
-Phase, Timeline, Key Actions, Business Outcome, Dependencies
+s4_analytics_roadmap must represent the recommended phased execution plan AFTER the assessment.
+
+The roadmap should focus on implementing the recommended analytics, reporting, governance, and S/4HANA readiness improvements.
+
+Columns:
+Phase, Timeline, Strategic Objective, Key Activities, Expected Outcome, Business Value, Dependencies
 """
             },
             {
@@ -1009,7 +1017,7 @@ Create a practical execution plan with workstreams, risks, dependencies, estimat
                     "engagement_overview_text",
                     "executive_summary_text",
                     "top_ai_opportunities",
-                    "implementation_roadmap"
+                    "s4_analytics_roadmap"
                 ],
                 "instructions": """
 Focus on where AI can create business value, reduce manual work, improve decisions, and accelerate operations.
