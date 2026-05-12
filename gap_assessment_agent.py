@@ -720,99 +720,161 @@ def add_table_from_records(doc, records):
 # --------------------
 # Build Word Document
 # --------------------
-def build_docx(data, client_name):
+def build_docx(data, client_name, assessment_type):
     doc = Document()
 
-    doc.add_heading(f"{client_name or 'Client'} Analytics Gap Assessment", 0)
+    doc.add_heading(f"{client_name or 'Client'} {assessment_type}", 0)
 
+    # Common executive front-end
     add_heading(doc, "1. Engagement Overview", 1)
     add_paragraph(doc, data.get("engagement_overview_text", ""))
-    add_heading(doc, "Engagement Scope Summary", 2)
-    add_table_from_records(doc, data.get("engagement_scope_summary", []))
 
     add_heading(doc, "2. Executive Summary", 1)
     add_paragraph(doc, data.get("executive_summary_text", ""))
-    add_heading(doc, "Analytics Environment Snapshot", 2)
-    add_table_from_records(doc, data.get("analytics_environment_snapshot", []))
 
-    add_heading(doc, "3. Analytics Complexity Snapshot", 1)
-    add_paragraph(doc, data.get("analytics_complexity_text", ""))
-    add_table_from_records(doc, data.get("analytics_complexity_snapshot", []))
+    if data.get("top_priorities"):
+        add_heading(doc, "Executive Priorities", 2)
+        add_table_from_records(doc, data.get("top_priorities", []))
 
-    add_heading(doc, "4. Analytics Gap Severity Heatmap", 1)
-    add_paragraph(doc, data.get("gap_heatmap_intro", ""))
-    add_table_from_records(doc, data.get("gap_severity_heatmap", []))
-    add_heading(doc, "Observations", 2)
-    add_paragraph(doc, data.get("gap_observations_text", ""))
+    if data.get("implementation_roadmap"):
+        add_heading(doc, "Implementation Roadmap", 2)
+        add_table_from_records(doc, data.get("implementation_roadmap", []))
 
-    add_heading(doc, "5. Current Analytics Landscape", 1)
-    add_paragraph(doc, data.get("current_landscape_text", ""))
-    add_heading(doc, "Current Analytics Architecture Summary", 2)
-    add_table_from_records(doc, data.get("current_architecture_summary", []))
+    # --------------------
+    # Analytics Gap Assessment
+    # --------------------
+    if assessment_type == "Analytics Gap Assessment":
 
-    add_heading(doc, "6. Reporting Inventory Summary", 1)
-    add_paragraph(doc, data.get("reporting_inventory_text", ""))
-    add_heading(doc, "Reporting Landscape Summary", 2)
-    add_table_from_records(doc, data.get("reporting_landscape_summary", []))
+        add_heading(doc, "3. Analytics Environment Snapshot", 1)
+        add_table_from_records(doc, data.get("analytics_environment_snapshot", []))
 
-    add_heading(doc, "7. S/4HANA Reporting Impact Assessment", 1)
-    add_paragraph(doc, data.get("s4_reporting_impact_text", ""))
-    add_heading(doc, "S/4HANA Reporting Impact Summary", 2)
-    add_table_from_records(doc, data.get("s4_impact_summary", []))
+        add_heading(doc, "4. Analytics Complexity Snapshot", 1)
+        add_paragraph(doc, data.get("analytics_complexity_text", ""))
+        add_table_from_records(doc, data.get("analytics_complexity_snapshot", []))
 
-    add_heading(doc, "8. Key Analytics Gaps Identified", 1)
-    add_paragraph(doc, data.get("key_gaps_text", ""))
-    add_heading(doc, "Gap Analysis Summary", 2)
-    add_table_from_records(doc, data.get("gap_analysis_summary", []))
+        add_heading(doc, "5. Gap Severity Heatmap", 1)
+        add_table_from_records(doc, data.get("gap_severity_heatmap", []))
+        add_paragraph(doc, data.get("gap_observations_text", ""))
 
-    add_heading(doc, "9. Opportunity Areas", 1)
-    add_paragraph(doc, data.get("opportunity_areas_text", ""))
-    add_heading(doc, "Improvement Opportunity Summary", 2)
-    add_table_from_records(doc, data.get("improvement_opportunity_summary", []))
+        add_heading(doc, "6. Current Analytics Landscape", 1)
+        add_paragraph(doc, data.get("current_landscape_text", ""))
+        add_table_from_records(doc, data.get("current_architecture_summary", []))
 
-    add_heading(doc, "10. Business Value of Addressing the Gaps", 1)
-    add_paragraph(doc, data.get("business_value_text", ""))
-    add_heading(doc, "Potential Impact", 2)
-    add_table_from_records(doc, data.get("potential_impact_summary", []))
+        add_heading(doc, "7. Reporting Inventory Summary", 1)
+        add_paragraph(doc, data.get("reporting_inventory_text", ""))
+        add_table_from_records(doc, data.get("reporting_landscape_summary", []))
 
-    add_heading(doc, "11. Recommended Next Steps", 1)
-    add_paragraph(doc, data.get("recommended_next_steps_text", ""))
-    add_heading(doc, "Recommended Focus Areas", 2)
-    add_table_from_records(doc, data.get("recommended_focus_areas", []))
+        add_heading(doc, "8. S/4HANA Reporting Impact", 1)
+        add_paragraph(doc, data.get("s4_reporting_impact_text", ""))
+        add_table_from_records(doc, data.get("s4_impact_summary", []))
 
-    add_heading(doc, "12. Appendix A — Reporting Inventory", 1)
-    add_table_from_records(doc, data.get("appendix_reporting_inventory", []))
+        add_heading(doc, "9. Gap Analysis Summary", 1)
+        add_paragraph(doc, data.get("key_gaps_text", ""))
+        add_table_from_records(doc, data.get("gap_analysis_summary", []))
 
-    add_heading(doc, "13. Appendix B — S/4 Reporting Impact Analysis", 1)
-    add_table_from_records(doc, data.get("appendix_s4_impact_analysis", []))
+        add_heading(doc, "10. Opportunity Areas", 1)
+        add_paragraph(doc, data.get("opportunity_areas_text", ""))
+        add_table_from_records(doc, data.get("improvement_opportunity_summary", []))
 
-    add_heading(doc, "14. Appendix C — Reporting Overlap Analysis", 1)
-    add_table_from_records(doc, data.get("appendix_reporting_overlap_analysis", []))
+        add_heading(doc, "11. Business Value", 1)
+        add_paragraph(doc, data.get("business_value_text", ""))
+        add_table_from_records(doc, data.get("potential_impact_summary", []))
 
-    add_heading(doc, "15. Appendix D — Data Source Mapping Table", 1)
-    add_table_from_records(doc, data.get("appendix_data_source_mapping", []))
+        add_heading(doc, "12. Recommended Next Steps", 1)
+        add_paragraph(doc, data.get("recommended_next_steps_text", ""))
+        add_table_from_records(doc, data.get("recommended_focus_areas", []))
 
-    add_heading(doc, "16. Appendix E — Critical Reports", 1)
-    add_table_from_records(doc, data.get("appendix_critical_reports", []))
+        add_heading(doc, "13. Appendix A — Reporting Inventory", 1)
+        add_table_from_records(doc, data.get("appendix_reporting_inventory", []))
 
-    add_heading(doc, "Critical Report Summary", 2)
-    add_table_from_records(doc, data.get("critical_report_summary", []))
+        add_heading(doc, "14. Appendix B — S/4 Reporting Impact Analysis", 1)
+        add_table_from_records(doc, data.get("appendix_s4_impact_analysis", []))
 
-    add_heading(doc, "17. Appendix F — Analytics Stakeholder Map", 1)
+        add_heading(doc, "15. Appendix C — Reporting Overlap Analysis", 1)
+        add_table_from_records(doc, data.get("appendix_reporting_overlap_analysis", []))
 
-    add_heading(doc, "Analytics Ownership Overview", 2)
-    add_table_from_records(doc, data.get("analytics_ownership_overview", []))
+        add_heading(doc, "16. Appendix D — Data Source Mapping", 1)
+        add_table_from_records(doc, data.get("appendix_data_source_mapping", []))
 
-    add_heading(doc, "Analytics Responsibility Model", 2)
-    add_table_from_records(doc, data.get("analytics_responsibility_model", []))
+        add_heading(doc, "17. Appendix E — Critical Reports", 1)
+        add_table_from_records(doc, data.get("appendix_critical_reports", []))
 
-    add_heading(doc, "Stakeholder Interview Summary", 2)
-    add_table_from_records(doc, data.get("stakeholder_interview_summary", []))
+        add_heading(doc, "Critical Report Summary", 2)
+        add_paragraph(doc, data.get("critical_report_summary", ""))
 
-    add_heading(doc, "Key Analytics Responsibility Gaps", 2)
-    add_table_from_records(doc, data.get("responsibility_gaps", []))
+        add_heading(doc, "18. Appendix F — Analytics Stakeholder Map", 1)
+        add_paragraph(doc, data.get("analytics_ownership_overview", ""))
+        add_table_from_records(doc, data.get("analytics_responsibility_model", []))
+        add_table_from_records(doc, data.get("stakeholder_interview_summary", []))
+        add_table_from_records(doc, data.get("responsibility_gaps", []))
 
-    add_heading(doc, "Key Observations", 2)
+    # --------------------
+    # Analytics Modernization Roadmap
+    # --------------------
+    elif assessment_type == "Analytics Modernization Roadmap":
+
+        add_heading(doc, "3. Modernization Drivers", 1)
+        add_table_from_records(doc, data.get("modernization_drivers", []))
+
+        add_heading(doc, "4. Current-State Architecture", 1)
+        add_table_from_records(doc, data.get("current_state_architecture", []))
+
+        add_heading(doc, "5. Future-State Architecture", 1)
+        add_table_from_records(doc, data.get("future_state_architecture", []))
+
+        add_heading(doc, "6. Capability Gap Summary", 1)
+        add_table_from_records(doc, data.get("capability_gap_summary", []))
+
+        add_heading(doc, "7. Platform Recommendations", 1)
+        add_table_from_records(doc, data.get("platform_recommendations", []))
+
+        add_heading(doc, "8. Workstream Plan", 1)
+        add_table_from_records(doc, data.get("workstream_plan", []))
+
+        add_heading(doc, "9. Risk Mitigation Plan", 1)
+        add_table_from_records(doc, data.get("risk_mitigation_plan", []))
+
+        add_heading(doc, "10. Investment Summary", 1)
+        add_table_from_records(doc, data.get("investment_summary", []))
+
+        add_heading(doc, "11. Business Value", 1)
+        add_paragraph(doc, data.get("business_value_text", ""))
+        add_table_from_records(doc, data.get("potential_impact_summary", []))
+
+    # --------------------
+    # AI Opportunity Assessment
+    # --------------------
+    elif assessment_type == "AI Opportunity Assessment":
+
+        add_heading(doc, "3. Top AI Opportunities", 1)
+        add_table_from_records(doc, data.get("top_ai_opportunities", []))
+
+        add_heading(doc, "4. AI Use Case Inventory", 1)
+        add_table_from_records(doc, data.get("ai_use_case_inventory", []))
+
+        add_heading(doc, "5. Automation Candidates", 1)
+        add_table_from_records(doc, data.get("automation_candidates", []))
+
+        add_heading(doc, "6. Decision Support Opportunities", 1)
+        add_table_from_records(doc, data.get("decision_support_opportunities", []))
+
+        add_heading(doc, "7. Data Readiness Summary", 1)
+        add_table_from_records(doc, data.get("data_readiness_summary", []))
+
+        add_heading(doc, "8. AI Roadmap", 1)
+        add_table_from_records(doc, data.get("ai_roadmap", []))
+
+        add_heading(doc, "9. Risk and Governance Considerations", 1)
+        add_table_from_records(doc, data.get("risk_and_governance_considerations", []))
+
+        add_heading(doc, "10. Business Value", 1)
+        add_paragraph(doc, data.get("business_value_text", ""))
+        add_table_from_records(doc, data.get("potential_impact_summary", []))
+
+        add_heading(doc, "11. Recommended Next Steps", 1)
+        add_paragraph(doc, data.get("recommended_next_steps_text", ""))
+
+    add_heading(doc, "Key Observations", 1)
     add_paragraph(doc, data.get("key_observations_text", ""))
 
     output = io.BytesIO()
@@ -946,25 +1008,19 @@ def validate_output(data):
 # --------------------
 # Output Validation
 # --------------------
-def validate_output(data):
-    required_keys = [
-        "executive_summary_text",
-        "gap_analysis_summary",
-        "appendix_reporting_inventory",
-        "appendix_s4_impact_analysis",
-        "appendix_reporting_overlap_analysis",
-        "appendix_data_source_mapping",
-        "appendix_critical_reports",
-        "analytics_ownership_overview",
-        "analytics_responsibility_model",
-        "stakeholder_interview_summary",
-        "responsibility_gaps",
-        "top_priorities",
-        "implementation_roadmap"
-    ]
-
+def validate_output(data, assessment_type):
     if not data:
         return False
+
+    framework = ASSESSMENT_FRAMEWORKS.get(assessment_type)
+
+    if not framework:
+        return False
+
+    required_keys = []
+
+    for section in framework["sections"]:
+        required_keys.extend(section["keys"])
 
     for key in required_keys:
         value = data.get(key)
@@ -991,7 +1047,7 @@ def validate_output(data):
                 return False
 
     return True
-
+    
 # --------------------
 # Assessment Frameworks
 # --------------------
@@ -1219,12 +1275,12 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
                     company_research
                 )
         
-                if validate_output(data):
+                if validate_output(data, assessment_type):
                     break
                 else:
                     st.warning(f"Regenerating output attempt {attempt + 1}: missing sections or placeholder text found.")
         
-            if not validate_output(data):
+            if not validate_output(data, assessment_type):
                 st.error("Failed to generate a complete assessment after retries.")
                 data = {}
 
@@ -1232,7 +1288,7 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
 
         if data:
             with st.spinner("Creating Word document..."):
-                st.session_state.word_doc = build_docx(data, client_name)
+                st.session_state.word_doc = build_docx(data, client_name, assessment_type)
 
             with st.spinner("Creating PowerPoint deck..."):
                 st.session_state.ppt_file = build_ppt(data, client_name)
