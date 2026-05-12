@@ -875,13 +875,16 @@ Phase, Timeline, Key Actions, Business Outcome, Dependencies
                 "section_name": "Current State and Gap Analysis",
                 "keys": [
                     "analytics_environment_snapshot",
+                    "analytics_environment_summary",
                     "analytics_complexity_text",
                     "analytics_complexity_snapshot",
                     "gap_severity_heatmap",
                     "gap_observations_text",
                     "gap_analysis_summary",
+                    "key_gaps_text",
                     "recommended_focus_areas"
                 ],
+
                 "instructions": """
 Focus on current-state analytics, reporting, governance, data ownership, system complexity, and decision-support gaps.
 
@@ -902,16 +905,22 @@ Do not repeat the table. Interpret the findings for the customer.
             {
                 "section_name": "Reporting, S/4 Impact, and Business Value",
                 "keys": [
-                    "current_landscape_text",
+                     "current_landscape_text",
                     "current_architecture_summary",
-                    "reporting_inventory_text",
                     "reporting_landscape_summary",
-                    "s4_reporting_impact_text",
+                    "reporting_inventory_text",
                     "s4_impact_summary",
-                    "business_value_text",
+                    "s4_reporting_impact_text",
+                    "gap_analysis_summary",
+                    "key_gaps_text",
+                    "improvement_opportunity_summary",
+                    "opportunity_areas_text",
                     "potential_impact_summary",
+                    "business_value_text",
+                    "recommended_focus_areas",
                     "recommended_next_steps_text"
                 ],
+
                 "instructions": """
 Focus on reporting inventory, architecture, S/4HANA reporting impact where relevant, business value, and next steps.
 
