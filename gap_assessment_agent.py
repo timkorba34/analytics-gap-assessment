@@ -799,9 +799,10 @@ Business Area, Current State, Where It Breaks, Business Impact, Why It Matters, 
                     "recommended_next_steps_text"
                 ],
                 "instructions": """
-Focus on reporting inventory, architecture, S/4HANA reporting impact where relevant, business value, and next steps.
-If S/4HANA is not relevant, explain that clearly and focus on modernization impact instead.
-"""
+guidance = (
+    "Focus on reporting inventory, architecture, "
+    "S/4HANA reporting impact where relevant, business value, and next steps."
+)
             },
             {
                 "section_name": "Appendices",
