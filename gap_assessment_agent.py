@@ -248,6 +248,58 @@ All tables must be arrays of flat row objects.
 Do not create nested dictionaries inside table cells.
 """
 
+# --------------------
+# Assessment Context
+# --------------------
+ASSESSMENT_CONTEXT = {
+    "Analytics Gap Assessment": """
+You are creating a premium executive-level Analytics Gap Assessment.
+
+The customer is currently undergoing or planning an SAP S/4HANA transformation initiative. The purpose is to evaluate the current-state data, analytics, reporting, governance, ownership, and source-system environment to identify gaps, risks, and business disruption areas caused by source and reporting changes.
+
+Focus on:
+- current-state reporting risks
+- S/4HANA source-system impact
+- report breakage risk
+- data model and KPI disruption
+- historical reporting challenges
+- governance and ownership gaps
+- business decision-making risk
+""",
+
+    "Analytics Modernization Roadmap": """
+You are creating a premium executive-level Analytics Modernization Roadmap.
+
+The customer is working toward an enterprise analytics modernization journey. The purpose is to define the future-state analytics vision, platform strategy, governance model, modernization priorities, roadmap, and business value.
+
+Focus on:
+- future-state analytics architecture
+- platform consolidation
+- reporting modernization
+- governance maturity
+- self-service analytics
+- cloud/data platform strategy
+- phased execution roadmap
+- business value realization
+""",
+
+    "AI Opportunity Assessment": """
+You are creating a premium executive-level AI Opportunity Assessment.
+
+The customer is looking to understand AI readiness, practical AI opportunities, and where AI can create value across operations, analytics, automation, and decision-making.
+
+Focus on:
+- AI readiness
+- data maturity
+- AI governance
+- automation opportunities
+- decision-support use cases
+- practical GenAI opportunities
+- implementation complexity
+- phased AI roadmap
+- business value realization
+"""
+}
 
 # --------------------
 # Generate One Section
@@ -753,127 +805,6 @@ def validate_output(data, assessment_type):
                 return False
 
     return True
-
-    # --------------------
-    # Assessment Context
-    # --------------------
-    ASSESSMENT_CONTEXT = {
-    "Analytics Gap Assessment": """
-You are creating a premium executive-level Analytics Gap Assessment.
-
-The customer is currently undergoing or planning an SAP S/4HANA transformation initiative.
-
-The purpose of this assessment is to evaluate the current-state analytics, reporting, governance, and data landscape to identify operational risks, reporting disruption risks, and analytics gaps that may impact the SAP S/4HANA transformation.
-
-The assessment must focus heavily on:
-- reporting disruption risks
-- legacy reporting dependencies
-- historical data challenges
-- analytics architecture complexity
-- fragmented reporting environments
-- governance gaps
-- source-system impacts
-- downstream reporting impacts from S/4HANA
-- business decision-making risks
-
-The assessment should explain how current-state reporting and analytics limitations may impact:
-- operational continuity
-- executive reporting
-- KPI consistency
-- financial reporting
-- supply chain visibility
-- analytics modernization readiness
-- post-S/4HANA reporting stability
-
-All findings should explain:
-- why leadership should care
-- operational implications
-- business risks
-- financial impacts
-- modernization urgency
-
-Do not generate generic consulting language.
-Avoid fabricated metrics unless explicitly provided.
-""",
-
-    "Analytics Modernization Roadmap": """
-You are creating a premium executive-level Analytics Modernization Roadmap.
-
-The customer is pursuing an enterprise analytics modernization journey to improve scalability, reporting agility, decision-making, governance, and platform standardization.
-
-The purpose of this assessment is to define the future-state analytics vision, modernization priorities, transformation roadmap, platform strategy, governance improvements, and phased execution plan.
-
-The assessment should focus heavily on:
-- future-state analytics architecture
-- platform consolidation
-- cloud modernization
-- reporting scalability
-- governance maturity
-- self-service analytics
-- executive dashboards
-- enterprise data strategy
-- cross-functional reporting alignment
-- operational efficiency improvements
-- modernization sequencing
-- business value realization
-
-The roadmap should explain:
-- why modernization matters
-- expected business outcomes
-- operational improvements
-- scalability benefits
-- cost optimization opportunities
-- reporting agility improvements
-- executive decision-making enhancements
-
-The assessment should read like a transformation strategy document for executive leadership.
-
-Do not generate generic consulting language.
-Avoid fabricated metrics unless explicitly provided.
-""",
-
-    "AI Opportunity Assessment": """
-You are creating a premium executive-level AI Opportunity Assessment.
-
-The customer is evaluating their organizational readiness for Artificial Intelligence and identifying practical AI opportunities that can improve operational efficiency, automation, decision-making, analytics, and business performance.
-
-The purpose of this assessment is to:
-- evaluate AI readiness
-- identify realistic AI opportunities
-- assess data maturity
-- assess governance readiness
-- identify automation candidates
-- prioritize AI use cases
-- define a phased AI adoption roadmap
-
-The assessment should focus heavily on:
-- data readiness
-- analytics maturity
-- process automation
-- decision-support opportunities
-- generative AI use cases
-- operational efficiency
-- reporting automation
-- AI governance
-- responsible AI
-- business value realization
-- organizational readiness
-
-All findings should explain:
-- business value
-- operational efficiency opportunities
-- workforce impacts
-- readiness gaps
-- implementation complexity
-- risk considerations
-- recommended next steps
-
-The assessment should feel practical, executive-focused, and business-oriented.
-
-Do not generate generic consulting language.
-Avoid fabricated metrics unless explicitly provided.
-"""
-}
 
 # --------------------
 # Assessment Frameworks
