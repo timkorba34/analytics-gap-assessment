@@ -564,52 +564,57 @@ def build_docx(data, client_name, assessment_type):
         add_table_from_records(doc, data.get("current_architecture_summary", []))
 
         add_heading(doc, "7. Reporting Inventory Summary", 1)
-        add_paragraph(doc, data.get("reporting_inventory_text", ""))
         add_table_from_records(doc, data.get("reporting_landscape_summary", []))
+        add_paragraph(doc, data.get("reporting_inventory_text", ""))
 
         add_heading(doc, "8. S/4HANA Reporting Impact", 1)
-        add_paragraph(doc, data.get("s4_reporting_impact_text", ""))
         add_table_from_records(doc, data.get("s4_impact_summary", []))
+        add_paragraph(doc, data.get("s4_reporting_impact_text", ""))
 
         add_heading(doc, "9. Gap Analysis Summary", 1)
-        add_paragraph(doc, data.get("key_gaps_text", ""))
         add_table_from_records(doc, data.get("gap_analysis_summary", []))
+        add_paragraph(doc, data.get("key_gaps_text", ""))
 
         add_heading(doc, "10. Opportunity Areas", 1)
-        add_paragraph(doc, data.get("opportunity_areas_text", ""))
         add_table_from_records(doc, data.get("improvement_opportunity_summary", []))
+        add_paragraph(doc, data.get("opportunity_areas_text", ""))
 
         add_heading(doc, "11. Business Value", 1)
-        add_paragraph(doc, data.get("business_value_text", ""))
         add_table_from_records(doc, data.get("potential_impact_summary", []))
+        add_paragraph(doc, data.get("business_value_text", ""))
 
         add_heading(doc, "12. Recommended Next Steps", 1)
-        add_paragraph(doc, data.get("recommended_next_steps_text", ""))
         add_table_from_records(doc, data.get("recommended_focus_areas", []))
+        add_paragraph(doc, data.get("recommended_next_steps_text", ""))
 
         add_heading(doc, "13. Appendix A — Reporting Inventory", 1)
         add_table_from_records(doc, data.get("appendix_reporting_inventory", []))
+        add_paragraph(doc, data.get("appendix_reporting_inventory_text", ""))
 
         add_heading(doc, "14. Appendix B — S/4 Reporting Impact Analysis", 1)
         add_table_from_records(doc, data.get("appendix_s4_impact_analysis", []))
+        add_paragraph(doc, data.get("appendix_s4_impact_analysis_text", ""))
 
         add_heading(doc, "15. Appendix C — Reporting Overlap Analysis", 1)
         add_table_from_records(doc, data.get("appendix_reporting_overlap_analysis", []))
+        add_paragraph(doc, data.get("appendix_reporting_overlap_analysis_text", ""))
 
         add_heading(doc, "16. Appendix D — Data Source Mapping", 1)
         add_table_from_records(doc, data.get("appendix_data_source_mapping", []))
+        add_paragraph(doc, data.get("appendix_data_source_mapping_text", ""))
 
         add_heading(doc, "17. Appendix E — Critical Reports", 1)
         add_table_from_records(doc, data.get("appendix_critical_reports", []))
+        add_paragraph(doc, data.get("appendix_critical_reports_text", ""))
 
         add_heading(doc, "Critical Report Summary", 2)
         add_paragraph(doc, data.get("critical_report_summary", ""))
 
         add_heading(doc, "18. Appendix F — Analytics Stakeholder Map", 1)
-        add_paragraph(doc, data.get("analytics_ownership_overview", ""))
         add_table_from_records(doc, data.get("analytics_responsibility_model", []))
         add_table_from_records(doc, data.get("stakeholder_interview_summary", []))
         add_table_from_records(doc, data.get("responsibility_gaps", []))
+        add_paragraph(doc, data.get("analytics_ownership_overview_text", ""))
 
     # --------------------
     # Analytics Modernization Roadmap
@@ -883,6 +888,15 @@ Focus on current-state analytics, reporting, governance, data ownership, system 
 Tables must use business-specific rows, not generic labels.
 Each table row should explain:
 Business Area, Current State, Where It Breaks, Business Impact, Why It Matters, Recommended Action, Priority
+
+After each table, generate a 1-2 paragraph executive narrative summarizing:
+- what the table shows
+- why it matters
+- operational implications
+- business risks
+- why leadership should care
+
+Do not repeat the table. Interpret the findings for the customer.
 """
             },
             {
