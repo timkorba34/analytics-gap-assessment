@@ -534,13 +534,12 @@ def build_docx(data, client_name, assessment_type):
     if data.get("top_priorities"):
         add_heading(doc, "Executive Priorities", 2)
         add_table_from_records(doc, data.get("top_priorities", []))
+        add_paragraph(doc, data.get("top_priorities_text", ""))
 
     if data.get("implementation_roadmap"):
         add_heading(doc, "Implementation Roadmap", 2)
         add_table_from_records(doc, data.get("implementation_roadmap", []))
-
-
-    
+        add_paragraph(doc, data.get("implementation_roadmap_text", ""))    
 
     # --------------------
     # Analytics Gap Assessment
@@ -852,7 +851,9 @@ ASSESSMENT_FRAMEWORKS = {
             "engagement_overview_text",
             "executive_summary_text",
             "top_priorities",
-            "implementation_roadmap"
+            "top_priorities_text",
+            "implementation_roadmap",
+            "implementation_roadmap_text"
         ],
         "instructions": """
 top_priorities must be a table array with exactly 5 rows:
