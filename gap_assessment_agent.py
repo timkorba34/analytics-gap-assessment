@@ -390,7 +390,8 @@ def generate_assessment_json(
     assessment_type,
     notes,
     file_content,
-    company_research
+    company_research,
+    section_config
 ):
     framework = ASSESSMENT_FRAMEWORKS.get(assessment_type)
 
