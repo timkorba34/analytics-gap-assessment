@@ -526,9 +526,11 @@ def build_docx(data, client_name, assessment_type):
 
     # Common executive front-end
     add_heading(doc, "1. Engagement Overview", 1)
+    doc.add_paragraph("")
     add_paragraph(doc, data.get("engagement_overview_text", ""))
 
     add_heading(doc, "2. Executive Summary", 1)
+    doc.add_paragraph("")
     add_paragraph(doc, data.get("executive_summary_text", ""))
 
     if data.get("top_priorities"):
@@ -550,29 +552,29 @@ def build_docx(data, client_name, assessment_type):
     # --------------------
     if assessment_type == "Analytics Gap Assessment":
 
-        add_heading(doc, "3. Analytics Environment Snapshot", 1)
+        add_heading(doc, "3. Current Analytics Ecosystem", 1)
         doc.add_paragraph("")
-        add_table_from_records(doc, data.get("analytics_environment_snapshot", []))
+        add_table_from_records(doc, data.get("current_system_inventory", []))
         doc.add_paragraph("")
-        add_paragraph(doc, data.get("analytics_environment_summary", ""))
+        add_paragraph(doc, data.get("current_data_flow_summary", ""))
 
-        add_heading(doc, "4. Analytics Complexity Snapshot", 1)
+        add_heading(doc, "4. Reporting Dependency Map", 1)
+        doc.add_paragraph("")
+        add_table_from_records(doc, data.get("reporting_dependency_map", []))
+        doc.add_paragraph("")
+        add_paragraph(doc, data.get("architecture_risk_summary", ""))
+
+        add_heading(doc, "5. Analytics Complexity and Operational Risk", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("analytics_complexity_snapshot", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("analytics_complexity_text", ""))
 
-        add_heading(doc, "5. Gap Severity Heatmap", 1)
+        add_heading(doc, "6. Gap Severity Heatmap", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("gap_severity_heatmap", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("gap_observations_text", ""))
-
-        add_heading(doc, "6. Current Analytics Landscape", 1)
-        doc.add_paragraph("")
-        add_table_from_records(doc, data.get("current_architecture_summary", []))
-        doc.add_paragraph("")
-        add_paragraph(doc, data.get("current_landscape_text", ""))
 
         add_heading(doc, "7. Reporting Inventory Summary", 1)
         doc.add_paragraph("")
@@ -934,6 +936,10 @@ Phase, Timeline, Strategic Objective, Key Activities, Expected Outcome, Business
         "keys": [
             "analytics_environment_snapshot",
             "analytics_environment_summary",
+            "current_system_inventory",
+            "current_data_flow_summary",
+            "reporting_dependency_map",
+            "architecture_risk_summary",
             "analytics_complexity_text",
             "analytics_complexity_snapshot",
             "gap_severity_heatmap",
@@ -951,6 +957,45 @@ gap_analysis_summary must be a table array.
 recommended_focus_areas must be a table array.
 
 All *_text and *_summary keys must be 1-2 paragraph narratives.
+
+current_system_inventory must be a table array.
+
+Columns:
+Business Area,
+Current Source System,
+Reporting Tool,
+Data Owner,
+Integration Method,
+Refresh Frequency,
+Key Dependency,
+Current Pain Point,
+S/4HANA Risk
+
+reporting_dependency_map must be a table array.
+
+Columns:
+Report / Dashboard,
+Primary Source System,
+Dependent Systems,
+Business Function,
+Criticality,
+Current Risk,
+S/4HANA Impact
+
+current_data_flow_summary must be a 1-2 paragraph executive narrative explaining:
+- how data flows today
+- where fragmentation exists
+- where manual effort exists
+- where reporting bottlenecks occur
+- operational risks
+- S/4HANA disruption concerns
+
+architecture_risk_summary must be a 1-2 paragraph executive narrative explaining:
+- architecture weaknesses
+- integration concerns
+- reporting dependencies
+- scalability limitations
+- business continuity risks
 """
     },
     {
