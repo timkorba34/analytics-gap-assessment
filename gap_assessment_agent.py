@@ -356,7 +356,6 @@ def add_heading(doc, text, level=1):
 
 def add_paragraph(doc, text):
     if not text:
-        doc.add_paragraph("To be validated.")
         return
 
     if isinstance(text, dict):
@@ -371,7 +370,6 @@ def add_paragraph(doc, text):
 
 def add_table_from_records(doc, records):
     if not records:
-        doc.add_paragraph("To be validated.")
         return
 
     if isinstance(records, str):
@@ -448,6 +446,7 @@ def build_docx(data, client_name, assessment_type):
 
         add_heading(doc, "3. Analytics Environment Snapshot", 1)
         add_table_from_records(doc, data.get("analytics_environment_snapshot", []))
+        add_paragraph(doc, data.get("analytics_environment_summary", ""))
 
         add_heading(doc, "4. Analytics Complexity Snapshot", 1)
         add_paragraph(doc, data.get("analytics_complexity_text", ""))
@@ -748,8 +747,17 @@ ASSESSMENT_FRAMEWORKS = {
                     "implementation_roadmap"
                 ],
                 "instructions": """
-Focus on the business diagnosis. Explain what the company does, how growth increased complexity,
-what is broken in analytics/reporting today, what leadership should prioritize first, and why it matters financially.
+Focus on current-state analytics, reporting, governance, data ownership, system complexity, and decision-support gaps.
+
+After each table, generate a 1-2 paragraph executive narrative summarizing:
+- what the table shows
+- why it matters
+- operational implications
+- business risks
+- why leadership should care
+"""
+
+
 
 top_priorities must be exactly 5 rows with:
 Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
