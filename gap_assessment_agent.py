@@ -311,7 +311,8 @@ def generate_section_json(
     notes,
     file_content,
     company_research,
-    section_config
+    section_config,
+    assessment_context
 ):
     base_context = build_base_context(
         client_name,
@@ -391,7 +392,8 @@ def generate_assessment_json(
     notes,
     file_content,
     company_research,
-    section_config
+    section_config,
+    assessment_context
 ):
     framework = ASSESSMENT_FRAMEWORKS.get(assessment_type)
 
