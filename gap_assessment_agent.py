@@ -799,10 +799,16 @@ Business Area, Current State, Where It Breaks, Business Impact, Why It Matters, 
                     "recommended_next_steps_text"
                 ],
                 "instructions": """
-guidance = (
-    "Focus on reporting inventory, architecture, "
-    "S/4HANA reporting impact where relevant, business value, and next steps."
-)
+Focus on reporting inventory, architecture, S/4HANA reporting impact where relevant, business value, and next steps.
+
+After each table, generate a 1-2 paragraph executive narrative summarizing:
+- what the table shows
+- why it matters
+- operational implications
+- business risks
+- why leadership should care
+"""
+},
             },
             {
                 "section_name": "Appendices",
