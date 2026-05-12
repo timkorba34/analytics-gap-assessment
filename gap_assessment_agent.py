@@ -336,7 +336,9 @@ def generate_section_json(
     assessment_type,
     notes,
     file_content,
-    company_research
+    company_research,
+    section_config,
+    assessment_context
 ):
     base_context = build_base_context(
         client_name,
