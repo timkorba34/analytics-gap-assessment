@@ -527,22 +527,27 @@ Write like a consulting partner delivering the diagnosis. Include the primary is
 top_priorities:
 Return exactly 5 rows. Columns must be:
 Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
+Write a summary 1 - 2 paragraphs explaining the top priorities and why they are important.
 
 implementation_roadmap:
 Return exactly 3 rows. Columns must be:
 Phase, Timeline, Key Actions, Business Outcome, Dependencies
+Write a summary 1 - 2 paragraphs explaining the implementation roadmap and why it is identified like this.
 
 analytics_environment_snapshot:
 Show the current analytics environment by business area. Columns:
 Business Area, Current State, Where It Breaks, Business Impact, Why It Matters, Recommended Action, Priority
+Write a summary 1 - 2 paragraphs explaining the analytics environment snapshot and some of the highlighted points.
 
 gap_analysis_summary:
 Show specific gaps, not generic labels. Columns:
 Business Area, Current Gap, Evidence / Assumption, Business Risk, Recommended Action, Priority
+Write a 1 - 2 paragraph summary explaining the gap analysis and how they need to be addressed.
 
 recommended_focus_areas:
 Columns:
 Focus Area, Rationale, Business Impact, Time Horizon, First Step
+Write a 1 - 2 paragraph summary on why these are the core focus areas in depth.
 
 appendix_reporting_inventory:
 Columns:
