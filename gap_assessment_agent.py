@@ -755,9 +755,6 @@ After each table, generate a 1-2 paragraph executive narrative summarizing:
 - operational implications
 - business risks
 - why leadership should care
-"""
-
-
 
 top_priorities must be exactly 5 rows with:
 Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
