@@ -867,6 +867,24 @@ After each table, generate a 1-2 paragraph executive narrative summarizing:
 top_priorities must be exactly 5 rows with:
 Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
 
+current_architecture_summary must be a table array.
+
+reporting_landscape_summary must be a table array.
+
+s4_impact_summary must be a table array.
+
+gap_analysis_summary must be a table array.
+
+improvement_opportunity_summary must be a table array.
+
+potential_impact_summary must be a table array.
+
+recommended_focus_areas must be a table array.
+
+All *_text keys must be 1-2 paragraph narratives.
+
+Do not return table keys as paragraphs or bullet lists.
+
 implementation_roadmap must be exactly 3 rows with:
 Phase, Timeline, Key Actions, Business Outcome, Dependencies
 """
