@@ -809,7 +809,6 @@ After each table, generate a 1-2 paragraph executive narrative summarizing:
 - why leadership should care
 """
 },
-            },
             {
                 "section_name": "Appendices",
                 "keys": [
