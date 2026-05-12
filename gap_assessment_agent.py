@@ -516,6 +516,54 @@ Data Source, Business Function, Current Usage, Integration Issue, Future-State R
 appendix_critical_reports must include:
 Critical Report, Executive Owner, Business Purpose, Risk If Unavailable, Modernization Priority
 
+SECTION-BY-SECTION OUTPUT REQUIREMENTS
+
+engagement_overview_text:
+Write 3-5 executive paragraphs. Explain what the company does, how it likely makes money, how growth increased operational complexity, why analytics is now a leadership issue, and why this assessment matters now. Avoid generic company background.
+
+executive_summary_text:
+Write like a consulting partner delivering the diagnosis. Include the primary issue, the top 3 risks, the business consequences, and the first actions leadership should take. This should be direct and opinionated.
+
+top_priorities:
+Return exactly 5 rows. Columns must be:
+Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
+
+implementation_roadmap:
+Return exactly 3 rows. Columns must be:
+Phase, Timeline, Key Actions, Business Outcome, Dependencies
+
+analytics_environment_snapshot:
+Show the current analytics environment by business area. Columns:
+Business Area, Current State, Where It Breaks, Business Impact, Why It Matters, Recommended Action, Priority
+
+gap_analysis_summary:
+Show specific gaps, not generic labels. Columns:
+Business Area, Current Gap, Evidence / Assumption, Business Risk, Recommended Action, Priority
+
+recommended_focus_areas:
+Columns:
+Focus Area, Rationale, Business Impact, Time Horizon, First Step
+
+appendix_reporting_inventory:
+Columns:
+Report Name, Business Function, Frequency, Current Owner, Current Issue, Recommended Disposition
+
+appendix_s4_impact_analysis:
+Columns:
+Process Area, Current Reporting Dependency, S/4HANA Impact, Risk Level, Required Action
+
+appendix_reporting_overlap_analysis:
+Columns:
+Report / Dashboard, Overlap Area, Duplicative Source, Business Risk, Recommended Action
+
+appendix_data_source_mapping:
+Columns:
+Data Source, Business Function, Current Usage, Integration Issue, Future-State Recommendation
+
+appendix_critical_reports:
+Columns:
+Critical Report, Executive Owner, Business Purpose, Risk If Unavailable, Modernization Priority
+
 Required keys:
 
 engagement_overview_text
