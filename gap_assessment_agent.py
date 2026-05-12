@@ -217,6 +217,8 @@ DISCOVERY NOTES
 SUPPORTING FILE CONTENT
 {file_content[:12000]}
 
+
+
 WRITING RULES
 You are a senior consulting partner creating a paid executive deliverable.
 
@@ -271,6 +273,12 @@ def generate_section_json(
     required_keys = "\n".join(section_config["keys"])
 
     prompt = f"""
+{assessment_context}
+
+{COMPANY_RESEARCH_REQUIREMENTS}
+
+{TABLE_SUMMARY_REQUIREMENTS}
+
 {base_context}
 
 SECTION TO GENERATE:
@@ -283,9 +291,18 @@ REQUIRED JSON KEYS:
 {required_keys}
 
 Return only these keys in one valid JSON object.
-Every required key must be populated.
-"""
 
+Requirements:
+- Every required key must be populated
+- No placeholder text
+- No generic consulting language
+- Use company-specific business context
+- Tie findings to operational and reporting impacts
+- Explain business risks and executive implications
+- Explain S/4HANA impacts where relevant
+- Interpret findings like an executive consultant
+"""
+    
     messages = [
         {
             "role": "system",
@@ -329,6 +346,8 @@ def generate_assessment_json(
         st.error(f"No framework found for assessment type: {assessment_type}")
         return {}
 
+    assessment_context = ASSESSMENT_CONTEXT.get(assessment_type, "")
+
     final_data = {}
 
     for section in framework["sections"]:
@@ -340,7 +359,8 @@ def generate_assessment_json(
                 notes,
                 file_content,
                 company_research,
-                section
+                section,
+                assessment_context
             )
 
         final_data.update(section_data)
@@ -438,6 +458,9 @@ def build_docx(data, client_name, assessment_type):
     if data.get("implementation_roadmap"):
         add_heading(doc, "Implementation Roadmap", 2)
         add_table_from_records(doc, data.get("implementation_roadmap", []))
+
+
+    
 
     # --------------------
     # Analytics Gap Assessment
@@ -730,7 +753,128 @@ def validate_output(data, assessment_type):
                 return False
 
     return True
-    
+
+    # --------------------
+    # Assessment Context
+    # --------------------
+    ASSESSMENT_CONTEXT = {
+    "Analytics Gap Assessment": """
+You are creating a premium executive-level Analytics Gap Assessment.
+
+The customer is currently undergoing or planning an SAP S/4HANA transformation initiative.
+
+The purpose of this assessment is to evaluate the current-state analytics, reporting, governance, and data landscape to identify operational risks, reporting disruption risks, and analytics gaps that may impact the SAP S/4HANA transformation.
+
+The assessment must focus heavily on:
+- reporting disruption risks
+- legacy reporting dependencies
+- historical data challenges
+- analytics architecture complexity
+- fragmented reporting environments
+- governance gaps
+- source-system impacts
+- downstream reporting impacts from S/4HANA
+- business decision-making risks
+
+The assessment should explain how current-state reporting and analytics limitations may impact:
+- operational continuity
+- executive reporting
+- KPI consistency
+- financial reporting
+- supply chain visibility
+- analytics modernization readiness
+- post-S/4HANA reporting stability
+
+All findings should explain:
+- why leadership should care
+- operational implications
+- business risks
+- financial impacts
+- modernization urgency
+
+Do not generate generic consulting language.
+Avoid fabricated metrics unless explicitly provided.
+""",
+
+    "Analytics Modernization Roadmap": """
+You are creating a premium executive-level Analytics Modernization Roadmap.
+
+The customer is pursuing an enterprise analytics modernization journey to improve scalability, reporting agility, decision-making, governance, and platform standardization.
+
+The purpose of this assessment is to define the future-state analytics vision, modernization priorities, transformation roadmap, platform strategy, governance improvements, and phased execution plan.
+
+The assessment should focus heavily on:
+- future-state analytics architecture
+- platform consolidation
+- cloud modernization
+- reporting scalability
+- governance maturity
+- self-service analytics
+- executive dashboards
+- enterprise data strategy
+- cross-functional reporting alignment
+- operational efficiency improvements
+- modernization sequencing
+- business value realization
+
+The roadmap should explain:
+- why modernization matters
+- expected business outcomes
+- operational improvements
+- scalability benefits
+- cost optimization opportunities
+- reporting agility improvements
+- executive decision-making enhancements
+
+The assessment should read like a transformation strategy document for executive leadership.
+
+Do not generate generic consulting language.
+Avoid fabricated metrics unless explicitly provided.
+""",
+
+    "AI Opportunity Assessment": """
+You are creating a premium executive-level AI Opportunity Assessment.
+
+The customer is evaluating their organizational readiness for Artificial Intelligence and identifying practical AI opportunities that can improve operational efficiency, automation, decision-making, analytics, and business performance.
+
+The purpose of this assessment is to:
+- evaluate AI readiness
+- identify realistic AI opportunities
+- assess data maturity
+- assess governance readiness
+- identify automation candidates
+- prioritize AI use cases
+- define a phased AI adoption roadmap
+
+The assessment should focus heavily on:
+- data readiness
+- analytics maturity
+- process automation
+- decision-support opportunities
+- generative AI use cases
+- operational efficiency
+- reporting automation
+- AI governance
+- responsible AI
+- business value realization
+- organizational readiness
+
+All findings should explain:
+- business value
+- operational efficiency opportunities
+- workforce impacts
+- readiness gaps
+- implementation complexity
+- risk considerations
+- recommended next steps
+
+The assessment should feel practical, executive-focused, and business-oriented.
+
+Do not generate generic consulting language.
+Avoid fabricated metrics unless explicitly provided.
+"""
+}
+
 # --------------------
 # Assessment Frameworks
 # --------------------
