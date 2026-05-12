@@ -936,17 +936,23 @@ After each table, generate a 1-2 paragraph executive narrative summarizing:
                 "section_name": "Appendices",
                 "keys": [
                     "appendix_reporting_inventory",
+                    "appendix_reporting_inventory_text",
                     "appendix_s4_impact_analysis",
+                    "appendix_s4_impact_analysis_text",
                     "appendix_reporting_overlap_analysis",
+                    "appendix_reporting_overlap_analysis_text",
                     "appendix_data_source_mapping",
+                    "appendix_data_source_mapping_text",
                     "appendix_critical_reports",
+                    "appendix_critical_reports_text",
                     "critical_report_summary",
-                    "analytics_ownership_overview",
+                    "analytics_ownership_overview_text",
                     "analytics_responsibility_model",
                     "stakeholder_interview_summary",
                     "responsibility_gaps",
                     "key_observations_text"
                 ],
+
                 "instructions": """
 Populate all appendices. No placeholders.used.used.
 
