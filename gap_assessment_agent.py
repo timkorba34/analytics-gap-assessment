@@ -846,163 +846,104 @@ ASSESSMENT_FRAMEWORKS = {
     "Analytics Gap Assessment": {
         "title": "Analytics Gap Assessment",
         "sections": [
-            {
-                "section_name": "Executive Overview",
-                "keys": [
-                    "engagement_overview_text",
-                    "executive_summary_text",
-                    "top_priorities",
-                    "implementation_roadmap"
-                ],
-                "instructions": """
-Focus on current-state analytics, reporting, governance, data ownership, system complexity, and decision-support gaps.
-
-After each table, generate a 1-2 paragraph executive narrative summarizing:
-- what the table shows
-- why it matters
-- operational implications
-- business risks
-- why leadership should care
-
-top_priorities must be exactly 5 rows with:
+    {
+        "section_name": "Executive Overview",
+        "keys": [
+            "engagement_overview_text",
+            "executive_summary_text",
+            "top_priorities",
+            "implementation_roadmap"
+        ],
+        "instructions": """
+top_priorities must be a table array with exactly 5 rows:
 Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
 
-current_architecture_summary must be a table array.
-
-reporting_landscape_summary must be a table array.
-
-s4_impact_summary must be a table array.
-
-gap_analysis_summary must be a table array.
-
-improvement_opportunity_summary must be a table array.
-
-potential_impact_summary must be a table array.
-
-recommended_focus_areas must be a table array.
-
-All *_text keys must be 1-2 paragraph narratives.
-
-Do not return table keys as paragraphs or bullet lists.
-
-implementation_roadmap must be exactly 3 rows with:
+implementation_roadmap must be a table array with exactly 3 rows:
 Phase, Timeline, Key Actions, Business Outcome, Dependencies
 """
-            },
-            {
-                "section_name": "Current State and Gap Analysis",
-                "keys": [
-                    "current_landscape_text",
-                    "current_architecture_summary",
+    },
+    {
+        "section_name": "Current State and Gap Analysis",
+        "keys": [
+            "analytics_environment_snapshot",
+            "analytics_environment_summary",
+            "analytics_complexity_text",
+            "analytics_complexity_snapshot",
+            "gap_severity_heatmap",
+            "gap_observations_text",
+            "gap_analysis_summary",
+            "key_gaps_text",
+            "recommended_focus_areas",
+            "recommended_next_steps_text"
+        ],
+        "instructions": """
+analytics_environment_snapshot must be a table array.
+analytics_complexity_snapshot must be a table array.
+gap_severity_heatmap must be a table array.
+gap_analysis_summary must be a table array.
+recommended_focus_areas must be a table array.
 
-                    "reporting_inventory_text",
-                    "reporting_landscape_summary",
-
-                    "s4_reporting_impact_text",
-                    "s4_impact_summary",
-
-                    "key_gaps_text",
-                    "gap_analysis_summary",
-
-                    "opportunity_areas_text",
-                    "improvement_opportunity_summary",
-
-                    "business_value_text",
-                    "potential_impact_summary",
-
-                    "recommended_next_steps_text",
-                    "recommended_focus_areas"
-                ],
-
-
-                "instructions": """
-Focus on current-state analytics, reporting, governance, data ownership, system complexity, and decision-support gaps.
-
-Tables must use business-specific rows, not generic labels.
-Each table row should explain:
-Business Area, Current State, Where It Breaks, Business Impact, Why It Matters, Recommended Action, Priority
-
-After each table, generate a 1-2 paragraph executive narrative summarizing:
-- what the table shows
-- why it matters
-- operational implications
-- business risks
-- why leadership should care
-
-Do not repeat the table. Interpret the findings for the customer.
+All *_text and *_summary keys must be 1-2 paragraph narratives.
 """
-            },
-            {
-                "section_name": "Reporting, S/4 Impact, and Business Value",
-                "keys": [
-                     "current_landscape_text",
-                    "current_architecture_summary",
-                    "reporting_landscape_summary",
-                    "reporting_inventory_text",
-                    "s4_impact_summary",
-                    "s4_reporting_impact_text",
-                    "gap_analysis_summary",
-                    "key_gaps_text",
-                    "improvement_opportunity_summary",
-                    "opportunity_areas_text",
-                    "potential_impact_summary",
-                    "business_value_text",
-                    "recommended_focus_areas",
-                    "recommended_next_steps_text"
-                ],
+    },
+    {
+        "section_name": "Reporting, S/4 Impact, and Business Value",
+        "keys": [
+            "current_landscape_text",
+            "current_architecture_summary",
+            "reporting_inventory_text",
+            "reporting_landscape_summary",
+            "s4_reporting_impact_text",
+            "s4_impact_summary",
+            "opportunity_areas_text",
+            "improvement_opportunity_summary",
+            "business_value_text",
+            "potential_impact_summary"
+        ],
+        "instructions": """
+current_architecture_summary must be a table array.
+reporting_landscape_summary must be a table array.
+s4_impact_summary must be a table array.
+improvement_opportunity_summary must be a table array.
+potential_impact_summary must be a table array.
 
-                "instructions": """
-Focus on reporting inventory, architecture, S/4HANA reporting impact where relevant, business value, and next steps.
-
-After each table, generate a 1-2 paragraph executive narrative summarizing:
-- what the table shows
-- why it matters
-- operational implications
-- business risks
-- why leadership should care
+All *_text keys must be 1-2 paragraph narratives.
 """
-            },
-            {
-                "section_name": "Appendices",
-                "keys": [
-                    "appendix_reporting_inventory",
-                    "appendix_reporting_inventory_text",
-                    "appendix_s4_impact_analysis",
-                    "appendix_s4_impact_analysis_text",
-                    "appendix_reporting_overlap_analysis",
-                    "appendix_reporting_overlap_analysis_text",
-                    "appendix_data_source_mapping",
-                    "appendix_data_source_mapping_text",
-                    "appendix_critical_reports",
-                    "appendix_critical_reports_text",
-                    "critical_report_summary",
-                    "analytics_ownership_overview_text",
-                    "analytics_responsibility_model",
-                    "stakeholder_interview_summary",
-                    "responsibility_gaps",
-                    "key_observations_text"
-                ],
+    },
+    {
+        "section_name": "Appendices",
+        "keys": [
+            "appendix_reporting_inventory",
+            "appendix_reporting_inventory_text",
+            "appendix_s4_impact_analysis",
+            "appendix_s4_impact_analysis_text",
+            "appendix_reporting_overlap_analysis",
+            "appendix_reporting_overlap_analysis_text",
+            "appendix_data_source_mapping",
+            "appendix_data_source_mapping_text",
+            "appendix_critical_reports",
+            "appendix_critical_reports_text",
+            "critical_report_summary",
+            "analytics_ownership_overview_text",
+            "analytics_responsibility_model",
+            "stakeholder_interview_summary",
+            "responsibility_gaps",
+            "key_observations_text"
+        ],
+        "instructions": """
+appendix_reporting_inventory must be a table array.
+appendix_s4_impact_analysis must be a table array.
+appendix_reporting_overlap_analysis must be a table array.
+appendix_data_source_mapping must be a table array.
+appendix_critical_reports must be a table array.
+analytics_responsibility_model must be a table array.
+stakeholder_interview_summary must be a table array.
+responsibility_gaps must be a table array.
 
-                "instructions": """
-Populate all appendices. No placeholders.used.used.
-
-appendix_reporting_inventory columns:
-Report Name, Business Function, Frequency, Current Owner, Current Issue, Recommended Disposition
-
-appendix_s4_impact_analysis columns:
-Process Area, Current Reporting Dependency, S/4HANA Impact, Risk Level, Required Action
-
-appendix_reporting_overlap_analysis columns:
-Report / Dashboard, Overlap Area, Duplicative Source, Business Risk, Recommended Action
-
-appendix_data_source_mapping columns:
-Data Source, Business Function, Current Usage, Integration Issue, Future-State Recommendation
-
-appendix_critical_reports columns:
-Critical Report, Executive Owner, Business Purpose, Risk If Unavailable, Modernization Priority
+All *_text and *_summary keys must be 1-2 paragraph narratives.
 """
-            }
-        ]
+    }
+]
     },
 
     "Analytics Modernization Roadmap": {
