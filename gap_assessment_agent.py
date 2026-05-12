@@ -69,9 +69,8 @@ assessment_type = st.selectbox(
     "Assessment Type",
     [
         "Analytics Gap Assessment",
-        "SAP / S/4HANA Reporting Assessment",
-        "AI Opportunity Assessment",
-        "Data Strategy Assessment"
+        "Analytics Modernization Roadmap",
+        "AI Opportunity Assessment"
     ]
 )
 
@@ -992,6 +991,209 @@ def validate_output(data):
                 return False
 
     return True
+
+# --------------------
+# Assessment Frameworks
+# --------------------
+ASSESSMENT_FRAMEWORKS = {
+    "Analytics Gap Assessment": {
+        "title": "Analytics Gap Assessment",
+        "sections": [
+            {
+                "section_name": "Executive Overview",
+                "keys": [
+                    "engagement_overview_text",
+                    "executive_summary_text",
+                    "top_priorities",
+                    "implementation_roadmap"
+                ],
+                "instructions": """
+Focus on the business diagnosis. Explain what the company does, how growth increased complexity,
+what is broken in analytics/reporting today, what leadership should prioritize first, and why it matters financially.
+
+top_priorities must be exactly 5 rows with:
+Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
+
+implementation_roadmap must be exactly 3 rows with:
+Phase, Timeline, Key Actions, Business Outcome, Dependencies
+"""
+            },
+            {
+                "section_name": "Current State and Gap Analysis",
+                "keys": [
+                    "analytics_environment_snapshot",
+                    "analytics_complexity_text",
+                    "analytics_complexity_snapshot",
+                    "gap_severity_heatmap",
+                    "gap_observations_text",
+                    "gap_analysis_summary",
+                    "recommended_focus_areas"
+                ],
+                "instructions": """
+Focus on current-state analytics, reporting, governance, data ownership, system complexity, and decision-support gaps.
+
+Tables must use business-specific rows, not generic labels.
+Each table row should explain:
+Business Area, Current State, Where It Breaks, Business Impact, Why It Matters, Recommended Action, Priority
+"""
+            },
+            {
+                "section_name": "Reporting, S/4 Impact, and Business Value",
+                "keys": [
+                    "current_landscape_text",
+                    "current_architecture_summary",
+                    "reporting_inventory_text",
+                    "reporting_landscape_summary",
+                    "s4_reporting_impact_text",
+                    "s4_impact_summary",
+                    "business_value_text",
+                    "potential_impact_summary",
+                    "recommended_next_steps_text"
+                ],
+                "instructions": """
+Focus on reporting inventory, architecture, S/4HANA reporting impact where relevant, business value, and next steps.
+If S/4HANA is not relevant, explain that clearly and focus on modernization impact instead.
+"""
+            },
+            {
+                "section_name": "Appendices",
+                "keys": [
+                    "appendix_reporting_inventory",
+                    "appendix_s4_impact_analysis",
+                    "appendix_reporting_overlap_analysis",
+                    "appendix_data_source_mapping",
+                    "appendix_critical_reports",
+                    "critical_report_summary",
+                    "analytics_ownership_overview",
+                    "analytics_responsibility_model",
+                    "stakeholder_interview_summary",
+                    "responsibility_gaps",
+                    "key_observations_text"
+                ],
+                "instructions": """
+Populate all appendices. No placeholders.
+
+appendix_reporting_inventory columns:
+Report Name, Business Function, Frequency, Current Owner, Current Issue, Recommended Disposition
+
+appendix_s4_impact_analysis columns:
+Process Area, Current Reporting Dependency, S/4HANA Impact, Risk Level, Required Action
+
+appendix_reporting_overlap_analysis columns:
+Report / Dashboard, Overlap Area, Duplicative Source, Business Risk, Recommended Action
+
+appendix_data_source_mapping columns:
+Data Source, Business Function, Current Usage, Integration Issue, Future-State Recommendation
+
+appendix_critical_reports columns:
+Critical Report, Executive Owner, Business Purpose, Risk If Unavailable, Modernization Priority
+"""
+            }
+        ]
+    },
+
+    "Analytics Modernization Roadmap": {
+        "title": "Analytics Modernization Roadmap",
+        "sections": [
+            {
+                "section_name": "Executive Roadmap Overview",
+                "keys": [
+                    "engagement_overview_text",
+                    "executive_summary_text",
+                    "modernization_drivers",
+                    "top_priorities",
+                    "implementation_roadmap"
+                ],
+                "instructions": """
+Focus on why modernization is needed, what needs to change, and the phased path forward.
+
+modernization_drivers columns:
+Driver, Current Constraint, Business Impact, Modernization Response, Priority
+
+implementation_roadmap must include:
+Phase, Timeline, Key Actions, Business Outcome, Dependencies
+"""
+            },
+            {
+                "section_name": "Current vs Future State",
+                "keys": [
+                    "current_state_architecture",
+                    "future_state_architecture",
+                    "capability_gap_summary",
+                    "platform_recommendations"
+                ],
+                "instructions": """
+Compare current-state and future-state analytics capabilities.
+
+Tables should explain:
+Capability Area, Current State, Future State, Gap, Recommended Action, Priority
+"""
+            },
+            {
+                "section_name": "Execution Plan",
+                "keys": [
+                    "workstream_plan",
+                    "risk_mitigation_plan",
+                    "investment_summary",
+                    "business_value_text",
+                    "potential_impact_summary"
+                ],
+                "instructions": """
+Create a practical execution plan with workstreams, risks, dependencies, estimated value, and investment considerations.
+"""
+            }
+        ]
+    },
+
+    "AI Opportunity Assessment": {
+        "title": "AI Opportunity Assessment",
+        "sections": [
+            {
+                "section_name": "AI Executive Opportunity Overview",
+                "keys": [
+                    "engagement_overview_text",
+                    "executive_summary_text",
+                    "top_ai_opportunities",
+                    "implementation_roadmap"
+                ],
+                "instructions": """
+Focus on where AI can create business value, reduce manual work, improve decisions, and accelerate operations.
+
+top_ai_opportunities columns:
+Use Case, Business Function, Current Pain Point, AI Opportunity, Business Value, Complexity, Priority
+"""
+            },
+            {
+                "section_name": "AI Use Case Portfolio",
+                "keys": [
+                    "ai_use_case_inventory",
+                    "automation_candidates",
+                    "decision_support_opportunities",
+                    "data_readiness_summary"
+                ],
+                "instructions": """
+Identify realistic AI use cases and readiness gaps.
+
+Use case tables should include:
+Use Case, Process Area, Required Data, Expected Benefit, Complexity, Recommended Next Step
+"""
+            },
+            {
+                "section_name": "AI Roadmap and Value",
+                "keys": [
+                    "ai_roadmap",
+                    "risk_and_governance_considerations",
+                    "business_value_text",
+                    "potential_impact_summary",
+                    "recommended_next_steps_text"
+                ],
+                "instructions": """
+Create a phased AI roadmap with governance, risk, change management, data readiness, and measurable value.
+"""
+            }
+        ]
+    }
+}
 
 # --------------------
 # Generate Button
