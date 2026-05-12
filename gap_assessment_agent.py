@@ -199,452 +199,59 @@ def research_company(company_name, industry):
         return f"Company research unavailable: {str(e)}"
 
 # --------------------
-# Generate Assessment JSON
+# Shared Prompt Builder
 # --------------------
-def generate_assessment_json(client_name, industry, assessment_type, notes, file_content, company_research):
-
-    notes = notes[:4000]
-    file_content = file_content[:12000]
-
-    prompt = f"""
-You are a senior consulting partner from a top-tier advisory firm delivering a paid executive assessment for a client.
-
-Your writing style must feel premium, strategic, commercial, and boardroom-ready.
-
-Never sound generic, robotic, repetitive, or AI-generated.
-
-The final output must feel like a deliverable a client would pay $50,000+ for.
-
+def build_base_context(client_name, industry, assessment_type, notes, file_content, company_research):
+    return f"""
 CLIENT INFORMATION
-
 Client Name: {client_name}
 Industry: {industry}
 Assessment Type: {assessment_type}
 
 PUBLIC COMPANY RESEARCH
-
 {company_research}
 
 DISCOVERY NOTES
-
-{notes}
+{notes[:4000]}
 
 SUPPORTING FILE CONTENT
+{file_content[:12000]}
 
-{file_content}
+WRITING RULES
+You are a senior consulting partner creating a paid executive deliverable.
 
-BUSINESS CONTEXT DERIVATION (MANDATORY)
+Write with a direct, commercial, boardroom-ready point of view.
 
-Before writing the assessment, infer the company’s operating model based on:
-- discovery notes
-- uploaded files
-- company research
+Before writing, infer the company's operating model from the discovery notes, uploaded files, research, and industry.
 
-Identify:
-- how the company makes money
-- core business functions (e.g., sales, operations, supply chain, finance)
-- key operational processes
-- likely sources of complexity
+Do not write generic statements that could apply to any company.
 
-This inferred context must be used throughout the entire assessment.
+Every issue must explain:
+- where it shows up in the business
+- what is happening operationally
+- who is impacted
+- what decision is delayed, wrong, or harder to make
+- why it matters financially or operationally
 
-Do NOT write generic statements that could apply to any company.
+No placeholders.
+No "To be validated."
+No empty strings.
+No empty arrays.
+No markdown.
+No code fences.
 
-OPERATIONAL SPECIFICITY REQUIREMENT
+Return valid JSON only.
 
-Every issue must include:
-
-- Where it shows up in the business (function/process)
-- What is happening operationally
-- Who is impacted
-- What decision is affected
-
-Generic statements such as "fragmented landscape" or "inefficiencies exist" are not allowed unless tied to a specific business process.
-
-GENERIC LANGUAGE PROHIBITION
-
-The following types of statements are not allowed:
-
-- "fragmented landscape"
-- "opportunities exist"
-- "lack of visibility"
-- "inefficiencies in reporting"
-
-Unless immediately followed by:
-- a specific process
-- a specific function
-- a specific business consequence
-
-If not, rewrite the statement.
-
-INFERENCE REQUIREMENT
-
-If discovery inputs are limited, you must:
-
-- infer realistic operational scenarios
-- use common patterns seen in similar businesses
-- make reasonable consulting assumptions
-
-Do NOT default to vague or generic language.
-
-
-OBJECTIVE
-
-Create a premium executive analytics assessment in JSON format.
-
-The document must first explain the company, what it has accomplished, where complexity has increased, and why leadership requested this assessment now.
-
-Then identify reporting, analytics, governance, technology, and decision-support gaps.
-
-Then recommend practical next steps tied to business value.
-
-WRITING REQUIREMENTS
-
-Write like an experienced consulting executive.
-
-Use specific business language such as:
-growth, margin pressure, operating visibility, scalability, decision-making speed, reporting trust, working capital, service levels, operational efficiency, transformation readiness.
-
-Tie all observations directly to likely client realities.
-
-For manufacturing clients, naturally reference:
-plants, supply chain, production, inventory, OTIF, forecasting, downtime, scrap, yield, procurement, distribution, acquisitions.
-
-All tables must be rendered as clean tabular structures with column headers and rows.
-
-Do NOT return Python dictionaries or JSON-style inline objects.
-
-Each table must be formatted as an array of flat row objects that can be directly rendered into a professional table.
-
-Each row must contain:
-- Business context
-- Impact
-- Priority
-- Action (where applicable)
-
-Do not use generic columns like "Category" or "Gap".
-
-Each row must read like a consulting insight, not a label.
-
-MANDATORY POINT OF VIEW
-
-You are not summarizing findings.
-
-You are diagnosing the business.
-
-You must take a clear position on:
-
-- What is actually broken
-- Where it shows up operationally
-- Why it matters financially
-- What leadership should prioritize first
-
-Avoid neutral language.
-
-Write with conviction as if presenting to a CFO and COO.
-
-Avoid generic labels like "gaps" or "opportunities" as single columns.
-
-Do NOT use generic filler statements such as:
-"significant opportunities exist"
-"the company faces challenges"
-"there are several gaps"
-
-Be specific and commercial.
-
+All tables must be arrays of flat row objects.
 Do not create nested dictionaries inside table cells.
-
-Every table must be a list of flat row objects.
-
-Bad:
-[
-  {{"stakeholders": [{{"name": "CFO", "role": "Finance"}}]}}
-]
-
-Good:
-[
-  {{"Stakeholder": "CFO", "Role": "Finance", "Current Pain Point": "Delayed margin visibility", "Business Risk": "Slow pricing decisions", "Requested Capability": "Weekly profitability dashboard", "Priority": "High"}}
-]
-
-Use clean column names with spaces and title case.
-Never use one-column tables.
-Never return fields like "gaps", "opportunities", "ownership", "interviews", or "reporting_inventory" as a single nested column.
-
-MANDATORY COMPLETENESS RULE
-
-Every required key must contain meaningful content.
-
-- No empty arrays
-- No empty strings
-- No "To be validated"
-- No placeholder text
-
-If information is not available, infer realistic consulting-level content.
-
-Do not skip sections under any circumstance.
-
-CRITICAL REQUIREMENT – ROADMAP
-
-The implementation_roadmap section is mandatory.
-
-You MUST return:
-
-Phase 1 (0–6 weeks)
-Phase 2 (6–12 weeks)
-Phase 3 (12+ weeks)
-
-Each phase must include:
-- Key Actions
-- Business Outcomes
-- Dependencies
-
-If this section is missing, the response is invalid.
-
-BUSINESS TRANSLATION REQUIREMENT
-
-Every issue identified must include:
-
-1. Where it shows up in the business (function/process)
-2. What is happening today
-3. The consequence (delay, inefficiency, cost, risk)
-4. Why it matters (margin, cash flow, service levels, growth)
-
-Do not describe issues without tying them to real business impact.
-
-ENGAGEMENT OVERVIEW MUST INCLUDE:
-
-1. What the company does
-2. What it has accomplished / growth journey
-3. Why complexity increased
-4. Why now is the right time for assessment
-5. Why analytics matters to leadership now
-
-EXECUTIVE SUMMARY MUST INCLUDE:
-
-1. Current state reality
-2. Main risks
-3. Business consequences
-4. Biggest value opportunities
-5. Immediate recommended actions
-
-TABLE STRUCTURE REQUIREMENT
-
-All tables must follow this structure:
-
-Business Area
-Current State
-Where It Breaks
-Business Impact
-Why It Matters
-Recommended Action
-Priority
-
-TOP PRIORITIES REQUIREMENT
-
-Identify the top 5 actions leadership should take.
-
-Each must include:
-
-- What to do
-- Why it matters
-- Business impact
-- Time horizon (Immediate / Near-Term / Mid-Term)
-
-These should feel like executive decisions, not suggestions.
-
-ROADMAP REQUIREMENT
-
-Create a phased roadmap:
-
-Phase 1 (0–6 weeks): Quick wins and stabilization
-Phase 2 (6–12 weeks): Foundation build
-Phase 3 (12+ weeks): Scale and advanced capabilities
-
-Each phase must include:
-- Key actions
-- Business outcomes
-- Dependencies
-
-VALUE QUANTIFICATION REQUIREMENT
-
-Where possible, estimate impact using directional ranges:
-
-- Time reduction (e.g., 20–40%)
-- Cost savings
-- Margin improvement
-- Working capital impact
-
-Do not invent unrealistic numbers.
-
-Use reasonable, experience-based estimates tied to the issue.
-
-RETURN ONLY VALID JSON
-
-STRICT TABLE FORMAT
-
-All table outputs MUST be arrays of objects using consistent columns.
-
-Do not switch formats between sections.
-
-Do not return narrative where a table is expected.
-
-Inconsistent structure is not allowed.
-
-APPENDIX REQUIREMENT
-
-Appendix sections are mandatory and must be populated.
-
-Do not return "To be validated."
-
-If source data is incomplete, infer realistic assessment content using consulting assumptions.
-
-Each appendix must contain at least 3 rows.
-
-appendix_reporting_inventory must include:
-Report Name, Business Function, Frequency, Current Owner, Current Issue, Recommended Disposition
-
-appendix_s4_impact_analysis must include:
-Process Area, Current Reporting Dependency, S/4HANA Impact, Risk Level, Required Action
-
-appendix_reporting_overlap_analysis must include:
-Report / Dashboard, Overlap Area, Duplicative Source, Business Risk, Recommended Action
-
-appendix_data_source_mapping must include:
-Data Source, Business Function, Current Usage, Integration Issue, Future-State Recommendation
-
-appendix_critical_reports must include:
-Critical Report, Executive Owner, Business Purpose, Risk If Unavailable, Modernization Priority
-
-SECTION-BY-SECTION OUTPUT REQUIREMENTS
-
-engagement_overview_text:
-Write 3-5 executive paragraphs. Explain what the company does, how it likely makes money, how growth increased operational complexity, why analytics is now a leadership issue, and why this assessment matters now. Avoid generic company background.
-
-executive_summary_text:
-Write like a consulting partner delivering the diagnosis. Include the primary issue, the top 3 risks, the business consequences, and the first actions leadership should take. This should be direct and opinionated.
-
-top_priorities:
-Return exactly 5 rows. Columns must be:
-Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
-Write a summary 1 - 2 paragraphs explaining the top priorities and why they are important.
-
-implementation_roadmap:
-Return exactly 3 rows. Columns must be:
-Phase, Timeline, Key Actions, Business Outcome, Dependencies
-Write a summary 1 - 2 paragraphs explaining the implementation roadmap and why it is identified like this.
-
-analytics_environment_snapshot:
-Show the current analytics environment by business area. Columns:
-Business Area, Current State, Where It Breaks, Business Impact, Why It Matters, Recommended Action, Priority
-Write a summary 1 - 2 paragraphs explaining the analytics environment snapshot and some of the highlighted points.
-
-gap_analysis_summary:
-Show specific gaps, not generic labels. Columns:
-Business Area, Current Gap, Evidence / Assumption, Business Risk, Recommended Action, Priority
-Write a 1 - 2 paragraph summary explaining the gap analysis and how they need to be addressed.
-
-recommended_focus_areas:
-Columns:
-Focus Area, Rationale, Business Impact, Time Horizon, First Step
-Write a 1 - 2 paragraph summary on why these are the core focus areas in depth.
-
-appendix_reporting_inventory:
-Columns:
-Report Name, Business Function, Frequency, Current Owner, Current Issue, Recommended Disposition
-
-appendix_s4_impact_analysis:
-Columns:
-Process Area, Current Reporting Dependency, S/4HANA Impact, Risk Level, Required Action
-
-appendix_reporting_overlap_analysis:
-Columns:
-Report / Dashboard, Overlap Area, Duplicative Source, Business Risk, Recommended Action
-
-appendix_data_source_mapping:
-Columns:
-Data Source, Business Function, Current Usage, Integration Issue, Future-State Recommendation
-
-appendix_critical_reports:
-Columns:
-Critical Report, Executive Owner, Business Purpose, Risk If Unavailable, Modernization Priority
-
-Required keys:
-
-engagement_overview_text
-engagement_scope_summary
-executive_summary_text
-analytics_environment_snapshot
-analytics_complexity_text
-analytics_complexity_snapshot
-gap_heatmap_intro
-gap_severity_heatmap
-gap_observations_text
-current_landscape_text
-current_architecture_summary
-reporting_inventory_text
-reporting_landscape_summary
-s4_reporting_impact_text
-s4_impact_summary
-key_gaps_text
-gap_analysis_summary
-opportunity_areas_text
-improvement_opportunity_summary
-business_value_text
-potential_impact_summary
-recommended_next_steps_text
-recommended_focus_areas
-appendix_reporting_inventory
-appendix_s4_impact_analysis
-appendix_reporting_overlap_analysis
-appendix_data_source_mapping
-appendix_critical_reports
-critical_report_summary
-analytics_ownership_overview
-analytics_responsibility_model
-stakeholder_interview_summary
-responsibility_gaps
-key_observations_text
-top_priorities
-implementation_roadmap
-
-RULES
-
-- Return valid JSON only
-- No markdown
-- No code fences
-- No empty sections
-- If data is missing, infer realistic executive-quality content
-- Every table field must be an array of objects
-- Narrative sections must be premium quality and client-ready
-- Recommendations must be practical, phased, and tied to ROI
-- Avoid repeating the same wording
-- Sound like a paid consulting advisor
 """
 
-    messages = [
-        {
-            "role": "system",
-            "content": "You must return a single valid JSON object only. No markdown, no commentary, no code fences."
-        },
-        {
-            "role": "user",
-            "content": prompt
-        }
-    ]
 
-    response = call_openai_with_retry(messages)
-
-    if response is None:
-        return {}
-
-    raw = response.choices[0].message.content.strip()
-
-    try:
-        return json.loads(raw)
-    except json.JSONDecodeError:
-        st.error("The AI response was not valid JSON. Showing raw response for debugging:")
-        st.code(raw[:4000])
-        return {}
+def generate_section_json(client_name, industry, assessment_type, notes, file_content, company_research, section_config):
+    base_context = build_base_context(
+        client_name,
+        industry,
+        assessment
 
 # --------------------
 # Word Helpers
