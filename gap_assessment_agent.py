@@ -217,6 +217,10 @@ DISCOVERY NOTES
 SUPPORTING FILE CONTENT
 {file_content[:12000]}
 
+{COMPANY_RESEARCH_REQUIREMENTS}
+
+{TABLE_SUMMARY_REQUIREMENTS}
+
 
 
 WRITING RULES
@@ -301,6 +305,28 @@ Focus on:
 """
 }
 
+COMPANY_RESEARCH_REQUIREMENTS = """
+Use the public company research, discovery notes, uploaded files, and industry context to make the assessment company-specific.
+
+Explain the customer's operating model, likely business complexity, reporting needs, ERP/data landscape, and transformation drivers.
+
+Avoid generic language. Do not fabricate specific counts, revenue, locations, systems, reports, or years of history unless provided.
+"""
+
+TABLE_SUMMARY_REQUIREMENTS = """
+After every table, generate a 1-2 paragraph executive narrative explaining what the table means to the customer.
+
+The narrative must explain:
+- why leadership should care
+- operational implications
+- business risk
+- reporting or analytics impact
+- financial or decision-making impact
+- recommended action
+
+Do not simply repeat the table. Interpret the findings.
+"""
+
 # --------------------
 # Generate One Section
 # --------------------
@@ -310,9 +336,7 @@ def generate_section_json(
     assessment_type,
     notes,
     file_content,
-    company_research,
-    section_config,
-    assessment_context
+    company_research
 ):
     base_context = build_base_context(
         client_name,
@@ -391,11 +415,10 @@ def generate_assessment_json(
     assessment_type,
     notes,
     file_content,
-    company_research,
-    section_config,
-    assessment_context
+    company_research
 ):
     framework = ASSESSMENT_FRAMEWORKS.get(assessment_type)
+    assessment_context = ASSESSMENT_CONTEXT.get(assessment_type, "")
 
     if not framework:
         st.error(f"No framework found for assessment type: {assessment_type}")
@@ -1033,6 +1056,7 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
         st.warning("Enter a client name first.")
     else:
         file_content = read_uploaded_files(uploaded_files)
+        company_research = research_company(client_name, industry)
 
         with st.spinner("Generating assessment content..."):
             max_retries = 3
