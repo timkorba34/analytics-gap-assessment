@@ -874,16 +874,28 @@ Phase, Timeline, Key Actions, Business Outcome, Dependencies
             {
                 "section_name": "Current State and Gap Analysis",
                 "keys": [
-                    "analytics_environment_snapshot",
-                    "analytics_environment_summary",
-                    "analytics_complexity_text",
-                    "analytics_complexity_snapshot",
-                    "gap_severity_heatmap",
-                    "gap_observations_text",
-                    "gap_analysis_summary",
+                    "current_landscape_text",
+                    "current_architecture_summary",
+
+                    "reporting_inventory_text",
+                    "reporting_landscape_summary",
+
+                    "s4_reporting_impact_text",
+                    "s4_impact_summary",
+
                     "key_gaps_text",
+                    "gap_analysis_summary",
+
+                    "opportunity_areas_text",
+                    "improvement_opportunity_summary",
+
+                    "business_value_text",
+                    "potential_impact_summary",
+
+                    "recommended_next_steps_text",
                     "recommended_focus_areas"
                 ],
+
 
                 "instructions": """
 Focus on current-state analytics, reporting, governance, data ownership, system complexity, and decision-support gaps.
