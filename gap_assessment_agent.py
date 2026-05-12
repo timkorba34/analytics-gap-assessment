@@ -551,16 +551,16 @@ def build_docx(data, client_name, assessment_type):
         add_paragraph(doc, data.get("analytics_environment_summary", ""))
 
         add_heading(doc, "4. Analytics Complexity Snapshot", 1)
-        add_paragraph(doc, data.get("analytics_complexity_text", ""))
         add_table_from_records(doc, data.get("analytics_complexity_snapshot", []))
+        add_paragraph(doc, data.get("analytics_complexity_text", ""))
 
         add_heading(doc, "5. Gap Severity Heatmap", 1)
         add_table_from_records(doc, data.get("gap_severity_heatmap", []))
         add_paragraph(doc, data.get("gap_observations_text", ""))
 
         add_heading(doc, "6. Current Analytics Landscape", 1)
-        add_paragraph(doc, data.get("current_landscape_text", ""))
         add_table_from_records(doc, data.get("current_architecture_summary", []))
+        add_paragraph(doc, data.get("current_landscape_text", ""))
 
         add_heading(doc, "7. Reporting Inventory Summary", 1)
         add_table_from_records(doc, data.get("reporting_landscape_summary", []))
@@ -582,7 +582,11 @@ def build_docx(data, client_name, assessment_type):
         add_table_from_records(doc, data.get("potential_impact_summary", []))
         add_paragraph(doc, data.get("business_value_text", ""))
 
-        add_heading(doc, "12. Recommended Next Steps", 1)
+        add_heading(doc, "12. S/4 Analytics Readiness Roadmap", 1)
+        add_table_from_records(doc, data.get("s4_analytics_roadmap_summary", []))
+        add_paragraph(doc, data.get("s4_analytics_roadmap_text", ""))
+
+        add_heading(doc, "13. Recommended Next Steps", 1)
         add_table_from_records(doc, data.get("recommended_focus_areas", []))
         add_paragraph(doc, data.get("recommended_next_steps_text", ""))
 
