@@ -247,11 +247,105 @@ Do not create nested dictionaries inside table cells.
 """
 
 
-def generate_section_json(client_name, industry, assessment_type, notes, file_content, company_research, section_config):
+# --------------------
+# Generate One Section
+# --------------------
+def generate_section_json(
+    client_name,
+    industry,
+    assessment_type,
+    notes,
+    file_content,
+    company_research,
+    section_config
+):
     base_context = build_base_context(
         client_name,
         industry,
-        assessment
+        assessment_type,
+        notes,
+        file_content,
+        company_research
+    )
+
+    required_keys = "\n".join(section_config["keys"])
+
+    prompt = f"""
+{base_context}
+
+SECTION TO GENERATE:
+{section_config["section_name"]}
+
+SECTION INSTRUCTIONS:
+{section_config["instructions"]}
+
+REQUIRED JSON KEYS:
+{required_keys}
+
+Return only these keys in one valid JSON object.
+Every required key must be populated.
+"""
+
+    messages = [
+        {
+            "role": "system",
+            "content": "Return one valid JSON object only. No markdown. No commentary."
+        },
+        {
+            "role": "user",
+            "content": prompt
+        }
+    ]
+
+    response = call_openai_with_retry(messages)
+
+    if response is None:
+        return {}
+
+    raw = response.choices[0].message.content.strip()
+
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        st.error(f"Invalid JSON returned for section: {section_config['section_name']}")
+        st.code(raw[:4000])
+        return {}
+
+
+# --------------------
+# Generate Full Assessment - Multiple Calls
+# --------------------
+def generate_assessment_json(
+    client_name,
+    industry,
+    assessment_type,
+    notes,
+    file_content,
+    company_research
+):
+    framework = ASSESSMENT_FRAMEWORKS.get(assessment_type)
+
+    if not framework:
+        st.error(f"No framework found for assessment type: {assessment_type}")
+        return {}
+
+    final_data = {}
+
+    for section in framework["sections"]:
+        with st.spinner(f"Generating {section['section_name']}..."):
+            section_data = generate_section_json(
+                client_name,
+                industry,
+                assessment_type,
+                notes,
+                file_content,
+                company_research,
+                section
+            )
+
+        final_data.update(section_data)
+
+    return final_data
 
 # --------------------
 # Word Helpers
@@ -594,23 +688,6 @@ Consulting Team
 # Company Research Default
 # --------------------
 company_research = ""
-
-
-# --------------------
-# Output Validation
-# --------------------
-def validate_output(data):
-    required_keys = [
-        "executive_summary_text",
-        "top_priorities",
-        "implementation_roadmap"
-    ]
-
-    for key in required_keys:
-        if key not in data or not data[key]:
-            return False
-
-    return True
 
 # --------------------
 # Output Validation
