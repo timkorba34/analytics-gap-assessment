@@ -298,11 +298,53 @@ for key, value in defaults.items():
         st.session_state[key] = value
 
 # --------------------
+# Company Search - Drop Down
+# --------------------
+def search_companies(query):
+
+    try:
+        response = tavily_client.search(
+            query=f"{query} company official name",
+            search_depth="basic",
+            max_results=5
+        )
+
+        companies = []
+
+        for result in response.get("results", []):
+
+            title = result.get("title", "")
+
+            if title and title not in companies:
+                companies.append(title)
+
+        return companies
+
+    except Exception as e:
+        return [query]
+
+# --------------------
 # UI Inputs
 # --------------------
 st.markdown("<div class='glass'>", unsafe_allow_html=True)
 
-client_name = st.text_input("Client Name")
+client_search = st.text_input("Search Client")
+
+company_options = []
+
+if client_search:
+    company_options = search_companies(client_search)
+
+if company_options:
+
+    client_name = st.selectbox(
+        "Select Company",
+        company_options
+    )
+
+else:
+    client_name = client_search
+    
 industry = st.selectbox(
     "Industry",
     [
