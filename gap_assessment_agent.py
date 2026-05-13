@@ -316,7 +316,7 @@ def search_companies(query):
             ]
         )
 
-        options = [query.strip()]
+        options = []
 
         for result in response.get("results", []):
             title = result.get("title", "").strip()
@@ -346,7 +346,7 @@ def search_companies(query):
             if clean_title and clean_title not in options:
                 options.append(clean_title)
 
-        return options[:5]
+        return options[:5] if options else [query.strip()]
 
     except Exception:
         return [query.strip()]
