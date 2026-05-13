@@ -187,27 +187,18 @@ st.markdown(
 )
 
 st.markdown(
-    f"""
-    <div class="hero-container">
-
-        <div class="hero-left">
-            <div class="hero-title">
-                Analytics Modernization Assessment Copilot
-            </div>
-
-            <div class="hero-subtitle">
-                AI-powered executive analytics assessments,
-                modernization roadmaps, S/4HANA readiness analysis,
-                and actionable remediation planning.
-            </div>
-        </div>
-
-        <div class="hero-right">
-            <img src="data:image/png;base64,{robot_image}">
-        </div>
-
-    </div>
-    """,
+    f"""<div class="hero-container">
+<div class="hero-left">
+<div class="hero-title">Analytics Modernization Assessment Copilot</div>
+<div class="hero-subtitle">
+AI-powered executive analytics assessments, modernization roadmaps,
+S/4HANA readiness analysis, and actionable remediation planning.
+</div>
+</div>
+<div class="hero-right">
+<img src="data:image/png;base64,{robot_image}">
+</div>
+</div>""",
     unsafe_allow_html=True
 )
 
