@@ -25,7 +25,7 @@ def get_base64(file_path):
         return base64.b64encode(f.read()).decode()
 
 bg_image = get_base64("copilot_bg.png")
-robot_image = get_base64("copilot_bg.png")
+robot_image = get_base64("robot_bg.png")
 
 st.markdown(
     f"""
