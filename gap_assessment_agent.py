@@ -193,11 +193,6 @@ div[data-testid="stFileUploaderFile"] {{
         color: #ffffff !important;
     }}
 
-    if uploaded_files:
-    st.markdown("### Uploaded Files")
-    for file in uploaded_files:
-        st.markdown(f"- `{file.name}`")
-
     div.stButton > button {{
         background: linear-gradient(90deg, #2563eb, #7c3aed);
         color: white !important;
@@ -511,6 +506,8 @@ uploaded_files = st.file_uploader(
     type=["txt", "csv", "pdf", "xls", "xlsx", "doc", "docx"],
     accept_multiple_files=True
 )
+
+
 
 notes = st.text_area("Paste Additional Notes", height=250)
 
