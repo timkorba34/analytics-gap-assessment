@@ -936,6 +936,9 @@ Phase, Timeline, Strategic Objective, Key Activities, Expected Outcome, Business
         "keys": [
             "analytics_environment_snapshot",
             "analytics_environment_summary",
+            "current_architecture_diagram",
+            "s4_future_state_diagram",
+            "reporting_dependency_diagram"
             "current_system_inventory",
             "current_data_flow_summary",
             "reporting_dependency_map",
