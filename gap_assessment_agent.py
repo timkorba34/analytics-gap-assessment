@@ -156,6 +156,21 @@ st.markdown(
         border-radius: 10px !important;
     }}
 
+    div[data-testid="stFileUploaderFile"] {{
+    background-color: rgba(15, 28, 60, 0.95) !important;
+    border: 1px solid rgba(120, 160, 255, 0.45) !important;
+    border-radius: 10px !important;
+    }}
+    
+    div[data-testid="stFileUploaderFile"] * {{
+        color: white !important;
+    }}
+    
+    div[data-testid="stFileUploaderFile"] svg {{
+        color: white !important;
+        fill: white !important;
+    }}
+
     .stFileUploader section {{
         background-color: rgba(15, 23, 42, 0.60) !important;
         border: 1px dashed rgba(255,255,255,0.35) !important;
