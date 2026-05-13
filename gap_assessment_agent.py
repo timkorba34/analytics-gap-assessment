@@ -18,9 +18,116 @@ from graphviz import Digraph
 # --------------------
 st.set_page_config(page_title="AI Gap Assessment Builder", layout="wide")
 
-st.title("Analytics Modernization Assessment Copilot")
-st.caption("Upload discovery inputs and generate a client-ready Word gap assessment.")
+import base64
 
+def get_base64(file_path):
+    with open(file_path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+bg_image = get_base64("copilot_bg.png")
+
+st.markdown(
+    f"""
+    <style>
+
+    .stApp {{
+        background: linear-gradient(rgba(5,10,25,0.92), rgba(5,10,25,0.96)),
+                    url("data:image/png;base64,{bg_image}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white;
+    }}
+
+    .main-title {{
+        font-size: 54px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 10px;
+    }}
+
+    .sub-title {{
+        font-size: 22px;
+        color: #c7d2fe;
+        margin-bottom: 40px;
+    }}
+
+    .glass {{
+        background: rgba(15, 23, 42, 0.72);
+        backdrop-filter: blur(12px);
+        padding: 30px;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    }}
+
+    .feature-card {{
+        background: rgba(20, 30, 60, 0.65);
+        padding: 20px;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.06);
+        margin-bottom: 20px;
+    }}
+
+    div.stButton > button {{
+        background: linear-gradient(90deg, #2563eb, #7c3aed);
+        color: white;
+        border-radius: 14px;
+        height: 55px;
+        font-size: 18px;
+        font-weight: 600;
+        border: none;
+        width: 100%;
+    }}
+
+    div.stButton > button:hover {{
+        background: linear-gradient(90deg, #1d4ed8, #6d28d9);
+        color: white;
+    }}
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown("""
+<div class='glass'>
+    <div class='main-title'>
+        Analytics Modernization Assessment Copilot
+    </div>
+
+    <div class='sub-title'>
+        AI-powered executive analytics assessments, modernization roadmaps,
+        and S/4HANA readiness insights.
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("""
+    <div class='feature-card'>
+        <h3>AI-Driven Insights</h3>
+        <p>Identify analytics gaps, risks, and reporting challenges automatically.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div class='feature-card'>
+        <h3>Executive Ready</h3>
+        <p>Generate boardroom-quality Word documents and PowerPoint presentations.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+    <div class='feature-card'>
+        <h3>S/4HANA Readiness</h3>
+        <p>Assess reporting impacts, governance gaps, and modernization priorities.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # --------------------
 # OpenAI Setup
@@ -63,6 +170,8 @@ for key, value in defaults.items():
 # --------------------
 # UI Inputs
 # --------------------
+st.markdown("<div class='glass'>", unsafe_allow_html=True)
+
 client_name = st.text_input("Client Name")
 industry = st.text_input("Industry")
 
@@ -85,6 +194,7 @@ notes = st.text_area("Paste Additional Notes", height=250)
 
 safe_client_name = client_name.strip().replace(" ", "_") if client_name else "Client"
 
+st.markdown("</div>", unsafe_allow_html=True)
 
 # --------------------
 # File Reader
