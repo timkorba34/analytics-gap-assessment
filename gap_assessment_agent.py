@@ -31,7 +31,8 @@ st.markdown(
     f"""
     <style>
 
-    background: linear-gradient(rgba(5,10,25,0.96), rgba(5,10,25,0.98));
+    .stApp {{
+        background: linear-gradient(rgba(5,10,25,0.96), rgba(5,10,25,0.98));
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -63,47 +64,49 @@ st.markdown(
         margin-bottom: 25px;
     }}
 
-    .hero-container {
+    .hero-container {{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: linear-gradient(90deg, rgba(10,15,40,0.95), rgba(15,23,42,0.82));
+        background: linear-gradient(
+            90deg,
+            rgba(10,15,40,0.95),
+            rgba(15,23,42,0.82)
+        );
         border-radius: 28px;
         padding: 50px;
         overflow: hidden;
         margin-bottom: 30px;
         border: 1px solid rgba(255,255,255,0.08);
-    }
+    }}
 
-    .hero-left {
+    .hero-left {{
         width: 58%;
-    }
+    }}
 
-    .hero-right {
+    .hero-right {{
         width: 38%;
         text-align: right;
-    }
+    }}
 
-    .hero-right img {
+    .hero-right img {{
         width: 100%;
         max-width: 420px;
-    }
+    }}
 
-    .hero-title {
+    .hero-title {{
         font-size: 64px;
         font-weight: 800;
         color: white;
         line-height: 1.1;
         margin-bottom: 20px;
-    }
+    }}
 
-    .hero-subtitle {
+    .hero-subtitle {{
         font-size: 22px;
         color: #c7d2fe;
         line-height: 1.6;
-    }
-
-    
+    }}
 
     .feature-card {{
         background: rgba(20, 30, 60, 0.72);
@@ -126,7 +129,9 @@ st.markdown(
         line-height: 1.5;
     }}
 
-    label, .stMarkdown p, .stMarkdown span {{
+    label,
+    .stMarkdown p,
+    .stMarkdown span {{
         color: #ffffff !important;
     }}
 
