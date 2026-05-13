@@ -303,50 +303,64 @@ for key, value in defaults.items():
 def search_companies(query):
     try:
         response = tavily_client.search(
-            query=f"{query} official company website",
+            query=f"{query} official company name official website",
             search_depth="basic",
-            max_results=6,
+            max_results=5,
             exclude_domains=[
                 "linkedin.com",
                 "facebook.com",
                 "twitter.com",
                 "x.com",
                 "glassdoor.com",
+                "zoominfo.com",
+                "seamless.ai",
+                "rocketreach.co",
                 "wikipedia.org"
             ]
         )
 
-        options = []
+        search_context = ""
 
         for result in response.get("results", []):
-            title = result.get("title", "").strip()
+            search_context += f"""
+Title: {result.get("title", "")}
+URL: {result.get("url", "")}
+Content: {result.get("content", "")}
+"""
 
-            clean_title = title
+        prompt = f"""
+You are identifying the correct official company name.
 
-            cleanup_terms = [
-                "Home page - ",
-                "Homepage - ",
-                "Home - ",
-                "Official Site",
-                "Official Website",
-                "| Microsoft",
-                "| LinkedIn",
-                "- LinkedIn",
-                "| Home",
-                "- Home",
-                "Home page",
-                "Homepage"
-            ]
+User typed:
+{query}
 
-            for term in cleanup_terms:
-                clean_title = clean_title.replace(term, "")
+Search results:
+{search_context}
 
-            clean_title = clean_title.strip(" -|")
+Return only the official company name.
+Do not return page titles.
+Do not return descriptions.
+Do not return URLs.
+Do not return LinkedIn, ZoomInfo, Seamless, employee names, or marketing text.
+Return one clean company name only.
 
-            if clean_title and clean_title not in options:
-                options.append(clean_title)
+Example:
+User typed: PIM Brands
+Return: PIM Brands, Inc.
+"""
 
-        return options[:5] if options else [query.strip()]
+        result = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "Return only one clean official company name."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0
+        )
+
+        company_name = result.choices[0].message.content.strip()
+
+        return [company_name]
 
     except Exception:
         return [query.strip()]
