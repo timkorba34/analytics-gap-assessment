@@ -10,6 +10,7 @@ import io
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from tavily import TavilyClient
+from graphviz import Digraph
 
 
 # --------------------
