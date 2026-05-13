@@ -301,28 +301,46 @@ for key, value in defaults.items():
 # Company Search - Drop Down
 # --------------------
 def search_companies(query):
-
     try:
         response = tavily_client.search(
-            query=f"{query} company official name",
+            query=f"{query} official company homepage",
             search_depth="basic",
-            max_results=5
+            max_results=8,
+            include_domains=[],
+            exclude_domains=["linkedin.com", "facebook.com", "twitter.com", "x.com", "glassdoor.com"]
         )
 
         companies = []
 
         for result in response.get("results", []):
-
             title = result.get("title", "")
+            url = result.get("url", "")
 
-            if title and title not in companies:
-                companies.append(title)
+            clean_name = title
 
-        return companies
+            for bad_text in [
+                "| LinkedIn",
+                "- LinkedIn",
+                "| Official Website",
+                "- Official Website",
+                "Official Website",
+                "| Home",
+                "- Home",
+                "Home |",
+                "Careers",
+                "About Us"
+            ]:
+                clean_name = clean_name.replace(bad_text, "")
 
-    except Exception as e:
+            clean_name = clean_name.strip(" -|")
+
+            if clean_name and clean_name not in companies:
+                companies.append(clean_name)
+
+        return companies[:5] if companies else [query]
+
+    except Exception:
         return [query]
-
 # --------------------
 # UI Inputs
 # --------------------
