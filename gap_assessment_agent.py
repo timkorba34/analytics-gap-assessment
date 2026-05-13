@@ -25,14 +25,13 @@ def get_base64(file_path):
         return base64.b64encode(f.read()).decode()
 
 bg_image = get_base64("copilot_bg.png")
+robot_image = get_base64("copilot_bg.png")
 
 st.markdown(
     f"""
     <style>
 
-    .stApp {{
-        background: linear-gradient(rgba(5,10,25,0.92), rgba(5,10,25,0.96)),
-                    url("data:image/png;base64,{bg_image}");
+    background: linear-gradient(rgba(5,10,25,0.96), rgba(5,10,25,0.98));
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -63,6 +62,48 @@ st.markdown(
         box-shadow: 0 0 30px rgba(0,0,0,0.4);
         margin-bottom: 25px;
     }}
+
+    .hero-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(90deg, rgba(10,15,40,0.95), rgba(15,23,42,0.82));
+        border-radius: 28px;
+        padding: 50px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .hero-left {
+        width: 58%;
+    }
+
+    .hero-right {
+        width: 38%;
+        text-align: right;
+    }
+
+    .hero-right img {
+        width: 100%;
+        max-width: 420px;
+    }
+
+    .hero-title {
+        font-size: 64px;
+        font-weight: 800;
+        color: white;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+        font-size: 22px;
+        color: #c7d2fe;
+        line-height: 1.6;
+    }
+
+    
 
     .feature-card {{
         background: rgba(20, 30, 60, 0.72);
@@ -141,13 +182,25 @@ st.markdown(
 )
 
 st.markdown(
-    """
-    <div class="glass">
-        <div class="main-title">Analytics Modernization Assessment Copilot</div>
-        <div class="sub-title">
-            AI-powered executive analytics assessments, modernization roadmaps,
-            and S/4HANA readiness insights.
+    f"""
+    <div class="hero-container">
+
+        <div class="hero-left">
+            <div class="hero-title">
+                Analytics Modernization Assessment Copilot
+            </div>
+
+            <div class="hero-subtitle">
+                AI-powered executive analytics assessments,
+                modernization roadmaps, S/4HANA readiness analysis,
+                and actionable remediation planning.
+            </div>
         </div>
+
+        <div class="hero-right">
+            <img src="data:image/png;base64,{robot_image}">
+        </div>
+
     </div>
     """,
     unsafe_allow_html=True
