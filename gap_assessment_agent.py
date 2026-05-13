@@ -539,14 +539,7 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("top_priorities", []))
         doc.add_paragraph("")
-        add_paragraph(doc, data.get("top_priorities_text", ""))
-
-    if data.get("s4_analytics_roadmap"):
-        add_heading(doc, "S/4HANA Analytics Readiness Roadmap", 2)
-        doc.add_paragraph("")
-        add_table_from_records(doc, data.get("s4_analytics_roadmap", []))
-        doc.add_paragraph("")
-        add_paragraph(doc, data.get("s4_analytics_roadmap_text", ""))    
+        add_paragraph(doc, data.get("top_priorities_text", ""))  
 
     # --------------------
     # Analytics Gap Assessment
@@ -607,13 +600,13 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("business_value_text", ""))
 
-        add_heading(doc, "12. S/4 Analytics Readiness Roadmap", 1)
+        add_heading(doc, "12. Gap Remediation Roadmap", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("s4_analytics_roadmap", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("s4_analytics_roadmap_text", ""))
 
-        add_heading(doc, "13. Recommended Next Steps", 1)
+        add_heading(doc, "13. Recommended Remediation Actions and Execution Plan", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("recommended_focus_areas", []))
         doc.add_paragraph("")
@@ -924,12 +917,23 @@ ASSESSMENT_FRAMEWORKS = {
 top_priorities must be a table array with exactly 5 rows:
 Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
 
-s4 analytics roadmap must represent the recommended phased execution plan AFTER the assessment.
+s4_analytics_roadmap must be a post-assessment gap remediation roadmap.
 
-The roadmap should focus on implementing the recommended analytics, reporting, governance, and S/4HANA readiness improvements.
+Do not include an Assessment phase. The assessment has already been completed.
+
+The roadmap must explain how the client should remediate the identified analytics, reporting, governance, data ownership, KPI, historical reporting, integration, and S/4HANA readiness gaps.
+
+Each phase must be action-oriented and tied directly to fixing gaps identified in this report.
+
+Use phases such as:
+1. Stabilize Critical Reporting Risk
+2. Define Data Ownership and KPI Governance
+3. Remediate S/4HANA Reporting Dependencies
+4. Modernize Priority Reports and Data Flows
+5. Operationalize Analytics Governance and Continuous Improvement
 
 Columns:
-Phase, Timeline, Strategic Objective, Key Activities, Expected Outcome, Business Value, Dependencies
+Phase, Timeline, Gap Addressed, Remediation Actions, Expected Outcome, Business Value, Dependencies
 """
     },
     {
@@ -958,7 +962,47 @@ analytics_environment_snapshot must be a table array.
 analytics_complexity_snapshot must be a table array.
 gap_severity_heatmap must be a table array.
 gap_analysis_summary must be a table array.
-recommended_focus_areas must be a table array.
+
+recommended_focus_areas must be a highly actionable post-assessment execution plan tied directly to the identified gaps in the report.
+
+Do not generate generic consulting recommendations.
+
+Every recommendation must:
+- align to a specific identified gap
+- explain the operational problem being solved
+- identify the required business or technical action
+- identify likely ownership
+- explain why the action matters
+- support movement toward execution readiness
+
+Recommendations should reflect realistic follow-on activities that occur immediately after an assessment.
+
+Include practical actions such as:
+- validating critical reporting dependencies
+- prioritizing report remediation
+- defining KPI ownership
+- establishing governance structures
+- identifying high-risk S/4HANA reporting impacts
+- aligning business stakeholders
+- creating remediation workstreams
+- defining implementation sequencing
+- preparing roadmap funding
+- creating implementation-ready scope
+- defining follow-on SOW activities
+- identifying quick wins
+- preparing architecture decisions
+- validating integration requirements
+- creating a phased modernization strategy
+
+Columns:
+Recommendation Category,
+Gap Addressed,
+Recommended Action,
+Business Outcome,
+Priority,
+Suggested Owner,
+Execution Horizon,
+Potential Follow-On Deliverable
 
 All *_text and *_summary keys must be 1-2 paragraph narratives.
 
@@ -1000,6 +1044,19 @@ architecture_risk_summary must be a 1-2 paragraph executive narrative explaining
 - reporting dependencies
 - scalability limitations
 - business continuity risks
+
+recommended_next_steps_text must read like an executive transition plan from assessment into execution.
+
+The narrative should explain:
+- what leadership should do immediately
+- what risks require urgent remediation
+- where governance decisions are required
+- which workstreams should begin first
+- where implementation funding and alignment are needed
+- what follow-on implementation activities should occur
+- how the organization should move from assessment into execution
+
+The tone should feel practical, operational, and implementation-oriented — not theoretical.
 """
     },
     {
