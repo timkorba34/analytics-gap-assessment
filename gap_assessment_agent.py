@@ -303,44 +303,53 @@ for key, value in defaults.items():
 def search_companies(query):
     try:
         response = tavily_client.search(
-            query=f"{query} official company homepage",
+            query=f"{query} official company website",
             search_depth="basic",
-            max_results=8,
-            include_domains=[],
-            exclude_domains=["linkedin.com", "facebook.com", "twitter.com", "x.com", "glassdoor.com"]
+            max_results=6,
+            exclude_domains=[
+                "linkedin.com",
+                "facebook.com",
+                "twitter.com",
+                "x.com",
+                "glassdoor.com",
+                "wikipedia.org"
+            ]
         )
 
-        companies = []
+        options = [query.strip()]
 
         for result in response.get("results", []):
-            title = result.get("title", "")
-            url = result.get("url", "")
+            title = result.get("title", "").strip()
 
-            clean_name = title
+            clean_title = title
 
-            for bad_text in [
+            cleanup_terms = [
+                "Home page - ",
+                "Homepage - ",
+                "Home - ",
+                "Official Site",
+                "Official Website",
+                "| Microsoft",
                 "| LinkedIn",
                 "- LinkedIn",
-                "| Official Website",
-                "- Official Website",
-                "Official Website",
                 "| Home",
                 "- Home",
-                "Home |",
-                "Careers",
-                "About Us"
-            ]:
-                clean_name = clean_name.replace(bad_text, "")
+                "Home page",
+                "Homepage"
+            ]
 
-            clean_name = clean_name.strip(" -|")
+            for term in cleanup_terms:
+                clean_title = clean_title.replace(term, "")
 
-            if clean_name and clean_name not in companies:
-                companies.append(clean_name)
+            clean_title = clean_title.strip(" -|")
 
-        return companies[:5] if companies else [query]
+            if clean_title and clean_title not in options:
+                options.append(clean_title)
+
+        return options[:5]
 
     except Exception:
-        return [query]
+        return [query.strip()]
 # --------------------
 # UI Inputs
 # --------------------
