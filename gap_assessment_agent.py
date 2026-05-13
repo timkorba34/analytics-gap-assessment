@@ -156,30 +156,47 @@ st.markdown(
         border-radius: 10px !important;
     }}
 
-    div[data-testid="stFileUploaderFile"] {{
-    background-color: rgba(15, 28, 60, 0.95) !important;
-    border: 1px solid rgba(120, 160, 255, 0.45) !important;
-    border-radius: 10px !important;
+   /* Uploaded file pill background */
+div[data-testid="stFileUploaderFile"] {{
+    background: #111a33 !important;
+    border: 1px solid rgba(120, 160, 255, 0.6) !important;
+    border-radius: 12px !important;
     }}
     
-    div[data-testid="stFileUploaderFile"] * {{
-        color: white !important;
+    /* Inner file pill containers */
+    div[data-testid="stFileUploaderFile"] > div {{
+        background: #111a33 !important;
+        color: #ffffff !important;
     }}
     
+    /* Filename text */
+    div[data-testid="stFileUploaderFile"] span,
+    div[data-testid="stFileUploaderFile"] p,
+    div[data-testid="stFileUploaderFile"] small {{
+        color: #ffffff !important;
+    }}
+    
+    /* File icon box */
     div[data-testid="stFileUploaderFile"] svg {{
-        color: white !important;
-        fill: white !important;
+        color: #ffffff !important;
+        fill: #ffffff !important;
     }}
-
-    .stFileUploader section {{
-        background-color: rgba(15, 23, 42, 0.60) !important;
-        border: 1px dashed rgba(255,255,255,0.35) !important;
-        border-radius: 14px !important;
+    
+    /* Remove button */
+    div[data-testid="stFileUploaderFile"] button {{
+        background: #0b1f44 !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(120, 160, 255, 0.6) !important;
     }}
 
     .stFileUploader * {{
         color: #ffffff !important;
     }}
+
+    if uploaded_files:
+    st.markdown("### Uploaded Files")
+    for file in uploaded_files:
+        st.markdown(f"- `{file.name}`")
 
     div.stButton > button {{
         background: linear-gradient(90deg, #2563eb, #7c3aed);
