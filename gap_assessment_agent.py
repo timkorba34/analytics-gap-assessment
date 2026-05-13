@@ -481,7 +481,7 @@ def add_table_from_records(doc, records):
         records = [records]
 
     if not isinstance(records, list) or len(records) == 0:
-        doc.add_paragraph("To be validated.")
+        doc.add_paragraph("No records were generated for this section.")
         return
 
     if isinstance(records[0], str):
@@ -541,7 +541,7 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("top_priorities_text", ""))
 
-    if data.get("S/4HANA Analytics Readiness Roadmap"):
+    if data.get("s4_analytics_roadmap"):
         add_heading(doc, "S/4HANA Analytics Readiness Roadmap", 2)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("s4_analytics_roadmap", []))
