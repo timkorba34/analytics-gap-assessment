@@ -9,6 +9,7 @@ import io
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
+from docx import Document
 from tavily import TavilyClient
 from graphviz import Digraph
 
@@ -475,7 +476,7 @@ assessment_type = st.selectbox(
 
 uploaded_files = st.file_uploader(
     "Upload Discovery Notes / Supporting Files",
-    type=["txt", "csv", "pdf", "xls", "xlsx"],
+    type=["txt", "csv", "pdf", "xls", "xlsx", "doc", "docx"],
     accept_multiple_files=True
 )
 
@@ -526,6 +527,13 @@ def read_uploaded_files(files):
                 for i, page in enumerate(reader.pages, start=1):
                     content += f"\n\n--- PAGE {i} ---\n"
                     content += page.extract_text() or ""
+
+            elif file_name.endswith(".docx"):
+
+                doc = Document(file)
+
+                for paragraph in doc.paragraphs:
+                    content += paragraph.text + "\n"
 
             else:
                 content += f"\nUnsupported file type: {file.type}"
