@@ -272,7 +272,42 @@ for key, value in defaults.items():
 st.markdown("<div class='glass'>", unsafe_allow_html=True)
 
 client_name = st.text_input("Client Name")
-industry = st.text_input("Industry")
+industry = st.selectbox(
+    "Industry",
+    [
+        "Select an industry",
+        "Aerospace & Defense",
+        "Agriculture",
+        "Automotive",
+        "Banking",
+        "Chemicals",
+        "Communications / Telecom",
+        "Consumer Products",
+        "Education",
+        "Energy & Utilities",
+        "Engineering & Construction",
+        "Financial Services",
+        "Government / Public Sector",
+        "Healthcare",
+        "High Tech",
+        "Hospitality",
+        "Industrial Manufacturing",
+        "Insurance",
+        "Life Sciences",
+        "Media & Entertainment",
+        "Mining",
+        "Oil & Gas",
+        "Pharmaceuticals",
+        "Professional Services",
+        "Real Estate",
+        "Retail",
+        "Technology",
+        "Transportation & Logistics",
+        "Travel",
+        "Wholesale Distribution",
+        "Other"
+    ]
+)
 
 assessment_type = st.selectbox(
     "Assessment Type",
