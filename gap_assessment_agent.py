@@ -42,14 +42,16 @@ st.markdown(
     .main-title {{
         font-size: 54px;
         font-weight: 700;
-        color: white;
+        color: #ffffff !important;
         margin-bottom: 10px;
+        line-height: 1.15;
     }}
 
     .sub-title {{
         font-size: 22px;
-        color: #c7d2fe;
-        margin-bottom: 40px;
+        color: #c7d2fe !important;
+        margin-bottom: 20px;
+        line-height: 1.5;
     }}
 
     .glass {{
@@ -57,21 +59,69 @@ st.markdown(
         backdrop-filter: blur(12px);
         padding: 30px;
         border-radius: 20px;
-        border: 1px solid rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
         box-shadow: 0 0 30px rgba(0,0,0,0.4);
+        margin-bottom: 25px;
     }}
 
     .feature-card {{
-        background: rgba(20, 30, 60, 0.65);
-        padding: 20px;
+        background: rgba(20, 30, 60, 0.72);
+        padding: 24px;
         border-radius: 18px;
-        border: 1px solid rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
         margin-bottom: 20px;
+        min-height: 160px;
+    }}
+
+    .feature-card h3 {{
+        color: #ffffff !important;
+        font-size: 26px;
+        margin-bottom: 15px;
+    }}
+
+    .feature-card p {{
+        color: #e5e7eb !important;
+        font-size: 17px;
+        line-height: 1.5;
+    }}
+
+    label, .stMarkdown p, .stMarkdown span {{
+        color: #ffffff !important;
+    }}
+
+    label[data-testid="stWidgetLabel"] {{
+        color: #ffffff !important;
+        font-weight: 600 !important;
+    }}
+
+    .stTextInput input,
+    .stTextArea textarea {{
+        background-color: rgba(15, 23, 42, 0.85) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255,255,255,0.25) !important;
+        border-radius: 10px !important;
+    }}
+
+    .stSelectbox div[data-baseweb="select"] > div {{
+        background-color: rgba(15, 23, 42, 0.85) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255,255,255,0.25) !important;
+        border-radius: 10px !important;
+    }}
+
+    .stFileUploader section {{
+        background-color: rgba(15, 23, 42, 0.60) !important;
+        border: 1px dashed rgba(255,255,255,0.35) !important;
+        border-radius: 14px !important;
+    }}
+
+    .stFileUploader * {{
+        color: #ffffff !important;
     }}
 
     div.stButton > button {{
         background: linear-gradient(90deg, #2563eb, #7c3aed);
-        color: white;
+        color: white !important;
         border-radius: 14px;
         height: 55px;
         font-size: 18px;
@@ -82,7 +132,7 @@ st.markdown(
 
     div.stButton > button:hover {{
         background: linear-gradient(90deg, #1d4ed8, #6d28d9);
-        color: white;
+        color: white !important;
     }}
 
     </style>
@@ -90,18 +140,18 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("""
-<div class='glass'>
-    <div class='main-title'>
-        Analytics Modernization Assessment Copilot
+st.markdown(
+    """
+    <div class="glass">
+        <div class="main-title">Analytics Modernization Assessment Copilot</div>
+        <div class="sub-title">
+            AI-powered executive analytics assessments, modernization roadmaps,
+            and S/4HANA readiness insights.
+        </div>
     </div>
-
-    <div class='sub-title'>
-        AI-powered executive analytics assessments, modernization roadmaps,
-        and S/4HANA readiness insights.
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 
 col1, col2, col3 = st.columns(3)
 
