@@ -181,6 +181,37 @@ st.markdown(
         color: white !important;
     }}
 
+    .stFileUploader label div {{
+    color: white !important;
+    }}
+
+    .stFileUploader section {{
+        background-color: rgba(10, 20, 45, 0.85) !important;
+        border: 1px dashed rgba(255,255,255,0.3) !important;
+        border-radius: 12px;
+    }}
+
+    .stFileUploader section:hover {{
+        border: 1px solid #4da6ff !important;
+    }}
+
+    .stFileUploader div[data-testid="stFileUploaderDropzone"] {{
+        background-color: rgba(10,20,45,0.9) !important;
+        color: white !important;
+    }}
+
+    .stFileUploader button {{
+        background-color: #0b1f44 !important;
+        color: white !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+        border-radius: 8px !important;
+    }}
+
+    .stFileUploader button:hover {{
+        border: 1px solid #4da6ff !important;
+        color: #4da6ff !important;
+    }}
+
     </style>
     """,
     unsafe_allow_html=True
