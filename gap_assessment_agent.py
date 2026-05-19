@@ -693,6 +693,14 @@ Assessment Type: {assessment_type}
 Adjust recommendations, impacted reports, dependencies,
 table mappings, architecture, and roadmap based on these selections.
 
+Transformation Context:
+Current Source System: SAP ECC
+Target Source System: SAP S/4HANA
+Migration Type: Brownfield
+
+The assessment must explicitly reference this transformation path throughout the report. 
+Do not generically say “S/4HANA migration.” Explain how the selected migration type changes
+
 PUBLIC COMPANY RESEARCH
 {company_research}
 
@@ -839,6 +847,8 @@ def generate_section_json(
     prompt = f"""
 {assessment_context}
 
+
+
 {COMPANY_RESEARCH_REQUIREMENTS}
 
 {TABLE_SUMMARY_REQUIREMENTS}
@@ -854,6 +864,43 @@ SECTION INSTRUCTIONS:
 REQUIRED JSON KEYS:
 {required_keys}
 
+If the required keys contain "transformation_context", generate it as an array.
+
+Format:
+
+"transformation_context": [
+  {{
+    "area": "ERP",
+    "current_state": "SAP ECC",
+    "target_state": "SAP S/4HANA",
+    "migration_impact": "Brownfield migration retains existing configurations and customizations, requiring validation of existing reporting dependencies and custom code."
+  }},
+  {{
+    "area": "Finance",
+    "current_state": "BKPF/BSEG/FAGLFLEXA",
+    "target_state": "ACDOCA",
+    "migration_impact": "Universal Journal consolidation impacts financial reporting logic and report structures."
+  }},
+  {{
+    "area": "Inventory",
+    "current_state": "MKPF/MSEG",
+    "target_state": "MATDOC",
+    "migration_impact": "Inventory reporting logic and historical movement analysis require validation."
+  }},
+  {{
+    "area": "Sales",
+    "current_state": "VBAK/VBAP/VBRK/VBRP",
+    "target_state": "S/4HANA CDS Views",
+    "migration_impact": "Order-to-cash reporting dependencies and KPIs require revalidation."
+  }},
+  {{
+    "area": "Reporting",
+    "current_state": "BusinessObjects / Excel / BW",
+    "target_state": "S/4HANA Embedded Analytics / Datasphere",
+    "migration_impact": "Reports should be categorized into retain, remediate, rebuild, or retire."
+  }}
+]
+
 Return only these keys in one valid JSON object.
 
 Requirements:
@@ -865,6 +912,10 @@ Requirements:
 - Explain business risks and executive implications
 - Explain S/4HANA impacts where relevant
 - Interpret findings like an executive consultant
+
+
+
+
 """
     
     messages = [
