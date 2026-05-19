@@ -521,13 +521,10 @@ migration_type = st.selectbox(
 target_platform = st.multiselect(
     "Target Platform",
     [
-        "SAP S4HANA",
-        "Oracle EBS",
+        "SAP S/4HANA",
         "Oracle Fusion",
-        "JD Edwards",
+        "SAP ECC (No Migration)",
         "Microsoft Dynamics",
-        "Infor",
-        "NetSuite",
         "Multiple ERP Systems",
         "Other"
     ]
