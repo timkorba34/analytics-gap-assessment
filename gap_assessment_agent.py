@@ -694,9 +694,9 @@ Adjust recommendations, impacted reports, dependencies,
 table mappings, architecture, and roadmap based on these selections.
 
 Transformation Context:
-Current Source System: SAP ECC
-Target Source System: SAP S/4HANA
-Migration Type: Brownfield
+Current Source System: {source_system}
+Target Source System: {target_platform}
+Migration Type: {migration_type}
 
 The assessment must explicitly reference this transformation path throughout the report. 
 Do not generically say “S/4HANA migration.” Explain how the selected migration type changes
@@ -1081,97 +1081,107 @@ def build_docx(data, client_name, assessment_type):
     # --------------------
     if assessment_type == "Analytics Gap Assessment":
 
-        add_heading(doc, "3. Current Analytics Ecosystem", 1)
+        add_heading(doc, "3. S/4HANA Transformation Context", 1)
+        doc.add_paragraph("")
+        add_table_from_records(
+        doc,
+        data.get("transformation_context", []))
+        doc.add_paragraph("")
+        add_paragraph(
+        doc,
+        data.get("transformation_context_summary", ""))
+
+        add_heading(doc, "4. Current Analytics Ecosystem", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("current_system_inventory", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("current_data_flow_summary", ""))
 
-        add_heading(doc, "4. Reporting Dependency Map", 1)
+        add_heading(doc, "5. Reporting Dependency Map", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("reporting_dependency_map", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("architecture_risk_summary", ""))
 
-        add_heading(doc, "5. Analytics Complexity and Operational Risk", 1)
+        add_heading(doc, "6. Analytics Complexity and Operational Risk", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("analytics_complexity_snapshot", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("analytics_complexity_text", ""))
 
-        add_heading(doc, "6. Gap Severity Heatmap", 1)
+        add_heading(doc, "7. Gap Severity Heatmap", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("gap_severity_heatmap", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("gap_observations_text", ""))
 
-        add_heading(doc, "7. Reporting Inventory Summary", 1)
+        add_heading(doc, "8. Reporting Inventory Summary", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("reporting_landscape_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("reporting_inventory_text", ""))
 
-        add_heading(doc, "8. S/4HANA Reporting Impact", 1)
+        add_heading(doc, "9. S/4HANA Reporting Impact", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("s4_impact_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("s4_reporting_impact_text", ""))
 
-        add_heading(doc, "9. Gap Analysis Summary", 1)
+        add_heading(doc, "10. Gap Analysis Summary", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("gap_analysis_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("key_gaps_text", ""))
 
-        add_heading(doc, "10. Opportunity Areas", 1)
+        add_heading(doc, "11. Opportunity Areas", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("improvement_opportunity_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("opportunity_areas_text", ""))
 
-        add_heading(doc, "11. Business Value", 1)
+        add_heading(doc, "12. Business Value", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("potential_impact_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("business_value_text", ""))
 
-        add_heading(doc, "12. Gap Remediation Roadmap", 1)
+        add_heading(doc, "13. Gap Remediation Roadmap", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("s4_analytics_roadmap", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("s4_analytics_roadmap_text", ""))
 
-        add_heading(doc, "13. Recommended Remediation Actions and Execution Plan", 1)
+        add_heading(doc, "14. Recommended Remediation Actions and Execution Plan", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("recommended_focus_areas", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("recommended_next_steps_text", ""))
 
-        add_heading(doc, "13. Appendix A — Reporting Inventory", 1)
+        add_heading(doc, "15. Appendix A — Reporting Inventory", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_reporting_inventory", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("appendix_reporting_inventory_text", ""))
 
-        add_heading(doc, "14. Appendix B — S/4 Reporting Impact Analysis", 1)
+        add_heading(doc, "16. Appendix B — S/4 Reporting Impact Analysis", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_s4_impact_analysis", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("appendix_s4_impact_analysis_text", ""))
 
-        add_heading(doc, "15. Appendix C — Reporting Overlap Analysis", 1)
+        add_heading(doc, "17. Appendix C — Reporting Overlap Analysis", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_reporting_overlap_analysis", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("appendix_reporting_overlap_analysis_text", ""))
 
-        add_heading(doc, "16. Appendix D — Data Source Mapping", 1)
+        add_heading(doc, "18. Appendix D — Data Source Mapping", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_data_source_mapping", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("appendix_data_source_mapping_text", ""))
 
-        add_heading(doc, "17. Appendix E — Critical Reports", 1)
+        add_heading(doc, "19. Appendix E — Critical Reports", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_critical_reports", []))
         doc.add_paragraph("")
@@ -1181,7 +1191,7 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("critical_report_summary", ""))
 
-        add_heading(doc, "18. Appendix F — Analytics Stakeholder Map", 1)
+        add_heading(doc, "20. Appendix F — Analytics Stakeholder Map", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("analytics_responsibility_model", []))
         add_table_from_records(doc, data.get("stakeholder_interview_summary", []))
@@ -1479,6 +1489,8 @@ Phase, Timeline, Gap Addressed, Remediation Actions, Expected Outcome, Business 
             "current_architecture_diagram",
             "s4_future_state_diagram",
             "reporting_dependency_diagram",
+            "transformation_context",
+            "transformation_context_summary",
             "current_system_inventory",
             "current_data_flow_summary",
             "reporting_dependency_map",
@@ -1493,6 +1505,24 @@ Phase, Timeline, Gap Addressed, Remediation Actions, Expected Outcome, Business 
             "recommended_next_steps_text"
         ],
         "instructions": """
+
+transformation_context must be a table array.
+
+Columns:
+Area,
+Current State,
+Target State,
+Migration Impact
+
+transformation_context_summary must be a 1-2 paragraph executive narrative explaining:
+
+- current source-to-target migration path
+- Brownfield/Greenfield impact
+- report breakage risks
+- source table impacts
+- business process impacts
+- remediation considerations
+
 analytics_environment_snapshot must be a table array.
 analytics_complexity_snapshot must be a table array.
 gap_severity_heatmap must be a table array.
