@@ -492,12 +492,56 @@ industry = st.selectbox(
     ]
 )
 
+source_system = st.selectbox(
+    "Source System",
+    [
+        "SAP ECC",
+        "SAP S/4HANA",
+        "Oracle EBS",
+        "Oracle Fusion",
+        "JD Edwards",
+        "Microsoft Dynamics",
+        "Infor",
+        "NetSuite",
+        "Multiple ERP Systems",
+        "Other"
+    ]
+)
+
+migration_type = st.selectbox(
+    "Migration Type",
+    [
+        "Brownfield",
+        "Greenfield",
+        "Smartfield / Selective Data Transition",
+        "Not Yet Defined"
+    ]
+)
+
+target_platform = st.multiselect(
+    "Target Analytics Platform",
+    [
+        "SAP Datasphere",
+        "SAP BDC",
+        "SAP BW/4HANA",
+        "Microsoft Fabric",
+        "Snowflake",
+        "Databricks",
+        "AWS",
+        "Power BI",
+        "SAC"
+    ]
+)
+
 assessment_type = st.selectbox(
     "Assessment Type",
     [
         "Analytics Gap Assessment",
-        "Analytics Modernization Roadmap",
-        "AI Opportunity Assessment"
+        "Analytics Modernization Assessment",
+        "S/4HANA Impact Assessment",
+        "AI Readiness Assessment",
+        "Data Governance Assessment",
+        "Reporting Rationalization Assessment"
     ]
 )
 
@@ -644,6 +688,13 @@ CLIENT INFORMATION
 Client Name: {client_name}
 Industry: {industry}
 Assessment Type: {assessment_type}
+Source System: {source_system}
+Migration Type: {migration_type}
+Target Platform: {target_platform}
+Assessment Type: {assessment_type}
+
+Adjust recommendations, impacted reports, dependencies,
+table mappings, architecture, and roadmap based on these selections.
 
 PUBLIC COMPANY RESEARCH
 {company_research}
