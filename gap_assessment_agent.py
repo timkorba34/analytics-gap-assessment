@@ -1528,6 +1528,8 @@ transformation_context_summary must be a 1-2 paragraph executive narrative expla
 - business process impacts
 - remediation considerations
 
+gap_observations_text must be a 1-2 paragraph executive narrative explaining the major observations from the gap severity heatmap, including which gaps create the highest business risk, why leadership should care, and what should be remediated first.
+
 analytics_environment_snapshot must be a table array.
 analytics_complexity_snapshot must be a table array.
 gap_severity_heatmap must be a table array.
@@ -1574,7 +1576,18 @@ Suggested Owner,
 Execution Horizon,
 Potential Follow-On Deliverable
 
-All *_text and *_summary keys must be 1-2 paragraph narratives.
+You must generate every required key exactly as listed. 
+Do not omit any key.
+
+The following narrative keys must be populated with 1-2 paragraphs:
+- analytics_environment_summary
+- current_data_flow_summary
+- architecture_risk_summary
+- analytics_complexity_text
+- gap_observations_text
+- key_gaps_text
+- recommended_next_steps_text
+- transformation_context_summary
 
 current_system_inventory must be a table array.
 
