@@ -1403,11 +1403,13 @@ company_research = ""
 # --------------------
 def validate_output(data, assessment_type):
     if not data:
+        st.error("Validation failed: data object is empty.")
         return False
 
     framework = ASSESSMENT_FRAMEWORKS.get(assessment_type)
 
     if not framework:
+        st.error(f"Validation failed: no framework found for {assessment_type}")
         return False
 
     required_keys = []
@@ -1419,28 +1421,34 @@ def validate_output(data, assessment_type):
         value = data.get(key)
 
         if value is None:
+            st.error(f"Missing key: {key}")
             return False
 
         if isinstance(value, str):
             if not value.strip():
+                st.error(f"Empty string key: {key}")
                 return False
             if "to be validated" in value.lower():
+                st.error(f"Placeholder found in key: {key}")
                 return False
 
         if isinstance(value, list):
             if len(value) == 0:
+                st.error(f"Empty list key: {key}")
                 return False
             if "to be validated" in str(value).lower():
+                st.error(f"Placeholder found in list key: {key}")
                 return False
 
         if isinstance(value, dict):
             if len(value) == 0:
+                st.error(f"Empty dict key: {key}")
                 return False
             if "to be validated" in str(value).lower():
+                st.error(f"Placeholder found in dict key: {key}")
                 return False
 
     return True
-
 # --------------------
 # Assessment Frameworks
 # --------------------
