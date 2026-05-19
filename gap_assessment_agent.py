@@ -687,7 +687,7 @@ Industry: {industry}
 Assessment Type: {assessment_type}
 Source System: {source_system}
 Migration Type: {migration_type}
-Target Platform: {target_platform}
+Target Source System: {target_source_system}
 Assessment Type: {assessment_type}
 
 Adjust recommendations, impacted reports, dependencies,
