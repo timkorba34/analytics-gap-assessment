@@ -518,8 +518,8 @@ migration_type = st.selectbox(
     ]
 )
 
-target_platform = st.multiselect(
-    "Target Platform",
+target_source_system = st.selectbox(
+    "Target Source System",
     [
         "SAP S/4HANA",
         "Oracle Fusion",
@@ -695,7 +695,7 @@ table mappings, architecture, and roadmap based on these selections.
 
 Transformation Context:
 Current Source System: {source_system}
-Target Source System: {target_platform}
+Target Source System: {target_source_system}
 Migration Type: {migration_type}
 
 The assessment must explicitly reference this transformation path throughout the report. 
@@ -1486,9 +1486,6 @@ Phase, Timeline, Gap Addressed, Remediation Actions, Expected Outcome, Business 
         "keys": [
             "analytics_environment_snapshot",
             "analytics_environment_summary",
-            "current_architecture_diagram",
-            "s4_future_state_diagram",
-            "reporting_dependency_diagram",
             "transformation_context",
             "transformation_context_summary",
             "current_system_inventory",
