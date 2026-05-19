@@ -519,18 +519,17 @@ migration_type = st.selectbox(
 )
 
 target_platform = st.multiselect(
-    "Target Analytics Platform",
+    "Target Platform",
     [
-        "SAP S/4HANA",
-        "SAP Datasphere",
-        "SAP BDC",
-        "SAP BW/4HANA",
-        "Microsoft Fabric",
-        "Snowflake",
-        "Databricks",
-        "AWS",
-        "Power BI",
-        "SAC"
+        "SAP ECC",
+        "Oracle EBS",
+        "Oracle Fusion",
+        "JD Edwards",
+        "Microsoft Dynamics",
+        "Infor",
+        "NetSuite",
+        "Multiple ERP Systems",
+        "Other"
     ]
 )
 
