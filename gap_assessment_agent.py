@@ -521,6 +521,7 @@ migration_type = st.selectbox(
 target_platform = st.multiselect(
     "Target Analytics Platform",
     [
+        "SAP S/4HANA",
         "SAP Datasphere",
         "SAP BDC",
         "SAP BW/4HANA",
