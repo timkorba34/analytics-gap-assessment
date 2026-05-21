@@ -1462,12 +1462,13 @@ Explain why the assessment was performed, the client business context, current s
 """,
 
     "cross_section_rules": [
-    "Do not restate previously identified gaps",
-    "Reference earlier findings instead",
-    "Company-specific examples must appear in every section",
-    "Recommendations must explain capability before technology",
-    "Avoid repeating same business risks more than once"
-]
+        "Do not restate previously identified gaps",
+        "Reference earlier findings instead",
+        "Company-specific examples must appear in every section",
+        "Recommendations must explain capability before technology",
+        "Avoid repeating same business risks more than once"
+    ]
+}
 
     "Executive Summary": """
 executive_summary_text:
