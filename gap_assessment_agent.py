@@ -795,6 +795,37 @@ Do not create nested dictionaries inside table cells.
 """
 
 # --------------------
+# Recommend Embedded Reports
+# --------------------
+
+def recommend_embedded_reports(report_inventory):
+
+    recommendations=[]
+
+    for report in report_inventory:
+
+        prompt=f"""
+        Current Report:
+        {report}
+
+        Search SAP standard embedded analytics,
+        SAP Fiori analytical applications,
+        CDS analytical queries,
+        and recommend:
+
+        - Best replacement
+        - Confidence score
+        - Retain/Replace/Rebuild/Retire
+        - Reason
+        """
+
+        result = client.chat.completions.create(...)
+
+        recommendations.append(result)
+
+    return recommendations
+
+# --------------------
 # Assessment Context
 # --------------------
 ASSESSMENT_CONTEXT = {
@@ -1178,67 +1209,73 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("reporting_inventory_text", ""))
 
-        add_heading(doc, "9. S/4HANA Reporting Impact", 1)
+        add_heading(doc, "9. ABAP Report Modernization Assessment", 1)
+        doc.add_paragraph("")
+        add_table_from_records(doc, data.get("abap_report_replacement_matrix", []))
+        doc.add_paragraph("")
+        add_paragraph(doc, data.get("abap_report_replacement_text", ""))
+
+        add_heading(doc, "10. S/4HANA Reporting Impact", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("s4_impact_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("s4_reporting_impact_text", ""))
 
-        add_heading(doc, "10. Gap Analysis Summary", 1)
+        add_heading(doc, "11. Gap Analysis Summary", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("gap_analysis_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("key_gaps_text", ""))
 
-        add_heading(doc, "11. Opportunity Areas", 1)
+        add_heading(doc, "12. Opportunity Areas", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("improvement_opportunity_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("opportunity_areas_text", ""))
 
-        add_heading(doc, "12. Business Value", 1)
+        add_heading(doc, "13. Business Value", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("potential_impact_summary", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("business_value_text", ""))
 
-        add_heading(doc, "13. Gap Remediation Roadmap", 1)
+        add_heading(doc, "14. Gap Remediation Roadmap", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("s4_analytics_roadmap", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("s4_analytics_roadmap_text", ""))
 
-        add_heading(doc, "14. Recommended Remediation Actions and Execution Plan", 1)
+        add_heading(doc, "15. Recommended Remediation Actions and Execution Plan", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("recommended_focus_areas", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("recommended_next_steps_text", ""))
 
-        add_heading(doc, "15. Appendix A — Reporting Inventory", 1)
+        add_heading(doc, "16. Appendix A — Reporting Inventory", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_reporting_inventory", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("appendix_reporting_inventory_text", ""))
 
-        add_heading(doc, "16. Appendix B — S/4 Reporting Impact Analysis", 1)
+        add_heading(doc, "17. Appendix B — S/4 Reporting Impact Analysis", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_s4_impact_analysis", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("appendix_s4_impact_analysis_text", ""))
 
-        add_heading(doc, "17. Appendix C — Reporting Overlap Analysis", 1)
+        add_heading(doc, "18. Appendix C — Reporting Overlap Analysis", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_reporting_overlap_analysis", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("appendix_reporting_overlap_analysis_text", ""))
 
-        add_heading(doc, "18. Appendix D — Data Source Mapping", 1)
+        add_heading(doc, "19. Appendix D — Data Source Mapping", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_data_source_mapping", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("appendix_data_source_mapping_text", ""))
 
-        add_heading(doc, "19. Appendix E — Critical Reports", 1)
+        add_heading(doc, "20. Appendix E — Critical Reports", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("appendix_critical_reports", []))
         doc.add_paragraph("")
@@ -1248,7 +1285,7 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("critical_report_summary", ""))
 
-        add_heading(doc, "20. Appendix F — Analytics Stakeholder Map", 1)
+        add_heading(doc, "21. Appendix F — Analytics Stakeholder Map", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("analytics_responsibility_model", []))
         add_table_from_records(doc, data.get("stakeholder_interview_summary", []))
@@ -1587,6 +1624,16 @@ reporting_inventory_text:
 Must be 1-2 executive paragraphs explaining the current reporting landscape, redundancy, manual effort, risk of report breakage, and need for inventory rationalization.
 """,
 
+    "ABAP Report Modernization Assessment": """
+abap_report_replacement_matrix must be a table array.
+
+Columns:
+ABAP Program / T-Code, Report Name, Business Area, Known Source Tables, Likely SAP Fiori App, Likely Embedded Analytics Query, Recommended Disposition, Confidence Score, Rationale, Deep-Dive Required
+
+abap_report_replacement_text:
+Must be 1-2 executive paragraphs explaining which custom ABAP reports should be retained, remediated, replaced, rebuilt, retired, or moved to modern analytics.
+""",
+
     "S/4HANA Reporting Impact": """
 s4_impact_summary must be a table array.
 Columns: Impact Area, Current State, Target State, Risk, Reporting Impact, Remediation Action
@@ -1756,6 +1803,11 @@ ASSESSMENT_FRAMEWORKS = {
                 "section_name": "Reporting Inventory Summary",
                 "keys": ["reporting_landscape_summary", "reporting_inventory_text"],
                 "instructions": SECTION_INSTRUCTIONS["Reporting Inventory Summary"]
+            },
+            {
+            "section_name": "ABAP Report Modernization Assessment",
+            "keys": {"abap_report_replacement_matrix","abap_report_replacement_text"],
+            "instructions": SECTION_INSTRUCTIONS["ABAP Report Modernization Assessment"]
             },
             {
                 "section_name": "S/4HANA Reporting Impact",
