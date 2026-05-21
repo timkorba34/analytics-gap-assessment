@@ -1461,6 +1461,14 @@ Must be 2-3 substantial executive paragraphs.
 Explain why the assessment was performed, the client business context, current source system, target source system, migration type, and why analytics/reporting risk matters.
 """,
 
+    "cross_section_rules": [
+    "Do not restate previously identified gaps",
+    "Reference earlier findings instead",
+    "Company-specific examples must appear in every section",
+    "Recommendations must explain capability before technology",
+    "Avoid repeating same business risks more than once"
+]
+
     "Executive Summary": """
 executive_summary_text:
 Must be 3-4 substantial executive paragraphs.
