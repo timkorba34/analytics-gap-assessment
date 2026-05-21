@@ -1449,34 +1449,115 @@ def validate_output(data, assessment_type):
                 return False
 
     return True
-# --------------------
-# Assessment Frameworks
-# --------------------
-ASSESSMENT_FRAMEWORKS = {
-    "Analytics Gap Assessment": {
-        "title": "Analytics Gap Assessment",
-        "sections": [
-    {
-        "section_name": "Executive Overview",
-        "keys": [
-            "engagement_overview_text",
-            "executive_summary_text",
-            "top_priorities",
-            "top_priorities_text",
-            "s4_analytics_roadmap",
-            "s4_analytics_roadmap_text"
-        ],
-        "instructions": """
-top_priorities must be a table array with exactly 5 rows:
-Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
 
+# --------------------
+# Section Instructions by Document Header
+# --------------------
+
+SECTION_INSTRUCTIONS = {
+    "Engagement Overview": """
+engagement_overview_text:
+Must be 2-3 substantial executive paragraphs.
+Explain why the assessment was performed, the client business context, current source system, target source system, migration type, and why analytics/reporting risk matters.
+""",
+
+    "Executive Summary": """
+executive_summary_text:
+Must be 3-4 substantial executive paragraphs.
+Summarize the highest-priority findings, business risk, reporting risk, governance gaps, S/4HANA impact, and urgency for remediation.
+
+top_priorities:
+Must be a table array with exactly 5 rows.
+Columns: Priority, Why It Matters, Business Impact, Time Horizon, Executive Owner
+
+top_priorities_text:
+Must be 2 executive paragraphs interpreting the priority table.
+""",
+
+    "S/4HANA Transformation Context": """
+transformation_context must be a table array.
+Columns: Area, Current State, Target State, Migration Impact
+
+transformation_context_summary:
+Must be 1-2 executive paragraphs explaining source-to-target migration path, Brownfield/Greenfield/Smartfield impact, report breakage risk, source table impacts, business process impacts, and remediation considerations.
+""",
+
+    "Current Analytics Ecosystem": """
+current_system_inventory must be a table array.
+Columns: Business Area, Current Source System, Reporting Tool, Data Owner, Integration Method, Refresh Frequency, Key Dependency, Current Pain Point, S/4HANA Risk
+
+current_data_flow_summary:
+Must be 1-2 executive paragraphs explaining data flow, fragmentation, manual effort, reporting bottlenecks, operational risks, and S/4HANA disruption concerns.
+""",
+
+    "Reporting Dependency Map": """
+reporting_dependency_map must be a table array.
+Columns: Report / Dashboard, Primary Source System, Dependent Systems, Business Function, Criticality, Current Risk, S/4HANA Impact
+
+architecture_risk_summary:
+Must be 1-2 executive paragraphs explaining architecture weaknesses, integration concerns, reporting dependencies, scalability limitations, and business continuity risks.
+""",
+
+    "Analytics Complexity and Operational Risk": """
+analytics_complexity_snapshot must be a table array.
+Columns: Business Area, Data Sources, Reporting Tools, Complexity Level, Key Challenges, Operational Risk, Remediation Priority
+
+analytics_complexity_text:
+Must be 1-2 executive paragraphs explaining why the analytics environment is complex, where operational risk appears, and why leadership should address it before or during migration.
+""",
+
+    "Gap Severity Heatmap": """
+gap_severity_heatmap must be a table array.
+Columns: Gap Area, Severity Level, Impact, Business Risk, Recommended Priority
+
+gap_observations_text:
+Must be 1-2 executive paragraphs explaining the highest-risk gaps, why leadership should care, and what should be remediated first.
+""",
+
+    "Reporting Inventory Summary": """
+reporting_landscape_summary must be a table array.
+Columns: Report Type, Frequency, Users, Issues, S/4HANA Risk, Remediation Need
+
+reporting_inventory_text:
+Must be 1-2 executive paragraphs explaining the current reporting landscape, redundancy, manual effort, risk of report breakage, and need for inventory rationalization.
+""",
+
+    "S/4HANA Reporting Impact": """
+s4_impact_summary must be a table array.
+Columns: Impact Area, Current State, Target State, Risk, Reporting Impact, Remediation Action
+
+s4_reporting_impact_text:
+Must be 1-2 executive paragraphs explaining how the selected migration type affects reporting, table structures, KPIs, historical reporting, and business continuity.
+""",
+
+    "Gap Analysis Summary": """
+gap_analysis_summary must be a table array.
+Columns: Gap Area, Current State, Identified Risk, Recommended Action, Business Impact
+
+key_gaps_text:
+Must be 1-2 executive paragraphs summarizing the most important gaps and why they matter operationally, financially, and strategically.
+""",
+
+    "Opportunity Areas": """
+improvement_opportunity_summary must be a table array.
+Columns: Opportunity, Description, Business Value, Priority, Recommended Next Step
+
+opportunity_areas_text:
+Must be 1-2 executive paragraphs explaining how the client can use the transformation to modernize reporting, governance, integration, and analytics capabilities.
+""",
+
+    "Business Value": """
+potential_impact_summary must be a table array.
+Columns: Impact Area, Description, Business Value, Financial / Operational Impact, Priority
+
+business_value_text:
+Must be 1-2 executive paragraphs explaining the business value of remediation and modernization.
+Do not fabricate financial metrics unless provided.
+""",
+
+    "Gap Remediation Roadmap": """
 s4_analytics_roadmap must be a post-assessment gap remediation roadmap.
-
 Do not include an Assessment phase. The assessment has already been completed.
-
-The roadmap must explain how the client should remediate the identified analytics, reporting, governance, data ownership, KPI, historical reporting, integration, and S/4HANA readiness gaps.
-
-Each phase must be action-oriented and tied directly to fixing gaps identified in this report.
 
 Use phases such as:
 1. Stabilize Critical Reporting Risk
@@ -1487,323 +1568,195 @@ Use phases such as:
 
 Columns:
 Phase, Timeline, Gap Addressed, Remediation Actions, Expected Outcome, Business Value, Dependencies
-"""
-    },
-    {
-        "section_name": "Current State and Gap Analysis",
-        "keys": [
-            "analytics_environment_snapshot",
-            "analytics_environment_summary",
-            "transformation_context",
-            "transformation_context_summary",
-            "current_system_inventory",
-            "current_data_flow_summary",
-            "reporting_dependency_map",
-            "architecture_risk_summary",
-            "analytics_complexity_text",
-            "analytics_complexity_snapshot",
-            "gap_severity_heatmap",
-            "gap_observations_text",
-            "gap_analysis_summary",
-            "key_gaps_text",
-            "recommended_focus_areas",
-            "recommended_next_steps_text"
-        ],
-        "instructions": """
 
-transformation_context must be a table array.
+s4_analytics_roadmap_text:
+Must be 1-2 executive paragraphs explaining how the roadmap moves the client from assessment into execution.
+""",
+
+    "Recommended Remediation Actions and Execution Plan": """
+recommended_focus_areas must be a highly actionable post-assessment execution plan tied directly to identified gaps.
 
 Columns:
-Area,
-Current State,
-Target State,
-Migration Impact
+Recommendation Category, Gap Addressed, Recommended Action, Business Outcome, Priority, Suggested Owner, Execution Horizon, Potential Follow-On Deliverable
 
-transformation_context_summary must be a 1-2 paragraph executive narrative explaining:
+recommended_next_steps_text:
+Must be 1-2 executive paragraphs explaining immediate actions, urgent risks, governance decisions, workstreams, funding alignment, and follow-on implementation activities.
+""",
 
-- current source-to-target migration path
-- Brownfield/Greenfield impact
-- report breakage risks
-- source table impacts
-- business process impacts
-- remediation considerations
-
-gap_observations_text must be a 1-2 paragraph executive narrative explaining the major observations from the gap severity heatmap, including which gaps create the highest business risk, why leadership should care, and what should be remediated first.
-
-analytics_environment_snapshot must be a table array.
-analytics_complexity_snapshot must be a table array.
-gap_severity_heatmap must be a table array.
-gap_analysis_summary must be a table array.
-
-recommended_focus_areas must be a highly actionable post-assessment execution plan tied directly to the identified gaps in the report.
-
-Do not generate generic consulting recommendations.
-
-Every recommendation must:
-- align to a specific identified gap
-- explain the operational problem being solved
-- identify the required business or technical action
-- identify likely ownership
-- explain why the action matters
-- support movement toward execution readiness
-
-Recommendations should reflect realistic follow-on activities that occur immediately after an assessment.
-
-Include practical actions such as:
-- validating critical reporting dependencies
-- prioritizing report remediation
-- defining KPI ownership
-- establishing governance structures
-- identifying high-risk S/4HANA reporting impacts
-- aligning business stakeholders
-- creating remediation workstreams
-- defining implementation sequencing
-- preparing roadmap funding
-- creating implementation-ready scope
-- defining follow-on SOW activities
-- identifying quick wins
-- preparing architecture decisions
-- validating integration requirements
-- creating a phased modernization strategy
-
-Columns:
-Recommendation Category,
-Gap Addressed,
-Recommended Action,
-Business Outcome,
-Priority,
-Suggested Owner,
-Execution Horizon,
-Potential Follow-On Deliverable
-
-You must generate every required key exactly as listed. 
-Do not omit any key.
-
-The following narrative keys must be populated with 1-2 paragraphs:
-- analytics_environment_summary
-- current_data_flow_summary
-- architecture_risk_summary
-- analytics_complexity_text
-- gap_observations_text
-- key_gaps_text
-- recommended_next_steps_text
-- transformation_context_summary
-
-current_system_inventory must be a table array.
-
-Columns:
-Business Area,
-Current Source System,
-Reporting Tool,
-Data Owner,
-Integration Method,
-Refresh Frequency,
-Key Dependency,
-Current Pain Point,
-S/4HANA Risk
-
-reporting_dependency_map must be a table array.
-
-Columns:
-Report / Dashboard,
-Primary Source System,
-Dependent Systems,
-Business Function,
-Criticality,
-Current Risk,
-S/4HANA Impact
-
-current_data_flow_summary must be a 1-2 paragraph executive narrative explaining:
-- how data flows today
-- where fragmentation exists
-- where manual effort exists
-- where reporting bottlenecks occur
-- operational risks
-- S/4HANA disruption concerns
-
-architecture_risk_summary must be a 1-2 paragraph executive narrative explaining:
-- architecture weaknesses
-- integration concerns
-- reporting dependencies
-- scalability limitations
-- business continuity risks
-
-recommended_next_steps_text must read like an executive transition plan from assessment into execution.
-
-The narrative should explain:
-- what leadership should do immediately
-- what risks require urgent remediation
-- where governance decisions are required
-- which workstreams should begin first
-- where implementation funding and alignment are needed
-- what follow-on implementation activities should occur
-- how the organization should move from assessment into execution
-
-The tone should feel practical, operational, and implementation-oriented — not theoretical.
-"""
-    },
-    {
-        "section_name": "Reporting, S/4 Impact, and Business Value",
-        "keys": [
-            "current_landscape_text",
-            "current_architecture_summary",
-            "reporting_inventory_text",
-            "reporting_landscape_summary",
-            "s4_reporting_impact_text",
-            "s4_impact_summary",
-            "opportunity_areas_text",
-            "improvement_opportunity_summary",
-            "business_value_text",
-            "potential_impact_summary"
-        ],
-        "instructions": """
-current_architecture_summary must be a table array.
-reporting_landscape_summary must be a table array.
-s4_impact_summary must be a table array.
-improvement_opportunity_summary must be a table array.
-potential_impact_summary must be a table array.
-
-All *_text keys must be 1-2 paragraph narratives.
-"""
-    },
-    {
-        "section_name": "Appendices",
-        "keys": [
-            "appendix_reporting_inventory",
-            "appendix_reporting_inventory_text",
-            "appendix_s4_impact_analysis",
-            "appendix_s4_impact_analysis_text",
-            "appendix_reporting_overlap_analysis",
-            "appendix_reporting_overlap_analysis_text",
-            "appendix_data_source_mapping",
-            "appendix_data_source_mapping_text",
-            "appendix_critical_reports",
-            "appendix_critical_reports_text",
-            "critical_report_summary",
-            "analytics_ownership_overview_text",
-            "analytics_responsibility_model",
-            "stakeholder_interview_summary",
-            "responsibility_gaps",
-            "key_observations_text"
-        ],
-        "instructions": """
+    "Appendix A — Reporting Inventory": """
 appendix_reporting_inventory must be a table array.
+Columns: Report Name, Report Type, Frequency, Owner, Data Source, Criticality, S/4HANA Risk
+
+appendix_reporting_inventory_text:
+Must be 1-2 paragraphs explaining why this inventory matters.
+""",
+
+    "Appendix B — S/4 Reporting Impact Analysis": """
 appendix_s4_impact_analysis must be a table array.
+Columns: Area, Current State, Target State, Impact, Risk Level, Remediation Consideration
+
+appendix_s4_impact_analysis_text:
+Must be 1-2 paragraphs explaining table, reporting, KPI, and source-to-target impact.
+""",
+
+    "Appendix C — Reporting Overlap Analysis": """
 appendix_reporting_overlap_analysis must be a table array.
+Columns: Report Name, Overlap With, Description, Business Impact, Recommended Action
+
+appendix_reporting_overlap_analysis_text:
+Must be 1-2 paragraphs explaining redundancy, confusion, and consolidation opportunities.
+""",
+
+    "Appendix D — Data Source Mapping": """
 appendix_data_source_mapping must be a table array.
+Columns: Report Name, Data Source, Dependency, Data Quality, S/4HANA Risk
+
+appendix_data_source_mapping_text:
+Must be 1-2 paragraphs explaining source dependencies and migration risk.
+""",
+
+    "Appendix E — Critical Reports": """
 appendix_critical_reports must be a table array.
+Columns: Report Name, Criticality Level, Impact on Decision, Impact of Failure, Remediation Priority
+
+appendix_critical_reports_text:
+Must be 1-2 paragraphs explaining why these reports must be prioritized.
+
+critical_report_summary:
+Must be 1 executive paragraph summarizing the critical report risk.
+""",
+
+    "Appendix F — Analytics Stakeholder Map": """
 analytics_responsibility_model must be a table array.
+Columns: Department, Report Name, Responsibility
+
 stakeholder_interview_summary must be a table array.
+Columns: Stakeholder, Role, Key Concerns
+
 responsibility_gaps must be a table array.
+Columns: Report Name, Gap, Business Impact, Recommended Action
 
-All *_text and *_summary keys must be 1-2 paragraph narratives.
+analytics_ownership_overview_text:
+Must be 1-2 paragraphs explaining ownership gaps and governance risk.
+
+key_observations_text:
+Must be 1-2 paragraphs summarizing appendix observations.
 """
-    }
-]
-    },
+}
 
-    "Analytics Modernization Roadmap": {
-        "title": "Analytics Modernization Roadmap",
+# --------------------
+# Assessment Frameworks
+# --------------------
+
+ASSESSMENT_FRAMEWORKS = {
+    "Analytics Gap Assessment": {
+        "title": "Analytics Gap Assessment",
         "sections": [
             {
-                "section_name": "Executive Roadmap Overview",
-                "keys": [
-                    "engagement_overview_text",
-                    "executive_summary_text",
-                    "modernization_drivers",
-                    "top_priorities",
-                    "s4_analytics_roadmap"
-                ],
-                "instructions": """
-Focus on why modernization is needed, what needs to change, and the phased path forward.
-
-modernization_drivers columns:
-Driver, Current Constraint, Business Impact, Modernization Response, Priority
-
-s4_analytics_roadmap must represent the recommended phased execution plan AFTER the assessment.
-
-The roadmap should focus on implementing the recommended analytics, reporting, governance, and S/4HANA readiness improvements.
-
-Columns:
-Phase, Timeline, Strategic Objective, Key Activities, Expected Outcome, Business Value, Dependencies
-"""
+                "section_name": "Engagement Overview",
+                "keys": ["engagement_overview_text"],
+                "instructions": SECTION_INSTRUCTIONS["Engagement Overview"]
             },
             {
-                "section_name": "Current vs Future State",
-                "keys": [
-                    "current_state_architecture",
-                    "future_state_architecture",
-                    "capability_gap_summary",
-                    "platform_recommendations"
-                ],
-                "instructions": """
-Compare current-state and future-state analytics capabilities.
-
-Tables should explain:
-Capability Area, Current State, Future State, Gap, Recommended Action, Priority
-"""
+                "section_name": "Executive Summary",
+                "keys": ["executive_summary_text", "top_priorities", "top_priorities_text"],
+                "instructions": SECTION_INSTRUCTIONS["Executive Summary"]
             },
             {
-                "section_name": "Execution Plan",
-                "keys": [
-                    "workstream_plan",
-                    "risk_mitigation_plan",
-                    "investment_summary",
-                    "business_value_text",
-                    "potential_impact_summary"
-                ],
-                "instructions": """
-Create a practical execution plan with workstreams, risks, dependencies, estimated value, and investment considerations.
-"""
-            }
-        ]
-    },
-
-    "AI Opportunity Assessment": {
-        "title": "AI Opportunity Assessment",
-        "sections": [
-            {
-                "section_name": "AI Executive Opportunity Overview",
-                "keys": [
-                    "engagement_overview_text",
-                    "executive_summary_text",
-                    "top_ai_opportunities",
-                    "s4_analytics_roadmap"
-                ],
-                "instructions": """
-Focus on where AI can create business value, reduce manual work, improve decisions, and accelerate operations.
-
-top_ai_opportunities columns:
-Use Case, Business Function, Current Pain Point, AI Opportunity, Business Value, Complexity, Priority
-"""
+                "section_name": "S/4HANA Transformation Context",
+                "keys": ["transformation_context", "transformation_context_summary"],
+                "instructions": SECTION_INSTRUCTIONS["S/4HANA Transformation Context"]
             },
             {
-                "section_name": "AI Use Case Portfolio",
-                "keys": [
-                    "ai_use_case_inventory",
-                    "automation_candidates",
-                    "decision_support_opportunities",
-                    "data_readiness_summary"
-                ],
-                "instructions": """
-Identify realistic AI use cases and readiness gaps.
-
-Use case tables should include:
-Use Case, Process Area, Required Data, Expected Benefit, Complexity, Recommended Next Step
-"""
+                "section_name": "Current Analytics Ecosystem",
+                "keys": ["current_system_inventory", "current_data_flow_summary"],
+                "instructions": SECTION_INSTRUCTIONS["Current Analytics Ecosystem"]
             },
             {
-                "section_name": "AI Roadmap and Value",
+                "section_name": "Reporting Dependency Map",
+                "keys": ["reporting_dependency_map", "architecture_risk_summary"],
+                "instructions": SECTION_INSTRUCTIONS["Reporting Dependency Map"]
+            },
+            {
+                "section_name": "Analytics Complexity and Operational Risk",
+                "keys": ["analytics_complexity_snapshot", "analytics_complexity_text"],
+                "instructions": SECTION_INSTRUCTIONS["Analytics Complexity and Operational Risk"]
+            },
+            {
+                "section_name": "Gap Severity Heatmap",
+                "keys": ["gap_severity_heatmap", "gap_observations_text"],
+                "instructions": SECTION_INSTRUCTIONS["Gap Severity Heatmap"]
+            },
+            {
+                "section_name": "Reporting Inventory Summary",
+                "keys": ["reporting_landscape_summary", "reporting_inventory_text"],
+                "instructions": SECTION_INSTRUCTIONS["Reporting Inventory Summary"]
+            },
+            {
+                "section_name": "S/4HANA Reporting Impact",
+                "keys": ["s4_impact_summary", "s4_reporting_impact_text"],
+                "instructions": SECTION_INSTRUCTIONS["S/4HANA Reporting Impact"]
+            },
+            {
+                "section_name": "Gap Analysis Summary",
+                "keys": ["gap_analysis_summary", "key_gaps_text"],
+                "instructions": SECTION_INSTRUCTIONS["Gap Analysis Summary"]
+            },
+            {
+                "section_name": "Opportunity Areas",
+                "keys": ["improvement_opportunity_summary", "opportunity_areas_text"],
+                "instructions": SECTION_INSTRUCTIONS["Opportunity Areas"]
+            },
+            {
+                "section_name": "Business Value",
+                "keys": ["potential_impact_summary", "business_value_text"],
+                "instructions": SECTION_INSTRUCTIONS["Business Value"]
+            },
+            {
+                "section_name": "Gap Remediation Roadmap",
+                "keys": ["s4_analytics_roadmap", "s4_analytics_roadmap_text"],
+                "instructions": SECTION_INSTRUCTIONS["Gap Remediation Roadmap"]
+            },
+            {
+                "section_name": "Recommended Remediation Actions and Execution Plan",
+                "keys": ["recommended_focus_areas", "recommended_next_steps_text"],
+                "instructions": SECTION_INSTRUCTIONS["Recommended Remediation Actions and Execution Plan"]
+            },
+            {
+                "section_name": "Appendix A — Reporting Inventory",
+                "keys": ["appendix_reporting_inventory", "appendix_reporting_inventory_text"],
+                "instructions": SECTION_INSTRUCTIONS["Appendix A — Reporting Inventory"]
+            },
+            {
+                "section_name": "Appendix B — S/4 Reporting Impact Analysis",
+                "keys": ["appendix_s4_impact_analysis", "appendix_s4_impact_analysis_text"],
+                "instructions": SECTION_INSTRUCTIONS["Appendix B — S/4 Reporting Impact Analysis"]
+            },
+            {
+                "section_name": "Appendix C — Reporting Overlap Analysis",
+                "keys": ["appendix_reporting_overlap_analysis", "appendix_reporting_overlap_analysis_text"],
+                "instructions": SECTION_INSTRUCTIONS["Appendix C — Reporting Overlap Analysis"]
+            },
+            {
+                "section_name": "Appendix D — Data Source Mapping",
+                "keys": ["appendix_data_source_mapping", "appendix_data_source_mapping_text"],
+                "instructions": SECTION_INSTRUCTIONS["Appendix D — Data Source Mapping"]
+            },
+            {
+                "section_name": "Appendix E — Critical Reports",
+                "keys": ["appendix_critical_reports", "appendix_critical_reports_text", "critical_report_summary"],
+                "instructions": SECTION_INSTRUCTIONS["Appendix E — Critical Reports"]
+            },
+            {
+                "section_name": "Appendix F — Analytics Stakeholder Map",
                 "keys": [
-                    "ai_roadmap",
-                    "risk_and_governance_considerations",
-                    "business_value_text",
-                    "potential_impact_summary",
-                    "recommended_next_steps_text"
+                    "analytics_responsibility_model",
+                    "stakeholder_interview_summary",
+                    "responsibility_gaps",
+                    "analytics_ownership_overview_text",
+                    "key_observations_text"
                 ],
-                "instructions": """
-Create a phased AI roadmap with governance, risk, change management, data readiness, and measurable value.
-"""
+                "instructions": SECTION_INSTRUCTIONS["Appendix F — Analytics Stakeholder Map"]
             }
         ]
     }
