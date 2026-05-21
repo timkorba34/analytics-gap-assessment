@@ -860,6 +860,9 @@ def generate_section_json(
 
 {base_context}
 
+GLOBAL CROSS-SECTION RULES:
+{cross_section_rules}
+
 SECTION TO GENERATE:
 {section_config["section_name"]}
 
@@ -1472,8 +1475,7 @@ Explain why the assessment was performed, the client business context, current s
         "Company-specific examples must appear in every section",
         "Recommendations must explain capability before technology",
         "Avoid repeating same business risks more than once"
-    ]
-}
+    ],
 
     "Executive Summary": """
 executive_summary_text:
