@@ -842,6 +842,11 @@ def generate_section_json(
         company_research
     )
 
+    cross_section_rules = "\n".join(
+    f"- {rule}"
+    for rule in SECTION_INSTRUCTIONS.get("cross_section_rules", [])
+)
+
     required_keys = "\n".join(section_config["keys"])
 
     prompt = f"""
