@@ -1209,11 +1209,11 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("reporting_inventory_text", ""))
 
-        add_heading(doc, "9. ABAP Report Modernization Assessment", 1)
+        add_heading(doc, "9. Report Modernization and Embedded Analytics Recommendation", 1)
         doc.add_paragraph("")
-        add_table_from_records(doc, data.get("abap_report_replacement_matrix", []))
+        add_table_from_records(doc, data.get("report_report_replacement_matrix", []))
         doc.add_paragraph("")
-        add_paragraph(doc, data.get("abap_report_replacement_text", ""))
+        add_paragraph(doc, data.get("report_replacement_text", ""))
 
         add_heading(doc, "10. S/4HANA Reporting Impact", 1)
         doc.add_paragraph("")
@@ -1624,15 +1624,15 @@ reporting_inventory_text:
 Must be 1-2 executive paragraphs explaining the current reporting landscape, redundancy, manual effort, risk of report breakage, and need for inventory rationalization.
 """,
 
-    "ABAP Report Modernization Assessment": """
-abap_report_replacement_matrix must be a table array.
+    "Report Modernization and Embedded Analytics Recommendation": """
+report_replacement_matrix must be a table array.
 
 Columns:
-ABAP Program / T-Code, Report Name, Business Area, Known Source Tables, Likely SAP Fiori App, Likely Embedded Analytics Query, Recommended Disposition, Confidence Score, Rationale, Deep-Dive Required
+Current Report, Current Tool / Type, ABAP Program / T-Code, Business Area, Known Source Tables, Current Purpose, Likely SAP Fiori App, Likely Embedded Analytics Query, Recommended Disposition, Target Reporting Option, Confidence Score, Rationale, Deep-Dive Required
 
-abap_report_replacement_text:
-Must be 1-2 executive paragraphs explaining which custom ABAP reports should be retained, remediated, replaced, rebuilt, retired, or moved to modern analytics.
-""",
+report_replacement_text:
+Must be 1-2 executive paragraphs explaining which Excel, Power BI, ABAP, BW, BusinessObjects, or other reports should be retained, remediated, replaced, rebuilt, retired, or moved to modern analytics.
+"""
 
     "S/4HANA Reporting Impact": """
 s4_impact_summary must be a table array.
@@ -1805,9 +1805,9 @@ ASSESSMENT_FRAMEWORKS = {
                 "instructions": SECTION_INSTRUCTIONS["Reporting Inventory Summary"]
             },
             {
-            "section_name": "ABAP Report Modernization Assessment",
-            "keys": {"abap_report_replacement_matrix","abap_report_replacement_text"],
-            "instructions": SECTION_INSTRUCTIONS["ABAP Report Modernization Assessment"]
+                "section_name": "Report Modernization and Embedded Analytics Recommendation",
+                "keys": ["abap_report_replacement_matrix","abap_report_replacement_text"],
+                "instructions": SECTION_INSTRUCTIONS["Report Modernization and Embedded Analytics Recommendation"]
             },
             {
                 "section_name": "S/4HANA Reporting Impact",
