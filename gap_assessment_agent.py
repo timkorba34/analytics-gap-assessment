@@ -240,6 +240,33 @@ div[data-testid="stFileUploaderFile"] {{
         color: #4da6ff !important;
     }}
 
+    /* Uploaded file filename visibility */
+    div[data-testid="stFileUploaderFile"] * {{
+        color: #ffffff !important;
+    }]
+    
+    /* Download button text visibility */
+    div[data-testid="stDownloadButton"] button {{
+        background: linear-gradient(90deg, #2563eb, #7c3aed) !important;
+        color: #ffffff !important;
+        border-radius: 14px !important;
+        height: 55px !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        border: none !important;
+    }}
+    
+    /* Download button hover */
+    div[data-testid="stDownloadButton"] button:hover {{
+        background: linear-gradient(90deg, #1d4ed8, #6d28d9) !important;
+        color: #ffffff !important;
+    }}
+    
+    /* Download button inner text */
+    div[data-testid="stDownloadButton"] button * {{
+        color: #ffffff !important;
+    }}
+
     </style>
     """,
     unsafe_allow_html=True
@@ -487,7 +514,7 @@ industry = st.selectbox(
         "Utilities",
         "Warehousing and Storage",
         "Wholesale",
-        "Wireless Services"
+        "Wireless Services",
         "Other"
     ]
 )
