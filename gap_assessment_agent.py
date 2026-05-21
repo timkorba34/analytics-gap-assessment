@@ -240,30 +240,52 @@ div[data-testid="stFileUploaderFile"] {{
         color: #4da6ff !important;
     }}
 
-    /* Uploaded file filename visibility */
-    div[data-testid="stFileUploaderFile"] * {{
-        color: #ffffff !important;
-    }}]
+    /* Fix uploaded file pills */
+    [data-testid="stFileUploaderFile"] {{
+        background-color: #111827 !important;
+        border: 1px solid #60a5fa !important;
+        border-radius: 10px !important;
+    }}
     
-    /* Download button text visibility */
-    div[data-testid="stDownloadButton"] button {{
-        background: linear-gradient(90deg, #2563eb, #7c3aed) !important;
+    [data-testid="stFileUploaderFile"] div,
+    [data-testid="stFileUploaderFile"] span,
+    [data-testid="stFileUploaderFile"] small,
+    [data-testid="stFileUploaderFile"] p {{
         color: #ffffff !important;
+        background-color: transparent !important;
+    }}
+    
+    /* Force filename visible */
+    [data-testid="stFileUploaderFileName"] {{
+        color: #ffffff !important;
+    }}
+    
+    /* File icon */
+    [data-testid="stFileUploaderFile"] svg {{
+        color: #ffffff !important;
+        fill: #ffffff !important;
+    }}
+    
+    /* Download buttons */
+    [data-testid="stDownloadButton"] button {{
+        background: linear-gradient(90deg,#2563eb,#7c3aed) !important;
+        color: #ffffff !important;
+        border: none !important;
         border-radius: 14px !important;
         height: 55px !important;
         font-size: 18px !important;
         font-weight: 600 !important;
-        border: none !important;
     }}
     
-    /* Download button hover */
-    div[data-testid="stDownloadButton"] button:hover {{
-        background: linear-gradient(90deg, #1d4ed8, #6d28d9) !important;
+    [data-testid="stDownloadButton"] button div,
+    [data-testid="stDownloadButton"] button span,
+    [data-testid="stDownloadButton"] button p {{
         color: #ffffff !important;
     }}
     
-    /* Download button inner text */
-    div[data-testid="stDownloadButton"] button * {{
+    /* Force button text */
+    button,
+    button * {{
         color: #ffffff !important;
     }}
 
