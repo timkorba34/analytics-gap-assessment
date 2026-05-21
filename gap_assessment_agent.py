@@ -243,7 +243,7 @@ div[data-testid="stFileUploaderFile"] {{
     /* Uploaded file filename visibility */
     div[data-testid="stFileUploaderFile"] * {{
         color: #ffffff !important;
-    }]
+    }}]
     
     /* Download button text visibility */
     div[data-testid="stDownloadButton"] button {{
