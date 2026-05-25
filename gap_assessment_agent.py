@@ -1735,9 +1735,24 @@ report_replacement_matrix must be a table array.
 Columns:
 Report, Tool, ABAP/T-Code, Area, Source Tables, Purpose, Fiori App, Embedded Query, Disposition, Target Option, Confidence, Rationale, Deep Dive?
 
+Rules:
+- Do not use "To be validated"
+- Do not use "TBD"
+- Do not leave cells blank
+- If the exact value is unknown, use one of these approved values:
+  - Unknown
+  - Not Provided
+  - Requires SME Review
+  - Requires Technical Review
+  - Not Applicable
+- Source Tables must contain either known SAP tables/views or "Requires Technical Review"
+- ABAP/T-Code must contain a known program/T-code or "Not Applicable"
+- Fiori App must contain a likely app name or "Requires Functional Review"
+- Embedded Query must contain a likely analytical query or "Requires Technical Review"
+
 report_replacement_text:
 Must be 1-2 executive paragraphs explaining which Excel, Power BI, ABAP, BW, BusinessObjects, or other reports should be retained, remediated, replaced, rebuilt, retired, or moved to modern analytics.
-""",
+"""
 
     "S/4HANA Reporting Impact": """
 s4_impact_summary must be a table array.
