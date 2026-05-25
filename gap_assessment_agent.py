@@ -1949,6 +1949,51 @@ recommended_next_steps_text:
 Must be 1–2 executive paragraphs explaining immediate actions, dependencies, governance decisions, funding alignment, execution sequencing, and follow-on implementation activities.
 """,
 
+    "Current Architecture Diagram": """
+current_architecture_diagram must be an object containing:
+
+nodes:
+Array of architecture components
+
+connections:
+Array of source-target relationships
+
+Format:
+
+{
+"nodes":[
+{"id":"SAP ECC","type":"ERP"},
+{"id":"BW","type":"Data Platform"},
+{"id":"Power BI","type":"Reporting"},
+{"id":"Excel","type":"Manual Reporting"}
+],
+
+"connections":[
+{"from":"SAP ECC","to":"BW","label":"extracts"},
+{"from":"BW","to":"Power BI","label":"feeds"},
+{"from":"SAP ECC","to":"Excel","label":"manual exports"}
+]
+}
+
+Rules:
+
+Use uploaded files and discovery notes.
+
+Infer architecture where appropriate.
+
+Include:
+
+- Source systems
+- Data movement tools
+- Data warehouses
+- Analytics tools
+- Manual reporting
+- External applications
+- Data lakes
+- Integration tools
+
+""",
+
     "Appendix A — Reporting Inventory": """
 appendix_reporting_inventory must be a table array.
 Columns: Report Name, Report Type, Frequency, Owner, Data Source, Criticality, S/4HANA Risk
