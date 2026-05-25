@@ -1235,6 +1235,7 @@ def add_table_from_records(doc, records):
 # --------------------
 def build_docx(data, client_name, assessment_type):
     TABLE_COUNTER["count"] = 0
+    assessment_type = (assessment_type or "").strip()
 
     doc = Document()
 
@@ -1256,12 +1257,12 @@ def build_docx(data, client_name, assessment_type):
         add_table_from_records(doc, data.get("top_priorities", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("top_priorities_text", ""))  
-
-    doc.add_paragraph(f"DEBUG assessment_type = {assessment_type}")
-
+    
     # --------------------
     # Analytics Gap Assessment
     # --------------------
+    assessment_type_clean = assessment_type.strip()
+
     if assessment_type == "Analytics Gap Assessment":
 
         add_heading(doc, "3. S/4HANA Transformation Context", 1)
@@ -1476,6 +1477,14 @@ def build_docx(data, client_name, assessment_type):
         add_heading(doc, "Key Observations", 1)
         add_paragraph(doc, data.get("key_observations_text", ""))
         doc.add_paragraph("")
+
+    else:
+    add_heading(doc, "Assessment Content Not Available", 1)
+    add_paragraph(
+        doc,
+        f"No document template exists for assessment type: {assessment_type}. "
+        "Confirm that the assessment type dropdown matches ASSESSMENT_FRAMEWORKS."
+    )
 
     # SAVE MUST STAY LAST
     set_update_fields_on_open(doc)
