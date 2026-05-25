@@ -1289,6 +1289,7 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("analytics_responsibility_model", []))
         add_table_from_records(doc, data.get("stakeholder_interview_summary", []))
+        doc.add_paragraph("")
         add_table_from_records(doc, data.get("responsibility_gaps", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("analytics_ownership_overview_text", ""))
