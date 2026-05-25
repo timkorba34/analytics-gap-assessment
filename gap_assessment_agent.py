@@ -156,39 +156,43 @@ st.markdown(
         border-radius: 10px !important;
     }}
 
-   /* Uploaded file pill background */
-div[data-testid="stFileUploaderFile"] {{
-    background: rgba(20,35,75,.95) !important;
+  /* FINAL OVERRIDE — Streamlit uploaded file cards */
+    [data-testid="stFileUploader"] section {{
+        background-color: rgba(10,20,45,0.90) !important;
+        border: 1px dashed rgba(255,255,255,0.35) !important;
+        border-radius: 14px !important;
     }}
     
-    /* Inner file pill containers */
-    div[data-testid="stFileUploaderFile"] > div {{
-        background: #111a33 !important;
+    [data-testid="stFileUploader"] section + div {{
+        background: transparent !important;
+    }}
+    
+    [data-testid="stFileUploader"] ul,
+    [data-testid="stFileUploader"] li,
+    [data-testid="stFileUploader"] li > div,
+    [data-testid="stFileUploader"] li div {{
+        background-color: rgba(17, 26, 51, 0.98) !important;
         color: #ffffff !important;
+        border-radius: 12px !important;
     }}
     
-    /* Filename text */
-    div[data-testid="stFileUploaderFile"] span,
-    div[data-testid="stFileUploaderFile"] p,
-    div[data-testid="stFileUploaderFile"] small {{
-        color: #ffffff !important;
+    [data-testid="stFileUploader"] li {{
+        border: 1px solid rgba(96,165,250,0.65) !important;
+        margin-bottom: 8px !important;
     }}
     
-    /* File icon box */
-    div[data-testid="stFileUploaderFile"] svg {{
+    [data-testid="stFileUploader"] span,
+    [data-testid="stFileUploader"] p,
+    [data-testid="stFileUploader"] small,
+    [data-testid="stFileUploader"] svg {{
         color: #ffffff !important;
         fill: #ffffff !important;
     }}
     
-    /* Remove button */
-    div[data-testid="stFileUploaderFile"] button {{
-        background: #0b1f44 !important;
+    [data-testid="stFileUploader"] button {{
+        background-color: #0b1f44 !important;
         color: #ffffff !important;
-        border: 1px solid rgba(120, 160, 255, 0.6) !important;
-    }}
-
-    .stFileUploader * {{
-        color: #ffffff !important;
+        border: 1px solid rgba(96,165,250,0.65) !important;
     }}
 
     div.stButton > button {{
