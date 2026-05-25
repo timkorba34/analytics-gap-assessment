@@ -1871,11 +1871,82 @@ Must be 1-2 executive paragraphs explaining how the roadmap moves the client fro
     "Recommended Remediation Actions and Execution Plan": """
 recommended_focus_areas must be a highly actionable post-assessment execution plan tied directly to identified gaps.
 
+Do not assign arbitrary durations.
+
+Timeline, effort, and execution sequencing must be calculated using implementation complexity drivers rather than generic consulting assumptions.
+
+Complexity Drivers:
+
+- Total report inventory count
+- Critical report count
+- Number of source systems
+- Number of custom reports / ABAP objects
+- Number of impacted analytical queries
+- Historical data retention requirements
+- Number of impacted business functions
+- Data governance maturity
+- Migration type (Brownfield / Greenfield / Selective Transition)
+- Existing analytics platform maturity
+
+Complexity Score Calculation:
+
+0–30:
+Small Complexity
+
+31–60:
+Medium Complexity
+
+61–100:
+Large Complexity
+
+Effort Guidance:
+
+Small:
+40–160 hours
+1–3 months
+
+Medium:
+160–600 hours
+3–6 months
+
+Large:
+600–2000+ hours
+6–18 months
+
+Recommendations must align to the Gap Remediation Roadmap phases and not be independently generated.
+
 Columns:
-Recommendation Category, Gap Addressed, Recommended Action, Business Outcome, Priority, Suggested Owner, Execution Horizon, Potential Follow-On Deliverable
+
+Recommendation Category,
+Gap Addressed,
+Recommended Action,
+Business Outcome,
+Priority,
+Suggested Owner,
+Complexity Score,
+Estimated Effort (Hours),
+Implementation Wave,
+Potential Follow-On Deliverable
+
+Implementation Wave values:
+
+Wave 1 (0–3 months)
+Wave 2 (3–6 months)
+Wave 3 (6–12 months)
+Wave 4 (>12 months)
+
+Rules:
+
+- Timelines must reflect actual implementation scope
+- Greenfield implementations should generally reduce remediation effort
+- Brownfield implementations should increase dependency validation effort
+- Large report inventories increase effort significantly
+- Avoid using fixed values such as "6–12 months" without complexity justification
+- Recommendations should represent realistic execution sequencing
 
 recommended_next_steps_text:
-Must be 1-2 executive paragraphs explaining immediate actions, urgent risks, governance decisions, workstreams, funding alignment, and follow-on implementation activities.
+
+Must be 1–2 executive paragraphs explaining immediate actions, dependencies, governance decisions, funding alignment, execution sequencing, and follow-on implementation activities.
 """,
 
     "Appendix A — Reporting Inventory": """
