@@ -1390,15 +1390,6 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("analytics_ownership_overview_text", ""))
 
-    # SAVE MUST STAY LAST
-    set_update_fields_on_open(doc)
-
-    output = io.BytesIO()
-    doc.save(output)
-    output.seek(0)
-
-    return output
-
     # --------------------
     # Analytics Modernization Roadmap
     # --------------------
@@ -1486,6 +1477,9 @@ def build_docx(data, client_name, assessment_type):
         add_heading(doc, "Key Observations", 1)
         add_paragraph(doc, data.get("key_observations_text", ""))
         doc.add_paragraph("")
+
+    # SAVE MUST STAY LAST
+    set_update_fields_on_open(doc)
 
     output = io.BytesIO()
     doc.save(output)
