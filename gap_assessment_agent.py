@@ -1383,12 +1383,16 @@ def build_docx(data, client_name, assessment_type):
 
         add_heading(doc, "21. Appendix F — Analytics Stakeholder Map", 1)
         doc.add_paragraph("")
+        add_heading(doc,"Analytics Responsibility Model",2)
         add_table_from_records(doc, data.get("analytics_responsibility_model", []))
+        doc.add_paragraph("")
+        add_heading(doc,"Stakeholder Interview Summary",2)
         add_table_from_records(doc, data.get("stakeholder_interview_summary", []))
         doc.add_paragraph("")
+        add_heading(doc,"Responsibility Gaps",2)
         add_table_from_records(doc, data.get("responsibility_gaps", []))
         doc.add_paragraph("")
-        add_paragraph(doc, data.get("analytics_ownership_overview_text", ""))
+        add_paragraph(doc,data.get("analytics_ownership_overview_text",""))
 
     # --------------------
     # Analytics Modernization Roadmap
@@ -1734,30 +1738,85 @@ Must be 1-2 executive paragraphs explaining the current reporting landscape, red
 """,
 
     "Report Modernization and Embedded Analytics Recommendation": """
+
 report_replacement_matrix must be a table array.
 
 Columns:
-Report, Tool, ABAP/T-Code, Area, Source Tables, Purpose, Fiori App, Embedded Query, Disposition, Target Option, Confidence, Rationale, Deep Dive?
+
+Current Report,
+Current Tool / Type,
+ABAP Program / T-Code,
+Business Area,
+Known Source Tables,
+Current Purpose,
+Likely SAP Fiori App,
+Likely Embedded Analytics Query,
+Recommended Disposition,
+Target Reporting Option,
+Confidence Score,
+Rationale,
+Deep-Dive Required
 
 Rules:
-- Do not use "To be validated"
-- Do not use "TBD"
-- Do not leave cells blank
-- If the exact value is unknown, use one of these approved values:
-  - Unknown
-  - Not Provided
-  - Requires SME Review
-  - Requires Technical Review
-  - Not Applicable
-- Source Tables must contain either known SAP tables/views or "Requires Technical Review"
-- ABAP/T-Code must contain a known program/T-code or "Not Applicable"
-- Fiori App must contain a likely app name or "Requires Functional Review"
-- Embedded Query must contain a likely analytical query or "Requires Technical Review"
+
+Do NOT return:
+
+- Requires Functional Review
+- Requires Technical Review
+- TBD
+- Unknown
+- Placeholder text
+
+Attempt to recommend actual SAP content whenever possible.
+
+Examples:
+
+Sales Order Backlog
+→ Fiori App:
+"Sales Order Fulfillment Issues"
+
+→ Embedded Query:
+"C_SalesDocumentItemDEX"
+
+Monthly P&L
+→ Fiori App:
+"Cost Centers - Actuals"
+
+→ Embedded Query:
+"C_ProfitCenterPlanActQ0001"
+
+Inventory Aging
+→ Fiori App:
+"Stock - Multiple Materials"
+
+→ Embedded Query:
+"C_MaterialStockTimeSeries"
+
+Customer Profitability
+→ Fiori App:
+"Customer Sales Volume"
+
+→ Embedded Query:
+"C_SalesVolumeCube"
+
+Return confidence scores:
+
+90-100:
+Strong mapping
+
+70-89:
+Likely match
+
+50-69:
+Possible match
+
+<50:
+Deep dive required
 
 report_replacement_text:
-Must be 1-2 executive paragraphs explaining which Excel, Power BI, ABAP, BW, BusinessObjects, or other reports should be retained, remediated, replaced, rebuilt, retired, or moved to modern analytics.
-""",
+Must explain why reports should be retained, rebuilt, retired, or modernized.
 
+""",
     "S/4HANA Reporting Impact": """
 s4_impact_summary must be a table array.
 Columns: Impact Area, Current State, Target State, Risk, Reporting Impact, Remediation Action
