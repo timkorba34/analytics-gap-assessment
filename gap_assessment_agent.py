@@ -1257,6 +1257,8 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("top_priorities_text", ""))  
 
+    doc.add_paragraph(f"DEBUG assessment_type = {assessment_type}")
+
     # --------------------
     # Analytics Gap Assessment
     # --------------------
