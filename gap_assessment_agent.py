@@ -2023,10 +2023,11 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
                     st.warning(f"Regenerating output attempt {attempt + 1}: missing sections or placeholder text found.")
         
             if not validate_output(data, assessment_type):
-                st.error("Failed to generate a complete assessment after retries.")
-                data = {}
+                st.error("Validation failed — showing partial output")
 
         st.session_state.assessment_data = data
+        st.write("Generated Keys:")
+        st.write(list(data.keys()))
 
         if data:
             with st.spinner("Creating Word document..."):
