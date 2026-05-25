@@ -1191,7 +1191,7 @@ def build_docx(data, client_name, assessment_type):
 
         add_heading(doc, "9. Report Modernization and Embedded Analytics Recommendation", 1)
         doc.add_paragraph("")
-        add_table_from_records(doc, data.get("report_report_replacement_matrix", []))
+        add_table_from_records(doc, data.get("report_replacement_matrix", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("report_replacement_text", ""))
 
@@ -1787,7 +1787,7 @@ ASSESSMENT_FRAMEWORKS = {
             },
             {
                 "section_name": "Report Modernization and Embedded Analytics Recommendation",
-                "keys": ["abap_report_replacement_matrix","abap_report_replacement_text"],
+                "keys": ["report_replacement_matrix", "report_replacement_text"],
                 "instructions": SECTION_INSTRUCTIONS["Report Modernization and Embedded Analytics Recommendation"]
             },
             {
