@@ -1235,11 +1235,11 @@ def add_table_from_records(doc, records):
 # --------------------
 def build_docx(data, client_name, assessment_type):
     TABLE_COUNTER["count"] = 0
-    assessment_type = (assessment_type or "").strip()
+    assessment_type_clean = (assessment_type or "").strip()
 
     doc = Document()
 
-    doc.add_heading(f"{client_name or 'Client'} {assessment_type}", 0)
+    doc.add_heading(f"{client_name or 'Client'} {assessment_type_clean}", 0)
     add_table_of_contents(doc)
 
     # Common executive front-end
@@ -1263,7 +1263,7 @@ def build_docx(data, client_name, assessment_type):
     # --------------------
     assessment_type_clean = assessment_type.strip()
 
-    if assessment_type == "Analytics Gap Assessment":
+    if assessment_type_clean == "Analytics Gap Assessment":
 
         add_heading(doc, "3. S/4HANA Transformation Context", 1)
         doc.add_paragraph("")
@@ -1393,7 +1393,7 @@ def build_docx(data, client_name, assessment_type):
     # --------------------
     # Analytics Modernization Roadmap
     # --------------------
-    elif assessment_type == "Analytics Modernization Roadmap":
+    elif assessment_type_clean == "Analytics Modernization Roadmap":
 
         add_heading(doc, "3. Modernization Drivers", 1)
         add_table_from_records(doc, data.get("modernization_drivers", []))
@@ -1435,7 +1435,7 @@ def build_docx(data, client_name, assessment_type):
     # --------------------
     # AI Opportunity Assessment
     # --------------------
-    elif assessment_type == "AI Opportunity Assessment":
+    elif assessment_type_clean == "AI Opportunity Assessment":
 
         add_heading(doc, "3. Top AI Opportunities", 1)
         add_table_from_records(doc, data.get("top_ai_opportunities", []))
@@ -1482,7 +1482,7 @@ def build_docx(data, client_name, assessment_type):
         add_heading(doc, "Assessment Content Not Available", 1)
         add_paragraph(
             doc,
-            f"No document template exists for assessment type: {assessment_type}. "
+            f"No document template exists for assessment type: {assessment_type_clean}. "
             "Confirm that the assessment type dropdown matches ASSESSMENT_FRAMEWORKS."
     )
 
