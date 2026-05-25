@@ -1229,6 +1229,67 @@ def add_table_from_records(doc, records):
     format_table(table)
     add_table_caption(doc)
 
+# --------------------
+# Build Architecture
+# --------------------
+
+def build_architecture_diagram(data):
+
+    diagram = Digraph()
+
+    nodes = data.get(
+        "current_architecture_diagram",
+        {}
+    ).get(
+        "nodes",
+        []
+    )
+
+    connections = data.get(
+        "current_architecture_diagram",
+        {}
+    ).get(
+        "connections",
+        []
+    )
+
+    for node in nodes:
+
+        node_type = node.get(
+            "type",
+            "System"
+        )
+
+        diagram.node(
+            node["id"],
+            node["id"],
+            shape="box",
+            style="filled",
+            fillcolor="lightblue"
+        )
+
+    for c in connections:
+
+        diagram.edge(
+            c["from"],
+            c["to"],
+            label=c.get(
+                "label",
+                ""
+            )
+        )
+
+    output_path="/tmp/architecture"
+
+    diagram.render(
+        output_path,
+        format="png",
+        cleanup=True
+    )
+
+    return output_path + ".png"
+
+
 
 # --------------------
 # Build Word Document
@@ -1280,6 +1341,27 @@ def build_docx(data, client_name, assessment_type):
         add_table_from_records(doc, data.get("current_system_inventory", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("current_data_flow_summary", ""))
+
+        try:
+
+            architecture_image=build_architecture_diagram(data)
+        
+            add_heading(
+                doc,
+                "Current Architecture",
+                2
+            )
+        
+            doc.add_picture(
+                architecture_image,
+                width=Inches(7)
+            )
+        
+        except Exception as e:
+        
+            doc.add_paragraph(
+                f"Architecture diagram unavailable: {str(e)}"
+            )
 
         add_heading(doc, "5. Reporting Dependency Map", 1)
         doc.add_paragraph("")
@@ -2082,6 +2164,11 @@ ASSESSMENT_FRAMEWORKS = {
                 "section_name": "Current Analytics Ecosystem",
                 "keys": ["current_system_inventory", "current_data_flow_summary"],
                 "instructions": SECTION_INSTRUCTIONS["Current Analytics Ecosystem"]
+            },
+            {
+                "section_name":"Current Architecture Diagram",
+                "keys":["current_architecture_diagram"],
+                "instructions":SECTION_INSTRUCTIONS["Current Architecture Diagram"]
             },
             {
                 "section_name": "Reporting Dependency Map",
