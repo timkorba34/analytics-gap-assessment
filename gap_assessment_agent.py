@@ -568,11 +568,8 @@ assessment_type = st.selectbox(
     "Assessment Type",
     [
         "Analytics Gap Assessment",
-        "Analytics Modernization Assessment",
-        "S/4HANA Impact Assessment",
-        "AI Readiness Assessment",
-        "Data Governance Assessment",
-        "Reporting Rationalization Assessment"
+        "Analytics Modernization Roadmap",
+        "AI Opportunity Assessment"
     ]
 )
 
