@@ -1637,6 +1637,7 @@ def validate_output(data, assessment_type):
                 return False
             if "to be validated" in str(value).lower():
                 st.error(f"Placeholder found in list key: {key}")
+                st.write(value)
                 return False
 
         if isinstance(value, dict):
