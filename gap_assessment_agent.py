@@ -425,6 +425,7 @@ Return: PIM Brands, Inc.
 
     except Exception:
         return [query.strip()]
+        
 # --------------------
 # UI Inputs
 # --------------------
@@ -645,7 +646,6 @@ def read_uploaded_files(files):
             content += f"\nError reading file: {str(e)}"
 
     return content
-
 
 # --------------------
 # OpenAI Retry Helper
@@ -984,10 +984,6 @@ Requirements:
 - Explain business risks and executive implications
 - Explain S/4HANA impacts where relevant
 - Interpret findings like an executive consultant
-
-
-
-
 """
     
     messages = [
@@ -1055,6 +1051,15 @@ def generate_assessment_json(
 
     return final_data
 
+# --------------------
+# Table of Contents Helper
+# --------------------
+def set_update_fields_on_open(doc):
+    settings = doc.settings.element
+    update_fields = OxmlElement("w:updateFields")
+    update_fields.set(qn("w:val"), "true")
+    settings.append(update_fields)
+    
 # --------------------
 # Word Table Formatting Helpers
 # --------------------
@@ -1222,9 +1227,10 @@ def add_table_from_records(doc, records):
                 value = str(value)
 
             row[i].text = value
-            
-        format_table(table)
-        add_table_caption(doc)
+
+    # IMPORTANT: these must be OUTSIDE both loops
+    format_table(table)
+    add_table_caption(doc)
 
 
 # --------------------
@@ -1236,7 +1242,6 @@ def build_docx(data, client_name, assessment_type):
     doc = Document()
 
     doc.add_heading(f"{client_name or 'Client'} {assessment_type}", 0)
-
     add_table_of_contents(doc)
 
     # Common executive front-end
@@ -1254,6 +1259,14 @@ def build_docx(data, client_name, assessment_type):
         add_table_from_records(doc, data.get("top_priorities", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("top_priorities_text", ""))  
+
+    set_update_fields_on_open(doc)
+
+    output = io.BytesIO()
+    doc.save(output)
+    output.seek(0)
+
+    return output
 
     # --------------------
     # Analytics Gap Assessment
