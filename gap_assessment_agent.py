@@ -28,315 +28,293 @@ def get_base64(file_path):
 bg_image = get_base64("copilot_bg.png")
 robot_image = get_base64("robot_bg.png")
 
+# ==========================
+# App Styling
+# ==========================
+
 st.markdown(
     f"""
-    <style>
+<style>
+
+/* ==========================
+   APP THEME
+========================== */
 
     .stApp {{
-        background: linear-gradient(rgba(5,10,25,0.96), rgba(5,10,25,0.98));
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        color: white;
-    }}
-
-    .main-title {{
-        font-size: 54px;
-        font-weight: 700;
-        color: #ffffff !important;
-        margin-bottom: 10px;
-        line-height: 1.15;
-    }}
-
-    .sub-title {{
-        font-size: 22px;
-        color: #c7d2fe !important;
-        margin-bottom: 20px;
-        line-height: 1.5;
-    }}
-
-    .glass {{
-        background: rgba(15, 23, 42, 0.72);
-        backdrop-filter: blur(12px);
-        padding: 30px;
-        border-radius: 20px;
-        border: 1px solid rgba(255,255,255,0.12);
-        box-shadow: 0 0 30px rgba(0,0,0,0.4);
-        margin-bottom: 25px;
-    }}
-
-    .hero-container {{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         background: linear-gradient(
-            90deg,
-            rgba(10,15,40,0.95),
-            rgba(15,23,42,0.82)
+            rgba(5,10,25,.96),
+            rgba(5,10,25,.98)
         );
-        border-radius: 28px;
-        padding: 50px;
-        overflow: hidden;
-        margin-bottom: 30px;
-        border: 1px solid rgba(255,255,255,0.08);
+        background-attachment: fixed;
+        color:white;
     }}
-
-    .hero-left {{
-        width: 58%;
-    }}
-
-    .hero-right {{
-        width: 38%;
-        text-align: right;
-    }}
-
-    .hero-right img {{
-        width: 100%;
-        max-width: 420px;
-    }}
-
-    .hero-title {{
-        font-size: 64px;
-        font-weight: 800;
-        color: white;
-        line-height: 1.1;
-        margin-bottom: 20px;
-    }}
-
-    .hero-subtitle {{
-        font-size: 22px;
-        color: #c7d2fe;
-        line-height: 1.6;
-    }}
-
-    .feature-card {{
-        background: rgba(20, 30, 60, 0.72);
-        padding: 24px;
-        border-radius: 18px;
-        border: 1px solid rgba(255,255,255,0.12);
-        margin-bottom: 20px;
-        min-height: 160px;
-    }}
-
-    .feature-card h3 {{
-        color: #ffffff !important;
-        font-size: 26px;
-        margin-bottom: 15px;
-    }}
-
-    .feature-card p {{
-        color: #e5e7eb !important;
-        font-size: 17px;
-        line-height: 1.5;
-    }}
-
+    
     label,
     .stMarkdown p,
-    .stMarkdown span {{
-        color: #ffffff !important;
-    }}
-
+    .stMarkdown span,
     label[data-testid="stWidgetLabel"] {{
-        color: #ffffff !important;
-        font-weight: 600 !important;
+        color:#ffffff !important;
     }}
-
+    
+    label[data-testid="stWidgetLabel"] {{
+        font-weight:600 !important;
+    }}
+    
+    
+/* ==========================
+    HERO SECTION
+========================== */
+    
+    .hero-container {{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    
+        background:linear-gradient(
+            90deg,
+            rgba(10,15,40,.95),
+            rgba(15,23,42,.82)
+        );
+    
+        padding:50px;
+        border-radius:28px;
+    
+        border:1px solid rgba(255,255,255,.08);
+    
+        margin-bottom:30px;
+    }}
+    
+    .hero-left {{
+        width:58%;
+    }}
+    
+    .hero-right {{
+        width:38%;
+        text-align:right;
+    }}
+    
+    .hero-right img {{
+        width:100%;
+        max-width:420px;
+    }}
+    
+    .hero-title {{
+        font-size:64px;
+        font-weight:800;
+        color:white;
+        line-height:1.1;
+    }}
+    
+    .hero-subtitle {{
+        font-size:22px;
+        color:#c7d2fe;
+        line-height:1.6;
+    }}
+    
+    
+/* ==========================
+    GLASS CONTAINERS
+========================== */
+    
+    .glass {{
+        background:rgba(15,23,42,.72);
+        backdrop-filter:blur(12px);
+    
+        padding:30px;
+        border-radius:20px;
+    
+        border:1px solid rgba(255,255,255,.12);
+    
+        box-shadow:0 0 30px rgba(0,0,0,.4);
+    
+        margin-bottom:25px;
+    }}
+    
+    
+/* ==========================
+       FEATURE CARDS
+========================== */
+    
+    .feature-card {{
+        background:rgba(20,30,60,.72);
+    
+        padding:24px;
+        border-radius:18px;
+    
+        border:1px solid rgba(255,255,255,.12);
+    
+        min-height:160px;
+    }}
+    
+    .feature-card h3 {{
+        color:white !important;
+        font-size:26px;
+    }}
+    
+    .feature-card p {{
+        color:#e5e7eb !important;
+        font-size:17px;
+    }}
+    
+    
+/* ==========================
+    INPUTS
+========================== */
+    
     .stTextInput input,
     .stTextArea textarea {{
-        background-color: rgba(15, 23, 42, 0.85) !important;
-        color: #ffffff !important;
-        border: 1px solid rgba(255,255,255,0.25) !important;
-        border-radius: 10px !important;
+        background-color:rgba(15,23,42,.85)!important;
+    
+        color:white!important;
+    
+        border:1px solid rgba(255,255,255,.25)!important;
+    
+        border-radius:10px!important;
     }}
-
+    
     .stSelectbox div[data-baseweb="select"] > div {{
-        background-color: rgba(15, 23, 42, 0.85) !important;
-        color: #ffffff !important;
-        border: 1px solid rgba(255,255,255,0.25) !important;
-        border-radius: 10px !important;
+        background-color:rgba(15,23,42,.85)!important;
+    
+        color:white!important;
+    
+        border:1px solid rgba(255,255,255,.25)!important;
+    
+        border-radius:10px!important;
     }}
-
-  /* FINAL OVERRIDE — Streamlit uploaded file cards */
+    
+    
+/* ==========================
+    FILE UPLOADER
+========================== */
+    
     [data-testid="stFileUploader"] section {{
-        background-color: rgba(10,20,45,0.90) !important;
-        border: 1px dashed rgba(255,255,255,0.35) !important;
-        border-radius: 14px !important;
+        background-color:rgba(10,20,45,.90)!important;
+    
+        border:1px dashed rgba(255,255,255,.35)!important;
+    
+        border-radius:14px!important;
+    }}
+    
+    [data-testid="stFileUploader"] section:hover {{
+        border:1px solid #4da6ff!important;
     }}
     
     [data-testid="stFileUploader"] section + div {{
-        background: transparent !important;
+        background:transparent!important;
     }}
     
     [data-testid="stFileUploader"] ul,
     [data-testid="stFileUploader"] li,
     [data-testid="stFileUploader"] li > div,
     [data-testid="stFileUploader"] li div {{
-        background-color: rgba(17, 26, 51, 0.98) !important;
-        color: #ffffff !important;
-        border-radius: 12px !important;
+    
+        background-color:rgba(17,26,51,.98)!important;
+    
+        color:white!important;
+    
+        border-radius:12px!important;
     }}
     
     [data-testid="stFileUploader"] li {{
-        border: 1px solid rgba(96,165,250,0.65) !important;
-        margin-bottom: 8px !important;
+        border:1px solid rgba(96,165,250,.65)!important;
+        margin-bottom:8px!important;
     }}
     
     [data-testid="stFileUploader"] span,
     [data-testid="stFileUploader"] p,
     [data-testid="stFileUploader"] small,
     [data-testid="stFileUploader"] svg {{
-        color: #ffffff !important;
-        fill: #ffffff !important;
+    
+        color:white!important;
+        fill:white!important;
     }}
     
     [data-testid="stFileUploader"] button {{
-        background-color: #0b1f44 !important;
-        color: #ffffff !important;
-        border: 1px solid rgba(96,165,250,0.65) !important;
-    }}
-
-    div.stButton > button {{
-        background: linear-gradient(90deg, #2563eb, #7c3aed);
-        color: white !important;
-        border-radius: 14px;
-        height: 55px;
-        font-size: 18px;
-        font-weight: 600;
-        border: none;
-        width: 100%;
-    }}
-
-    div.stButton > button:hover {{
-        background: linear-gradient(90deg, #1d4ed8, #6d28d9);
-        color: white !important;
-    }}
-
-    .stFileUploader label div {{
-    color: white !important;
-    }}
-
-    .stFileUploader section {{
-        background-color: rgba(10, 20, 45, 0.85) !important;
-        border: 1px dashed rgba(255,255,255,0.3) !important;
-        border-radius: 12px;
-    }}
-
-    .stFileUploader section:hover {{
-        border: 1px solid #4da6ff !important;
-    }}
-
-    .stFileUploader div[data-testid="stFileUploaderDropzone"] {{
-        background-color: rgba(10,20,45,0.9) !important;
-        color: white !important;
-    }}
-
-    .stFileUploader button {{
-        background-color: #0b1f44 !important;
-        color: white !important;
-        border: 1px solid rgba(255,255,255,0.2) !important;
-        border-radius: 8px !important;
-    }}
-
-    .stFileUploader button:hover {{
-        border: 1px solid #4da6ff !important;
-        color: #4da6ff !important;
-    }}
-
-    /* Fix uploaded file pills */
-    [data-testid="stFileUploaderFile"] {{
-        background-color: #111827 !important;
-        border: 1px solid #60a5fa !important;
-        border-radius: 10px !important;
+    
+        background:#0b1f44!important;
+    
+        color:white!important;
+    
+        border:1px solid rgba(96,165,250,.65)!important;
     }}
     
-    [data-testid="stFileUploaderFile"] div,
-    [data-testid="stFileUploaderFile"] span,
-    [data-testid="stFileUploaderFile"] small,
-    [data-testid="stFileUploaderFile"] p {{
-        color: #ffffff !important;
-        background-color: transparent !important;
-    }}
     
-    /* Force filename visible */
-    [data-testid="stFileUploaderFileName"] {{
-        color: #ffffff !important;
-    }}
+/* ==========================
+    BUTTONS
+========================== */
     
-    /* File icon */
-    [data-testid="stFileUploaderFile"] svg {{
-        color: #ffffff !important;
-        fill: #ffffff !important;
-    }}
-    
-    /* Download buttons */
+    div.stButton > button,
     [data-testid="stDownloadButton"] button {{
-        background: linear-gradient(90deg,#2563eb,#7c3aed) !important;
-        color: #ffffff !important;
-        border: none !important;
-        border-radius: 14px !important;
-        height: 55px !important;
-        font-size: 18px !important;
-        font-weight: 600 !important;
+    
+        background:linear-gradient(
+            90deg,
+            #2563eb,
+            #7c3aed
+        ) !important;
+    
+        color:white!important;
+    
+        border:none!important;
+    
+        border-radius:14px!important;
+    
+        height:55px!important;
+    
+        font-size:18px!important;
+    
+        font-weight:600!important;
+    
+        width:100%;
     }}
     
-    [data-testid="stDownloadButton"] button div,
-    [data-testid="stDownloadButton"] button span,
-    [data-testid="stDownloadButton"] button p {{
-        color: #ffffff !important;
+    div.stButton > button:hover {{
+        background:linear-gradient(
+            90deg,
+            #1d4ed8,
+            #6d28d9
+        )!important;
     }}
     
-    /* Force button text */
-    button,
     button * {{
-        color: #ffffff !important;
+        color:white!important;
     }}
-
+    
     </style>
     """,
     unsafe_allow_html=True
-)
+    )
 
-st.markdown(
-    f"""<div class="hero-container">
-<div class="hero-left">
-<div class="hero-title">Analytics Modernization Assessment Copilot</div>
-<div class="hero-subtitle">
-AI-powered executive analytics assessments, modernization roadmaps,
-S/4HANA readiness analysis, and actionable remediation planning.
-</div>
-</div>
-<div class="hero-right">
-<img src="data:image/png;base64,{robot_image}">
-</div>
-</div>""",
+
+# ==========================
+# HERO
+# ==========================
+
+    st.markdown(
+    f"""
+    <div class="hero-container">
+    
+    <div class="hero-left">
+    
+    <div class="hero-title">
+    Analytics Modernization Assessment Copilot
+    </div>
+    
+    <div class="hero-subtitle">
+    AI-powered executive analytics assessments,
+    modernization roadmaps, S/4HANA readiness analysis,
+    and actionable remediation planning.
+    </div>
+    
+    </div>
+    
+    <div class="hero-right">
+    <img src="data:image/png;base64,{robot_image}">
+    </div>
+    
+    </div>
+    """,
     unsafe_allow_html=True
-)
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.markdown("""
-    <div class='feature-card'>
-        <h3>AI-Driven Insights</h3>
-        <p>Identify analytics gaps, risks, and reporting challenges automatically.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col2:
-    st.markdown("""
-    <div class='feature-card'>
-        <h3>Executive Ready</h3>
-        <p>Generate boardroom-quality Word documents and PowerPoint presentations.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col3:
-    st.markdown("""
-    <div class='feature-card'>
-        <h3>S/4HANA Readiness</h3>
-        <p>Assess reporting impacts, governance gaps, and modernization priorities.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    )
 
 # --------------------
 # OpenAI Setup
