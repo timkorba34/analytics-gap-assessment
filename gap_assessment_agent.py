@@ -1479,11 +1479,11 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
 
     else:
-    add_heading(doc, "Assessment Content Not Available", 1)
-    add_paragraph(
-        doc,
-        f"No document template exists for assessment type: {assessment_type}. "
-        "Confirm that the assessment type dropdown matches ASSESSMENT_FRAMEWORKS."
+        add_heading(doc, "Assessment Content Not Available", 1)
+        add_paragraph(
+            doc,
+            f"No document template exists for assessment type: {assessment_type}. "
+            "Confirm that the assessment type dropdown matches ASSESSMENT_FRAMEWORKS."
     )
 
     # SAVE MUST STAY LAST
