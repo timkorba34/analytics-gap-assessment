@@ -2,7 +2,6 @@ import json
 import os
 import streamlit as st
 from openai import OpenAI
-from docx import Document
 import PyPDF2
 import pandas as pd
 import io
@@ -10,6 +9,11 @@ import io
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from docx import Document
+from docx.shared import Inches, Pt, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT, WD_CELL_VERTICAL_ALIGNMENT
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 from tavily import TavilyClient
 from graphviz import Digraph
 
@@ -1052,6 +1056,107 @@ def generate_assessment_json(
     return final_data
 
 # --------------------
+# Word Table Formatting Helpers
+# --------------------
+
+TABLE_COUNTER = {"count": 0}
+
+def set_cell_shading(cell, fill):
+    tc_pr = cell._tc.get_or_add_tcPr()
+    shd = OxmlElement("w:shd")
+    shd.set(qn("w:fill"), fill)
+    tc_pr.append(shd)
+
+
+def set_cell_margins(cell, top=80, start=80, bottom=80, end=80):
+    tc = cell._tc
+    tc_pr = tc.get_or_add_tcPr()
+    tc_mar = tc_pr.first_child_found_in("w:tcMar")
+
+    if tc_mar is None:
+        tc_mar = OxmlElement("w:tcMar")
+        tc_pr.append(tc_mar)
+
+    for m, v in {
+        "top": top,
+        "start": start,
+        "bottom": bottom,
+        "end": end,
+    }.items():
+        node = tc_mar.find(qn(f"w:{m}"))
+        if node is None:
+            node = OxmlElement(f"w:{m}")
+            tc_mar.append(node)
+
+        node.set(qn("w:w"), str(v))
+        node.set(qn("w:type"), "dxa")
+
+
+def format_table(table):
+    table.style = "Table Grid"
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    table.autofit = True
+
+    for row_idx, row in enumerate(table.rows):
+        for cell in row.cells:
+            cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
+            set_cell_margins(cell)
+
+            for paragraph in cell.paragraphs:
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
+                for run in paragraph.runs:
+                    run.font.size = Pt(8)
+
+            if row_idx == 0:
+                set_cell_shading(cell, "D9D9D9")
+
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        run.font.bold = True
+                        run.font.color.rgb = RGBColor(0, 0, 0)
+                        run.font.size = Pt(8)
+
+
+def add_table_caption(doc):
+    TABLE_COUNTER["count"] += 1
+
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    run = p.add_run(f"Table {TABLE_COUNTER['count']}")
+    run.bold = True
+    run.font.size = Pt(9)
+    run.font.color.rgb = RGBColor(80, 80, 80)
+
+
+def add_table_of_contents(doc):
+    doc.add_heading("Table of Contents", level=1)
+
+    paragraph = doc.add_paragraph()
+    run = paragraph.add_run()
+
+    fld_char1 = OxmlElement("w:fldChar")
+    fld_char1.set(qn("w:fldCharType"), "begin")
+
+    instr_text = OxmlElement("w:instrText")
+    instr_text.set(qn("xml:space"), "preserve")
+    instr_text.text = 'TOC \\o "1-3" \\h \\z \\u'
+
+    fld_char2 = OxmlElement("w:fldChar")
+    fld_char2.set(qn("w:fldCharType"), "separate")
+
+    fld_char3 = OxmlElement("w:fldChar")
+    fld_char3.set(qn("w:fldCharType"), "end")
+
+    run._r.append(fld_char1)
+    run._r.append(instr_text)
+    run._r.append(fld_char2)
+    run._r.append(fld_char3)
+
+    doc.add_page_break()
+
+# --------------------
 # Word Helpers
 # --------------------
 def add_heading(doc, text, level=1):
@@ -1099,7 +1204,6 @@ def add_table_from_records(doc, records):
     headers = list(records[0].keys())
 
     table = doc.add_table(rows=1, cols=len(headers))
-    table.style = "Table Grid"
 
     for i, h in enumerate(headers):
         table.rows[0].cells[i].text = str(h)
@@ -1118,15 +1222,22 @@ def add_table_from_records(doc, records):
                 value = str(value)
 
             row[i].text = value
+            
+        format_table(table)
+        add_table_caption(doc)
 
 
 # --------------------
 # Build Word Document
 # --------------------
 def build_docx(data, client_name, assessment_type):
+    TABLE_COUNTER["count"] = 0
+
     doc = Document()
 
     doc.add_heading(f"{client_name or 'Client'} {assessment_type}", 0)
+
+    add_table_of_contents(doc)
 
     # Common executive front-end
     add_heading(doc, "1. Engagement Overview", 1)
@@ -1609,7 +1720,7 @@ Must be 1-2 executive paragraphs explaining the current reporting landscape, red
 report_replacement_matrix must be a table array.
 
 Columns:
-Current Report, Current Tool / Type, ABAP Program / T-Code, Business Area, Known Source Tables, Current Purpose, Likely SAP Fiori App, Likely Embedded Analytics Query, Recommended Disposition, Target Reporting Option, Confidence Score, Rationale, Deep-Dive Required
+Report, Tool, ABAP/T-Code, Area, Source Tables, Purpose, Fiori App, Embedded Query, Disposition, Target Option, Confidence, Rationale, Deep Dive?
 
 report_replacement_text:
 Must be 1-2 executive paragraphs explaining which Excel, Power BI, ABAP, BW, BusinessObjects, or other reports should be retained, remediated, replaced, rebuilt, retired, or moved to modern analytics.
