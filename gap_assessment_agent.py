@@ -158,9 +158,7 @@ st.markdown(
 
    /* Uploaded file pill background */
 div[data-testid="stFileUploaderFile"] {{
-    background: #111a33 !important;
-    border: 1px solid rgba(120, 160, 255, 0.6) !important;
-    border-radius: 12px !important;
+    background: rgba(20,35,75,.95) !important;
     }}
     
     /* Inner file pill containers */
