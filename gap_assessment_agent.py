@@ -2037,8 +2037,6 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
                 st.error("Validation failed — showing partial output")
 
         st.session_state.assessment_data = data
-        st.write("Generated Keys:")
-        st.write(list(data.keys()))
 
         if data:
             with st.spinner("Creating Word document..."):
