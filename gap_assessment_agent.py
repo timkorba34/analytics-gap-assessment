@@ -1260,14 +1260,6 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("top_priorities_text", ""))  
 
-    set_update_fields_on_open(doc)
-
-    output = io.BytesIO()
-    doc.save(output)
-    output.seek(0)
-
-    return output
-
     # --------------------
     # Analytics Gap Assessment
     # --------------------
@@ -1397,6 +1389,15 @@ def build_docx(data, client_name, assessment_type):
         add_table_from_records(doc, data.get("responsibility_gaps", []))
         doc.add_paragraph("")
         add_paragraph(doc, data.get("analytics_ownership_overview_text", ""))
+
+    # SAVE MUST STAY LAST
+    set_update_fields_on_open(doc)
+
+    output = io.BytesIO()
+    doc.save(output)
+    output.seek(0)
+
+    return output
 
     # --------------------
     # Analytics Modernization Roadmap
