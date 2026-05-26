@@ -1492,6 +1492,27 @@ def build_docx(data, client_name, assessment_type):
                 "current_architecture_diagram"
             )
 
+                        future_data = data.get(
+                "future_architecture_diagram",
+                {
+                    "nodes":[
+                        {"id":"SAP S/4HANA"},
+                        {"id":"Datasphere"},
+                        {"id":"Power BI"}
+                    ],
+                    "connections":[
+                        {
+                            "from":"SAP S/4HANA",
+                            "to":"Datasphere"
+                        },
+                        {
+                            "from":"Datasphere",
+                            "to":"Power BI"
+                        }
+                    ]
+                }
+            )
+            
             future_image = build_architecture_diagram(
                 future_data,
                 "future_architecture_diagram"
@@ -2366,13 +2387,25 @@ Must be 1-2 paragraphs explaining why these reports must be prioritized.
 critical_report_summary:
 Must be 1 executive paragraph summarizing the critical report risk.
 """,
+"Analytics Stakeholder Map": """
+Create stakeholder summaries ONLY if supplied in uploaded files,
+meeting notes, or user input.
 
-    "Appendix F — Analytics Stakeholder Map": """
-analytics_responsibility_model must be a table array.
-Columns: Department, Report Name, Responsibility
+Rules:
 
-stakeholder_interview_summary must be a table array.
-Columns: Stakeholder, Role, Key Concerns
+- Never invent names
+- Never create fake people
+- Never create fake titles
+
+If no stakeholder information exists:
+
+Stakeholder="Not Provided"
+Role="Unknown"
+Key Concerns="Validation Required"
+
+confidence=0
+validation_required=True
+source="Missing Input"
 
 responsibility_gaps must be a table array.
 Columns: Report Name, Gap, Business Impact, Recommended Action
