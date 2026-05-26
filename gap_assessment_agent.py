@@ -874,7 +874,6 @@ Focus on:
 - phased AI roadmap
 - business value realization
 """
-}
 
 "COMPANY_RESEARCH_REQUIREMENTS" = """
 Use the public company research, discovery notes, uploaded files, and industry context to make the assessment company-specific.
