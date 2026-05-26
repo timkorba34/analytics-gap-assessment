@@ -2387,7 +2387,8 @@ Must be 1-2 paragraphs explaining why these reports must be prioritized.
 critical_report_summary:
 Must be 1 executive paragraph summarizing the critical report risk.
 """,
-"Analytics Stakeholder Map": """
+    
+    "Appendix F — Analytics Stakeholder Map": """
 Create stakeholder summaries ONLY if supplied in uploaded files,
 meeting notes, or user input.
 
@@ -2406,6 +2407,12 @@ Key Concerns="Validation Required"
 confidence=0
 validation_required=True
 source="Missing Input"
+
+analytics_responsibility_model must be a table array.
+Columns: Department, Report Name, Responsibility
+
+stakeholder_interview_summary must be a table array.
+Columns: Stakeholder, Role, Key Concerns
 
 responsibility_gaps must be a table array.
 Columns: Report Name, Gap, Business Impact, Recommended Action
