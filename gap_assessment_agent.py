@@ -873,9 +873,10 @@ Focus on:
 - implementation complexity
 - phased AI roadmap
 - business value realization
-""",
+"""
+}
 
-"COMPANY_RESEARCH_REQUIREMENTS": """
+COMPANY_RESEARCH_REQUIREMENTS = """
 Use the public company research, discovery notes, uploaded files, and industry context to make the assessment company-specific.
 
 Explain the customer's operating model, likely business complexity, reporting needs, ERP/data landscape, and transformation drivers.
@@ -883,7 +884,7 @@ Explain the customer's operating model, likely business complexity, reporting ne
 Avoid generic language. Do not fabricate specific counts, revenue, locations, systems, reports, or years of history unless provided.
 """,
 
-"TABLE_SUMMARY_REQUIREMENTS": """
+TABLE_SUMMARY_REQUIREMENTS = """
 After every table, generate a 1-2 paragraph executive narrative explaining what the table means to the customer.
 
 The narrative must explain:
@@ -896,7 +897,7 @@ The narrative must explain:
 
 Do not simply repeat the table. Interpret the findings.
 """
-}
+
 
 # --------------------
 # Generate One Section
