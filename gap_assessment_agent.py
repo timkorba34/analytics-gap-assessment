@@ -798,28 +798,83 @@ Unknown – Discovery Required
 
 def recommend_embedded_reports(report_inventory):
 
-    recommendations=[]
+    recommendations = []
+
+    if not report_inventory:
+        return recommendations
 
     for report in report_inventory:
 
-        prompt=f"""
+        prompt = f"""
+        You are an SAP S/4HANA embedded analytics advisor.
+
         Current Report:
         {report}
 
-        Search SAP standard embedded analytics,
-        SAP Fiori analytical applications,
-        CDS analytical queries,
-        and recommend:
+        Recommend the best SAP standard replacement or modernization path.
 
-        - Best replacement
-        - Confidence score
-        - Retain/Replace/Rebuild/Retire
-        - Reason
+        Return ONLY valid JSON with this structure:
+
+        {{
+            "current_report": "",
+            "business_area": "",
+            "known_source_tables": "",
+            "likely_sap_fiori_app": "",
+            "likely_embedded_analytics_query": "",
+            "recommended_disposition": "",
+            "target_reporting_option": "",
+            "confidence_score": 0,
+            "source": "",
+            "validation_required": true,
+            "rationale": "",
+            "deep_dive_required": true
+        }}
+
+        Rules:
+        - If the recommendation is based on exact input from the uploaded report inventory, set source = "Uploaded Inventory".
+        - If the recommendation is based on SAP knowledge but not confirmed in the uploaded inventory, set source = "AI Inferred".
+        - If confidence_score is below 80, validation_required must be true.
+        - Do not invent stakeholder names.
+        - Do not invent report owners unless provided.
+        - Use Retain, Replace, Rebuild, Retire, or Modernize for recommended_disposition.
         """
 
-        result = client.chat.completions.create(...)
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Return only valid JSON. No markdown."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.2
+        )
 
-        recommendations.append(result)
+        try:
+            recommendation = json.loads(
+                response.choices[0].message.content
+            )
+        except Exception:
+            recommendation = {
+                "current_report": str(report),
+                "business_area": "",
+                "known_source_tables": "",
+                "likely_sap_fiori_app": "",
+                "likely_embedded_analytics_query": "",
+                "recommended_disposition": "Deep Dive Required",
+                "target_reporting_option": "",
+                "confidence_score": 0,
+                "source": "Parsing Error",
+                "validation_required": True,
+                "rationale": "The AI response could not be parsed into valid JSON.",
+                "deep_dive_required": True
+            }
+
+        recommendations.append(recommendation)
 
     return recommendations
 
@@ -1251,7 +1306,7 @@ def add_table_from_records(doc, records):
 # Build Architecture Diagram
 # --------------------
 
-def build_architecture_diagram(data,key):
+def build_architecture_diagram(data):
 
     diagram=Digraph()
 
@@ -1367,6 +1422,10 @@ def build_docx(data, client_name, assessment_type):
     doc.add_paragraph("")
     add_paragraph(doc, data.get("executive_summary_text", ""))
 
+    add_heading(doc,"Assessment Confidence",1)
+    doc.add_paragraph(f"Confidence Score: {confidence}%")
+    doc.add_paragraph(f"Missing Inputs: {','.join(missing)}")
+
     if data.get("assessment_assumptions"):
         add_heading(doc,"3. Assessment Assumptions",1)
         add_table_from_records(doc,data.get("assessment_assumptions",[]))
@@ -1378,9 +1437,9 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("top_priorities_text", ""))  
     
-    # --------------------
-    # Analytics Gap Assessment
-    # --------------------
+# --------------------
+# Analytics Gap Assessment
+# --------------------
     assessment_type_clean = assessment_type.strip()
 
     if assessment_type_clean == "Analytics Gap Assessment":
@@ -1406,6 +1465,16 @@ def build_docx(data, client_name, assessment_type):
             image = build_architecture_diagram(
                 data,
                 "current_architecture_diagram"
+            )
+
+            future_image = build_architecture_diagram(
+                future_data,
+                "future_architecture_diagram"
+            )
+
+            risk_image = build_architecture_diagram(
+                risk_data,
+                "risk_architecture_diagram"
             )
         
             doc.add_picture(
