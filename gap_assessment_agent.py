@@ -1437,7 +1437,7 @@ def build_docx(data, client_name, assessment_type):
     add_paragraph(doc, data.get("executive_summary_text", ""))
 
     add_heading(doc,"Assessment Confidence",1)
-        add_heading(doc, "Assessment Confidence", 1)
+    add_heading(doc, "Assessment Confidence", 1)
 
     confidence = data.get("assessment_confidence", 75)
     missing = data.get("missing_inputs", [])
