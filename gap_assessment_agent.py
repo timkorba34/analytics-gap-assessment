@@ -2579,8 +2579,7 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
                 st.session_state.email_text = build_exec_email(data, client_name)
 
             st.success("Assessment outputs generated successfully.")
-            quality=
-            calculate_quality_score(data)
+            quality = calculate_quality_score(data)
             
             st.metric(
                 "Assessment Quality",
