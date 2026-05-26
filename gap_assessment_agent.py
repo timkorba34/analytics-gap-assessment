@@ -1119,6 +1119,20 @@ def generate_assessment_json(
 
         final_data.update(section_data)
 
+        missing_inputs = []
+
+    if not file_content:
+        missing_inputs.append("Uploaded discovery files")
+
+    if not notes:
+        missing_inputs.append("Additional notes")
+
+    confidence = 100 - (len(missing_inputs) * 10)
+    confidence = max(confidence, 50)
+
+    final_data["missing_inputs"] = missing_inputs
+    final_data["assessment_confidence"] = confidence
+
     return final_data
 
 # --------------------
@@ -1423,8 +1437,20 @@ def build_docx(data, client_name, assessment_type):
     add_paragraph(doc, data.get("executive_summary_text", ""))
 
     add_heading(doc,"Assessment Confidence",1)
+        add_heading(doc, "Assessment Confidence", 1)
+
+    confidence = data.get("assessment_confidence", 75)
+    missing = data.get("missing_inputs", [])
+
+    if isinstance(missing, str):
+        missing = [missing]
+
     doc.add_paragraph(f"Confidence Score: {confidence}%")
-    doc.add_paragraph(f"Missing Inputs: {','.join(missing)}")
+
+    if missing:
+        doc.add_paragraph("Missing Inputs: " + ", ".join(missing))
+    else:
+        doc.add_paragraph("Missing Inputs: None identified")
 
     if data.get("assessment_assumptions"):
         add_heading(doc,"3. Assessment Assumptions",1)
