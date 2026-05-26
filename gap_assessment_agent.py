@@ -1492,7 +1492,7 @@ def build_docx(data, client_name, assessment_type):
                 "current_architecture_diagram"
             )
 
-                        future_data = data.get(
+                future_data = data.get(
                 "future_architecture_diagram",
                 {
                     "nodes":[
