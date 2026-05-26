@@ -773,6 +773,23 @@ Return valid JSON only.
 
 All tables must be arrays of flat row objects.
 Do not create nested dictionaries inside table cells.
+IMPORTANT:
+
+Never invent:
+
+- source systems
+- report counts
+- BW usage
+- Power BI usage
+- SAP modules
+- executive roles
+- architecture components
+
+If unavailable:
+
+Return:
+
+Unknown – Discovery Required
 """
 
 # --------------------
@@ -859,15 +876,15 @@ Focus on:
 """
 }
 
-COMPANY_RESEARCH_REQUIREMENTS = """
+"COMPANY_RESEARCH_REQUIREMENTS" = """
 Use the public company research, discovery notes, uploaded files, and industry context to make the assessment company-specific.
 
 Explain the customer's operating model, likely business complexity, reporting needs, ERP/data landscape, and transformation drivers.
 
 Avoid generic language. Do not fabricate specific counts, revenue, locations, systems, reports, or years of history unless provided.
-"""
+""",
 
-TABLE_SUMMARY_REQUIREMENTS = """
+"TABLE_SUMMARY_REQUIREMENTS" = """
 After every table, generate a 1-2 paragraph executive narrative explaining what the table means to the customer.
 
 The narrative must explain:
@@ -880,6 +897,7 @@ The narrative must explain:
 
 Do not simply repeat the table. Interpret the findings.
 """
+}
 
 # --------------------
 # Generate One Section
@@ -1260,12 +1278,29 @@ def build_architecture_diagram(data):
             "System"
         )
 
+        shape_map={
+
+        "ERP":"box",
+        "Warehouse":"cylinder",
+        "Reporting":"folder",
+        "Integration":"diamond",
+        "Consumer":"oval"
+        }
+        
+        fill_map={
+        
+        "ERP":"#D9EAF7",
+        "Warehouse":"#FFF2CC",
+        "Reporting":"#E2F0D9",
+        "Integration":"#F4CCCC",
+        "Consumer":"#D9D2E9"
+        }
+        
         diagram.node(
-            node["id"],
-            node["id"],
-            shape="box",
-            style="filled",
-            fillcolor="lightblue"
+        node["id"],
+        shape=shape_map.get(node_type,"box"),
+        style="filled",
+        fillcolor=fill_map.get(node_type)
         )
 
     for c in connections:
@@ -1289,7 +1324,104 @@ def build_architecture_diagram(data):
 
     return output_path + ".png"
 
+# --------------------
+# Build Architecture Diagram
+# --------------------
 
+def build_architecture_diagram(data,key):
+
+    diagram=Digraph()
+
+    architecture=data.get(
+        key,
+        {}
+    )
+
+    nodes=architecture.get(
+        "nodes",
+        []
+    )
+
+    connections=architecture.get(
+        "connections",
+        []
+    )
+
+    shape_map={
+
+        "ERP":"box",
+
+        "Warehouse":"cylinder",
+
+        "Reporting":"folder",
+
+        "Integration":"diamond",
+
+        "Consumer":"oval"
+
+    }
+
+    color_map={
+
+        "ERP":"#D9EAF7",
+
+        "Warehouse":"#FFF2CC",
+
+        "Reporting":"#E2F0D9",
+
+        "Integration":"#F4CCCC",
+
+        "Consumer":"#D9D2E9"
+
+    }
+
+    for node in nodes:
+
+        node_type=node.get(
+            "type",
+            "ERP"
+        )
+
+        diagram.node(
+
+            node["id"],
+
+            shape=
+            shape_map.get(
+                node_type,
+                "box"
+            ),
+
+            style="filled",
+
+            fillcolor=
+            color_map.get(
+                node_type,
+                "#D9EAF7"
+            )
+        )
+
+    for c in connections:
+
+        diagram.edge(
+            c["from"],
+            c["to"],
+            label=
+            c.get(
+                "label",
+                ""
+            )
+        )
+
+    output="/tmp/architecture"
+
+    diagram.render(
+        output,
+        format="png",
+        cleanup=True
+    )
+
+    return output+".png"
 
 # --------------------
 # Build Word Document
@@ -1311,6 +1443,10 @@ def build_docx(data, client_name, assessment_type):
     add_heading(doc, "2. Executive Summary", 1)
     doc.add_paragraph("")
     add_paragraph(doc, data.get("executive_summary_text", ""))
+
+    if data.get("assessment_assumptions"):
+        add_heading(doc,"3. Assessment Assumptions",1)
+        add_table_from_records(doc,data.get("assessment_assumptions",[]))
 
     if data.get("top_priorities"):
         add_heading(doc, "Executive Priorities", 2)
@@ -1335,6 +1471,51 @@ def build_docx(data, client_name, assessment_type):
         add_paragraph(
         doc,
         data.get("transformation_context_summary", ""))
+
+        try:
+
+            add_heading(
+                doc,
+                "Current Architecture",
+                1
+            )
+        
+            image=
+            build_architecture_diagram(
+                data,
+                "current_architecture_diagram"
+            )
+        
+            doc.add_picture(
+                image,
+                width=Inches(7)
+            )
+        
+        except:
+            pass
+        
+        
+        try:
+        
+            add_heading(
+                doc,
+                "Future Architecture",
+                1
+            )
+        
+            image=
+            build_architecture_diagram(
+                data,
+                "future_architecture_diagram"
+            )
+        
+            doc.add_picture(
+                image,
+                width=Inches(7)
+            )
+        
+        except:
+            pass
 
         add_heading(doc, "4. Current Analytics Ecosystem", 1)
         doc.add_paragraph("")
@@ -1771,6 +1952,53 @@ top_priorities_text:
 Must be 2 executive paragraphs interpreting the priority table.
 """,
 
+    "Assessment Assumptions": """
+assessment_assumptions must be a table.
+
+Columns:
+
+Area,
+Assumption,
+Confidence,
+Validation Required
+
+Rules:
+
+Never fabricate customer facts.
+
+If information is unavailable:
+
+Use:
+
+Unknown – Discovery Required
+
+Confidence:
+
+High
+Medium
+Low
+""",
+
+    "Current Architecture Diagram": """
+
+current_architecture_diagram:
+
+{
+"nodes":[],
+"connections":[]
+}
+""",
+
+"Future Architecture Diagram": """
+
+future_architecture_diagram:
+
+{
+"nodes":[],
+"connections":[]
+}
+""",
+
     "S/4HANA Transformation Context": """
 transformation_context must be a table array.
 Columns: Area, Current State, Target State, Migration Impact
@@ -2156,6 +2384,11 @@ ASSESSMENT_FRAMEWORKS = {
                 "instructions": SECTION_INSTRUCTIONS["Executive Summary"]
             },
             {
+                "section_name":"Assessment Assumptions",
+                "keys":["assessment_assumptions"],
+                "instructions":SECTION_INSTRUCTIONS["Assessment Assumptions"]
+            },
+            {
                 "section_name": "S/4HANA Transformation Context",
                 "keys": ["transformation_context", "transformation_context_summary"],
                 "instructions": SECTION_INSTRUCTIONS["S/4HANA Transformation Context"]
@@ -2169,6 +2402,11 @@ ASSESSMENT_FRAMEWORKS = {
                 "section_name":"Current Architecture Diagram",
                 "keys":["current_architecture_diagram"],
                 "instructions":SECTION_INSTRUCTIONS["Current Architecture Diagram"]
+            },
+            {
+                "section_name":"Future Architecture Diagram",
+                "keys":["future_architecture_diagram"],
+                "instructions":SECTION_INSTRUCTIONS["Future Architecture Diagram"]
             },
             {
                 "section_name": "Reporting Dependency Map",
@@ -2266,8 +2504,36 @@ ASSESSMENT_FRAMEWORKS = {
 }
 
 # --------------------
+# Calculate Quality Score
+# --------------------
+
+def calculate_quality_score(data):
+
+    score=0
+
+    checks=[
+
+        "current_architecture_diagram",
+        "future_architecture_diagram",
+        "report_replacement_matrix",
+        "assessment_assumptions",
+        "recommended_focus_areas",
+        "s4_analytics_roadmap"
+
+    ]
+
+    for c in checks:
+
+        if data.get(c):
+
+            score+=15
+
+    return min(score,100)
+
+# --------------------
 # Generate Button
 # --------------------
+
 if st.button("Generate Assessment Outputs", key="main_generate_btn"):
 
     if not client_name:
@@ -2311,6 +2577,13 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
                 st.session_state.email_text = build_exec_email(data, client_name)
 
             st.success("Assessment outputs generated successfully.")
+            quality=
+            calculate_quality_score(data)
+            
+            st.metric(
+                "Assessment Quality",
+                f"{quality}/100"
+            )
         else:
             st.error("Assessment generation failed.")
 
