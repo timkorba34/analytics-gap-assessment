@@ -1320,7 +1320,7 @@ def add_table_from_records(doc, records):
 # Build Architecture Diagram
 # --------------------
 
-def build_architecture_diagram(data, "current_architecture_diagram");
+def build_architecture_diagram(data, key):
 
     diagram=Digraph()
 
