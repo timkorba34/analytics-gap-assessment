@@ -1479,8 +1479,7 @@ def build_docx(data, client_name, assessment_type):
                 1
             )
         
-            image=
-            build_architecture_diagram(
+            image = build_architecture_diagram(
                 data,
                 "current_architecture_diagram"
             )
@@ -1490,8 +1489,11 @@ def build_docx(data, client_name, assessment_type):
                 width=Inches(7)
             )
         
-        except:
-            pass
+        except Exception as e:
+        
+            doc.add_paragraph(
+                f"Current architecture unavailable: {str(e)}"
+            )
         
         
         try:
@@ -1502,8 +1504,7 @@ def build_docx(data, client_name, assessment_type):
                 1
             )
         
-            image=
-            build_architecture_diagram(
+            image = build_architecture_diagram(
                 data,
                 "future_architecture_diagram"
             )
@@ -1513,9 +1514,11 @@ def build_docx(data, client_name, assessment_type):
                 width=Inches(7)
             )
         
-        except:
-            pass
-
+        except Exception as e:
+        
+            doc.add_paragraph(
+                f"Future architecture unavailable: {str(e)}"
+            )
         add_heading(doc, "4. Current Analytics Ecosystem", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("current_system_inventory", []))
