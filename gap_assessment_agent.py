@@ -875,7 +875,7 @@ Focus on:
 - business value realization
 """,
 
-"COMPANY_RESEARCH_REQUIREMENTS" = """
+"COMPANY_RESEARCH_REQUIREMENTS": """
 Use the public company research, discovery notes, uploaded files, and industry context to make the assessment company-specific.
 
 Explain the customer's operating model, likely business complexity, reporting needs, ERP/data landscape, and transformation drivers.
