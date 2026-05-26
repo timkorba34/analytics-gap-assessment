@@ -883,7 +883,7 @@ Explain the customer's operating model, likely business complexity, reporting ne
 Avoid generic language. Do not fabricate specific counts, revenue, locations, systems, reports, or years of history unless provided.
 """,
 
-"TABLE_SUMMARY_REQUIREMENTS" = """
+"TABLE_SUMMARY_REQUIREMENTS": """
 After every table, generate a 1-2 paragraph executive narrative explaining what the table means to the customer.
 
 The narrative must explain:
