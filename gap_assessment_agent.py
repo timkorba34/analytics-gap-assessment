@@ -937,7 +937,7 @@ Use the public company research, discovery notes, uploaded files, and industry c
 Explain the customer's operating model, likely business complexity, reporting needs, ERP/data landscape, and transformation drivers.
 
 Avoid generic language. Do not fabricate specific counts, revenue, locations, systems, reports, or years of history unless provided.
-""",
+"""
 
 TABLE_SUMMARY_REQUIREMENTS = """
 After every table, generate a 1-2 paragraph executive narrative explaining what the table means to the customer.
@@ -1490,37 +1490,6 @@ def build_docx(data, client_name, assessment_type):
             image = build_architecture_diagram(
                 data,
                 "current_architecture_diagram"
-            )
-
-            future_data = data.get(
-                "future_architecture_diagram",
-                {
-                    "nodes":[
-                        {"id":"SAP S/4HANA"},
-                        {"id":"Datasphere"},
-                        {"id":"Power BI"}
-                    ],
-                    "connections":[
-                        {
-                            "from":"SAP S/4HANA",
-                            "to":"Datasphere"
-                        },
-                        {
-                            "from":"Datasphere",
-                            "to":"Power BI"
-                        }
-                    ]
-                }
-            )
-            
-            future_image = build_architecture_diagram(
-                future_data,
-                "future_architecture_diagram"
-            )
-
-            risk_image = build_architecture_diagram(
-                risk_data,
-                "risk_architecture_diagram"
             )
         
             doc.add_picture(
@@ -2360,19 +2329,6 @@ Format:
 Rules:
 
 Use uploaded files and discovery notes.
-
-Infer architecture where appropriate.
-
-Include:
-
-- Source systems
-- Data movement tools
-- Data warehouses
-- Analytics tools
-- Manual reporting
-- External applications
-- Data lakes
-- Integration tools
 
 """,
 
