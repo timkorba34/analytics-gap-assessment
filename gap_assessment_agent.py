@@ -614,7 +614,7 @@ def read_uploaded_files(files):
                 for sheet_name in excel_file.sheet_names:
                     df = pd.read_excel(excel_file, sheet_name=sheet_name)
                     content += f"\n\n--- SHEET: {sheet_name} ---\n"
-                    content += df.head(20).to_string(index=False)
+                    content += df.fillna("").to_string(index=False)
 
             elif file_name.endswith(".xls"):
                 excel_file = pd.ExcelFile(file, engine="xlrd")
