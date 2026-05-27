@@ -1968,7 +1968,7 @@ Medium
 Low
 """,
 
-    "Current Architecture Diagram": """
+   "Current Architecture Diagram": """
 
 current_architecture_diagram must be an object containing:
 
@@ -1981,19 +1981,8 @@ Array of source-target relationships
 Format:
 
 {
-"nodes":[
-{"id":"SAP BW","type":"Warehouse"},
-{"id":"Power BI","type":"Reporting"},
-{"id":"SAP Embedded Analytics","type":"Reporting"},
-{"id":"BusinessObjects","type":"Reporting"},
-{"id":"SAP Datasphere","type":"Warehouse"}
-],
-
-"connections":[
-{"from":"SAP BW","to":"Power BI","label":"feeds"},
-{"from":"SAP BW","to":"BusinessObjects","label":"feeds"},
-{"from":"SAP Datasphere","to":"SAP Embedded Analytics","label":"feeds"}
-]
+"nodes":[],
+"connections":[]
 }
 
 Rules:
@@ -2003,40 +1992,55 @@ Use uploaded files as PRIMARY SOURCE OF TRUTH.
 Priority Order:
 
 1. Uploaded spreadsheets
-2. Discovery notes
-3. User-entered notes
-4. Company research
+2. Uploaded architecture documents
+3. Discovery notes
+4. User notes
+5. Company research
+
+DO NOT COPY THE EXAMPLE BELOW AS OUTPUT.
 
 DO NOT INVENT:
 
-- ERP systems
-- BW systems
-- reporting tools
+- SAP ECC
+- SAP S/4HANA
+- SAP BW
+- Power BI
+- Datasphere
+- BusinessObjects
+- SAP modules
 - integration tools
 - data warehouses
-- SAP modules
-- cloud platforms
 - source systems
 
-If SAP ECC is not explicitly provided:
-DO NOT ADD SAP ECC
+Only use systems explicitly found in uploaded files.
 
-If BW is not provided:
-DO NOT ADD BW
+If uploaded files contain:
 
-If Power BI is not provided:
-DO NOT ADD Power BI
+SAP BW
+Power BI
+SAP Embedded Analytics
+BusinessObjects
+SAP Datasphere
 
-If information is missing:
-
-Return:
+Then return:
 
 {
-"nodes":[],
+"nodes":[
+{"id":"SAP BW","type":"Warehouse"},
+{"id":"Power BI","type":"Reporting"},
+{"id":"SAP Embedded Analytics","type":"Reporting"},
+{"id":"BusinessObjects","type":"Reporting"},
+{"id":"SAP Datasphere","type":"Warehouse"}
+],
+
 "connections":[]
 }
 
-rather than inventing architecture.
+If relationships are unknown:
+
+Leave connections empty.
+
+Do not create fake arrows.
 
 """,
 
