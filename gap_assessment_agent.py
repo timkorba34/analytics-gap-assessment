@@ -1564,27 +1564,6 @@ def build_docx(data, client_name, assessment_type):
         doc.add_paragraph("")
         add_paragraph(doc, data.get("current_data_flow_summary", ""))
 
-        try:
-
-            architecture_image = build_architecture_diagram(data, "current_architecture_diagram")
-        
-            add_heading(
-                doc,
-                "Current Architecture",
-                2
-            )
-        
-            doc.add_picture(
-                architecture_image,
-                width=Inches(7)
-            )
-        
-        except Exception as e:
-        
-            doc.add_paragraph(
-                f"Architecture diagram unavailable: {str(e)}"
-            )
-
         add_heading(doc, "5. Reporting Dependency Map", 1)
         doc.add_paragraph("")
         add_table_from_records(doc, data.get("reporting_dependency_map", []))
@@ -2022,22 +2001,74 @@ Low
 
     "Current Architecture Diagram": """
 
-current_architecture_diagram:
+current_architecture_diagram must be an object containing:
+
+nodes:
+Array of architecture components
+
+connections:
+Array of source-target relationships
+
+Format:
+
+{
+"nodes":[
+{"id":"SAP BW","type":"Warehouse"},
+{"id":"Power BI","type":"Reporting"},
+{"id":"SAP Embedded Analytics","type":"Reporting"},
+{"id":"BusinessObjects","type":"Reporting"},
+{"id":"SAP Datasphere","type":"Warehouse"}
+],
+
+"connections":[
+{"from":"SAP BW","to":"Power BI","label":"feeds"},
+{"from":"SAP BW","to":"BusinessObjects","label":"feeds"},
+{"from":"SAP Datasphere","to":"SAP Embedded Analytics","label":"feeds"}
+]
+}
+
+Rules:
+
+Use uploaded files as PRIMARY SOURCE OF TRUTH.
+
+Priority Order:
+
+1. Uploaded spreadsheets
+2. Discovery notes
+3. User-entered notes
+4. Company research
+
+DO NOT INVENT:
+
+- ERP systems
+- BW systems
+- reporting tools
+- integration tools
+- data warehouses
+- SAP modules
+- cloud platforms
+- source systems
+
+If SAP ECC is not explicitly provided:
+DO NOT ADD SAP ECC
+
+If BW is not provided:
+DO NOT ADD BW
+
+If Power BI is not provided:
+DO NOT ADD Power BI
+
+If information is missing:
+
+Return:
 
 {
 "nodes":[],
 "connections":[]
 }
-""",
 
-"Future Architecture Diagram": """
+rather than inventing architecture.
 
-future_architecture_diagram:
-
-{
-"nodes":[],
-"connections":[]
-}
 """,
 
     "S/4HANA Transformation Context": """
