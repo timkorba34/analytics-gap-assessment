@@ -2040,6 +2040,46 @@ rather than inventing architecture.
 
 """,
 
+    "Future Architecture Diagram": """
+future_architecture_diagram must be an object containing:
+
+nodes:
+Array of future-state architecture components
+
+connections:
+Array of source-target relationships
+
+Format:
+
+{
+"nodes":[
+{"id":"SAP S/4HANA","type":"ERP"},
+{"id":"SAP Datasphere","type":"Warehouse"},
+{"id":"SAP Analytics Cloud","type":"Reporting"},
+{"id":"Power BI","type":"Reporting"}
+],
+
+"connections":[
+{"from":"SAP S/4HANA","to":"SAP Datasphere","label":"replicates / federates"},
+{"from":"SAP Datasphere","to":"SAP Analytics Cloud","label":"semantic consumption"},
+{"from":"SAP Datasphere","to":"Power BI","label":"consumption"}
+]
+}
+
+Rules:
+
+Use uploaded files, discovery notes, and target platform selections as PRIMARY SOURCE OF TRUTH.
+
+Do not invent future-state platforms unless they are selected, uploaded, or stated in notes.
+
+If target platform is not known, return:
+
+{
+"nodes":[],
+"connections":[]
+}
+""",
+
     "S/4HANA Transformation Context": """
 transformation_context must be a table array.
 Columns: Area, Current State, Target State, Migration Impact
