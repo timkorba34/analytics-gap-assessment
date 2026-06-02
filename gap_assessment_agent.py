@@ -2024,31 +2024,32 @@ top_priorities_text:
 Must be 2 executive paragraphs interpreting the priority table.
 """,
 
-    "Assessment Assumptions": """
-assessment_assumptions must be a table.
+   "Assessment Assumptions": """
+assessment_assumptions must be a JSON array of objects.
 
-Columns:
-
-Area,
-Assumption,
-Confidence,
-Validation Required
+Each object must use exactly these keys:
+- Area
+- Assumption
+- Confidence
+- Validation Required
 
 Rules:
+- Do not return markdown.
+- Do not return a pipe-delimited table.
+- Do not use | characters.
+- Never fabricate customer facts.
+- If information is unavailable, use "Unknown – Discovery Required".
+- Confidence must be one of: High, Medium, Low.
 
-Never fabricate customer facts.
-
-If information is unavailable:
-
-Use:
-
-Unknown – Discovery Required
-
-Confidence:
-
-High
-Medium
-Low
+Example:
+"assessment_assumptions": [
+  {
+    "Area": "Current Reporting Risks",
+    "Assumption": "Unknown – Discovery Required",
+    "Confidence": "Low",
+    "Validation Required": "Yes"
+  }
+]
 """,
 
    "Current Architecture Diagram": """
