@@ -442,14 +442,10 @@ st.markdown("<div class='glass'>", unsafe_allow_html=True)
 
 client_search = st.text_input("Search Client")
 
-st.write("client_search:", client_search)
-
 if client_search:
     company_options = search_companies(client_search)
 else:
     company_options = []
-
-st.write("company_options:", company_options)
 
 if company_options:
     client_name = st.selectbox(
