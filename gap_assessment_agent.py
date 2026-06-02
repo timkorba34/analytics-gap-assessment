@@ -370,6 +370,12 @@ for key, value in defaults.items():
 # Company Search - Drop Down
 # --------------------
 def search_companies(query):
+    if not query or not query.strip():
+        return []
+
+    if not tavily_client:
+        return [query.strip()]
+
     try:
         response = tavily_client.search(
             query=f"{query} official company name official website",
@@ -397,25 +403,17 @@ URL: {result.get("url", "")}
 Content: {result.get("content", "")}
 """
 
+        if not search_context.strip():
+            return [query.strip()]
+
         prompt = f"""
-You are identifying the correct official company name.
+Return the official company name only.
 
 User typed:
 {query}
 
 Search results:
 {search_context}
-
-Return only the official company name.
-Do not return page titles.
-Do not return descriptions.
-Do not return URLs.
-Do not return LinkedIn, ZoomInfo, Seamless, employee names, or marketing text.
-Return one clean company name only.
-
-Example:
-User typed: PIM Brands
-Return: PIM Brands, Inc.
 """
 
         result = client.chat.completions.create(
@@ -429,9 +427,10 @@ Return: PIM Brands, Inc.
 
         company_name = result.choices[0].message.content.strip()
 
-        return [company_name]
+        return [company_name] if company_name else [query.strip()]
 
-    except Exception:
+    except Exception as e:
+        st.warning(f"Company search unavailable. Using typed client name. Error: {str(e)}")
         return [query.strip()]
         
 # --------------------
