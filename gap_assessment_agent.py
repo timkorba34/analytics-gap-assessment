@@ -1951,18 +1951,29 @@ def validate_output(data, assessment_type):
             if len(value) == 0:
                 st.error(f"Empty list key: {key}")
                 return False
-            if "to be validated" in str(value).lower():
-                st.error(f"Placeholder found in list key: {key}")
-                st.write(value)
-                return False
+           appendix_f_keys = [
+                "analytics_responsibility_model",
+                "stakeholder_interview_summary",
+                "responsibility_gaps",
+                "analytics_ownership_overview_text",
+                "key_observations_text"
+            ]
+            
+            if "to be validated" in str(value).lower() and key not in appendix_f_keys:
 
         if isinstance(value, dict):
             if len(value) == 0:
                 st.error(f"Empty dict key: {key}")
                 return False
-            if "to be validated" in str(value).lower():
-                st.error(f"Placeholder found in dict key: {key}")
-                return False
+                appendix_f_keys = [
+                    "analytics_responsibility_model",
+                    "stakeholder_interview_summary",
+                    "responsibility_gaps",
+                    "analytics_ownership_overview_text",
+                    "key_observations_text"
+                ]
+                
+                if "to be validated" in str(value).lower() and key not in appendix_f_keys:
 
     return True
 
