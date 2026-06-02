@@ -1917,6 +1917,7 @@ company_research = ""
 # Output Validation
 # --------------------
 def validate_output(data, assessment_type):
+
     if not data:
         st.error("Validation failed: data object is empty.")
         return False
@@ -1927,12 +1928,21 @@ def validate_output(data, assessment_type):
         st.error(f"Validation failed: no framework found for {assessment_type}")
         return False
 
+    appendix_f_keys = [
+        "analytics_responsibility_model",
+        "stakeholder_interview_summary",
+        "responsibility_gaps",
+        "analytics_ownership_overview_text",
+        "key_observations_text"
+    ]
+
     required_keys = []
 
     for section in framework["sections"]:
         required_keys.extend(section["keys"])
 
     for key in required_keys:
+
         value = data.get(key)
 
         if value is None:
@@ -1940,43 +1950,48 @@ def validate_output(data, assessment_type):
             return False
 
         if isinstance(value, str):
+
             if not value.strip():
                 st.error(f"Empty string key: {key}")
                 return False
-            if "to be validated" in value.lower():
+
+            if (
+                "to be validated" in value.lower()
+                and key not in appendix_f_keys
+            ):
                 st.error(f"Placeholder found in key: {key}")
+                st.write(value)
                 return False
 
-        if isinstance(value, list):
+        elif isinstance(value, list):
+
             if len(value) == 0:
                 st.error(f"Empty list key: {key}")
                 return False
-           appendix_f_keys = [
-                "analytics_responsibility_model",
-                "stakeholder_interview_summary",
-                "responsibility_gaps",
-                "analytics_ownership_overview_text",
-                "key_observations_text"
-            ]
-            
-            if "to be validated" in str(value).lower() and key not in appendix_f_keys:
 
-        if isinstance(value, dict):
+            if (
+                "to be validated" in str(value).lower()
+                and key not in appendix_f_keys
+            ):
+                st.error(f"Placeholder found in list key: {key}")
+                st.write(value)
+                return False
+
+        elif isinstance(value, dict):
+
             if len(value) == 0:
                 st.error(f"Empty dict key: {key}")
                 return False
-                appendix_f_keys = [
-                    "analytics_responsibility_model",
-                    "stakeholder_interview_summary",
-                    "responsibility_gaps",
-                    "analytics_ownership_overview_text",
-                    "key_observations_text"
-                ]
-                
-                if "to be validated" in str(value).lower() and key not in appendix_f_keys:
+
+            if (
+                "to be validated" in str(value).lower()
+                and key not in appendix_f_keys
+            ):
+                st.error(f"Placeholder found in dict key: {key}")
+                st.write(value)
+                return False
 
     return True
-
 # --------------------
 # Section Instructions by Document Header
 # --------------------
