@@ -2759,24 +2759,24 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
 
 
     if data:
-            with st.spinner("Creating Word document..."):
-                st.session_state.word_doc = build_docx(data, client_name, assessment_type)
+        with st.spinner("Creating Word document..."):
+            st.session_state.word_doc = build_docx(data, client_name, assessment_type)
 
-            with st.spinner("Creating PowerPoint deck..."):
-                st.session_state.ppt_file = build_ppt(data, client_name)
+        with st.spinner("Creating PowerPoint deck..."):
+            st.session_state.ppt_file = build_ppt(data, client_name)
 
-            with st.spinner("Creating Executive Summary Email..."):
-                st.session_state.email_text = build_exec_email(data, client_name)
+        with st.spinner("Creating Executive Summary Email..."):
+            st.session_state.email_text = build_exec_email(data, client_name)
 
-            st.success("Assessment outputs generated successfully.")
-            quality = calculate_quality_score(data)
+        st.success("Assessment outputs generated successfully.")
+        quality = calculate_quality_score(data)
             
-            st.metric(
-                "Assessment Quality",
-                f"{quality}/100"
-            )
-        else:
-            st.error("Assessment generation failed.")
+        st.metric(
+            "Assessment Quality",
+            f"{quality}/100"
+        )
+    else:
+        st.error("Assessment generation failed.")
 
 # --------------------
 # Download Buttons
