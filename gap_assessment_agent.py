@@ -2766,3 +2766,34 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
 
         else:
             st.error("Assessment generation failed.")
+
+
+# --------------------
+# Download Buttons
+# --------------------
+
+if st.session_state.word_doc:
+
+    st.download_button(
+        "Download Word Document",
+        data=st.session_state.word_doc,
+        file_name=f"{safe_client_name}_Assessment.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+
+if st.session_state.ppt_file:
+
+    st.download_button(
+        "Download PowerPoint",
+        data=st.session_state.ppt_file,
+        file_name=f"{safe_client_name}_Assessment.pptx",
+        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    )
+
+if st.session_state.email_text:
+
+    st.text_area(
+        "Executive Summary Email",
+        st.session_state.email_text,
+        height=250
+    )
