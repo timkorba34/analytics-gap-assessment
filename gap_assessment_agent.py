@@ -455,11 +455,6 @@ if company_options:
 
 else:
     client_name = client_search
-
-enable_claude_review = st.checkbox(
-    "Enable Claude Executive Review",
-    value=False
-)
     
 industry = st.selectbox(
     "Industry",
@@ -592,7 +587,10 @@ uploaded_files = st.file_uploader(
     accept_multiple_files=True
 )
 
-
+enable_claude_review = st.checkbox(
+    "Enable Claude Executive Review",
+    value=False
+)
 
 notes = st.text_area("Paste Additional Notes", height=250)
 
