@@ -2685,6 +2685,7 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
 
     if not client_name:
         st.warning("Enter a client name first.")
+
     else:
         file_content = read_uploaded_files(uploaded_files)
         company_research = research_company(client_name, industry)
@@ -2702,108 +2703,66 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
                     file_content,
                     company_research
                 )
-        
+
                 if validate_output(data, assessment_type):
                     break
                 else:
-                    st.warning(f"Regenerating output attempt {attempt + 1}: missing sections or placeholder text found.")
-        
+                    st.warning(
+                        f"Regenerating output attempt {attempt + 1}: missing sections or placeholder text found."
+                    )
+
             if not validate_output(data, assessment_type):
                 st.error("Validation failed — showing partial output")
 
-        st.session_state.assessment_data = data
+        if enable_claude_review and data:
+
+            with st.spinner("Running Claude Executive Review..."):
+
+                review_fields = [
+                    "executive_summary_text",
+                    "key_gaps_text",
+                    "business_value_text",
+                    "recommended_next_steps_text",
+                    "s4_analytics_roadmap_text"
+                ]
+
+                for field in review_fields:
+                    if field in data and data[field]:
+                        data[field] = claude_review_text(
+                            data[field],
+                            field
+                        )
 
         st.session_state.assessment_data = data
 
-    if enable_claude_review and data:
-    
-        with st.spinner("Running Claude Executive Review..."):
-    
-            review_fields = [
-                "engagement_overview_text",
-                "executive_summary_text",
-                "top_priorities_text",
-                "transformation_context_summary",
-                "current_data_flow_summary",
-                "architecture_risk_summary",
-                "analytics_complexity_text",
-                "gap_observations_text",
-                "reporting_inventory_text",
-                "report_replacement_text",
-                "s4_reporting_impact_text",
-                "key_gaps_text",
-                "opportunity_areas_text",
-                "business_value_text",
-                "s4_analytics_roadmap_text",
-                "recommended_next_steps_text",
-                "appendix_reporting_inventory_text",
-                "appendix_s4_impact_analysis_text",
-                "appendix_reporting_overlap_analysis_text",
-                "appendix_data_source_mapping_text",
-                "appendix_critical_reports_text",
-                "critical_report_summary",
-                "analytics_ownership_overview_text",
-                "key_observations_text"
-            ]
-    
-            for field in review_fields:
-    
-                if field in data and data[field]:
-    
-                    data[field] = claude_review_text(
-                        data[field],
-                        field
-                    )
-    
-    st.session_state.assessment_data = data
+        if data:
+            with st.spinner("Creating Word document..."):
+                st.session_state.word_doc = build_docx(
+                    data,
+                    client_name,
+                    assessment_type
+                )
 
+            with st.spinner("Creating PowerPoint deck..."):
+                st.session_state.ppt_file = build_ppt(
+                    data,
+                    client_name
+                )
 
-    if data:
-        with st.spinner("Creating Word document..."):
-            st.session_state.word_doc = build_docx(data, client_name, assessment_type)
+            with st.spinner("Creating Executive Summary Email..."):
+                st.session_state.email_text = build_exec_email(
+                    data,
+                    client_name
+                )
 
-        with st.spinner("Creating PowerPoint deck..."):
-            st.session_state.ppt_file = build_ppt(data, client_name)
+            st.success("Assessment outputs generated successfully.")
 
-        with st.spinner("Creating Executive Summary Email..."):
-            st.session_state.email_text = build_exec_email(data, client_name)
+            quality = calculate_quality_score(data)
 
-        st.success("Assessment outputs generated successfully.")
-        quality = calculate_quality_score(data)
-            
-        st.metric(
-            "Assessment Quality",
-            f"{quality}/100"
-        )
-    else:
-        st.error("Assessment generation failed.")
+            st.metric(
+                "Assessment Quality",
+                f"{quality}/100"
+            )
 
-# --------------------
-# Download Buttons
-# --------------------
-if st.session_state.get("word_doc"):
-    st.download_button(
-        label="Download Word Document",
-        data=st.session_state.word_doc.getvalue() if hasattr(st.session_state.word_doc, "getvalue") else st.session_state.word_doc,
-        file_name=f"{safe_client_name}_Gap_Assessment_Report.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        key="download_word_doc"
-    )
-
-if st.session_state.get("ppt_file"):
-    st.download_button(
-        label="Download PowerPoint Deck",
-        data=st.session_state.ppt_file.getvalue() if hasattr(st.session_state.ppt_file, "getvalue") else st.session_state.ppt_file,
-        file_name=f"{safe_client_name}_Gap_Assessment_Deck.pptx",
-        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        key="download_ppt_file"
-    )
-
-if st.session_state.get("email_text"):
-    st.download_button(
-        label="Download Executive Summary Email",
-        data=st.session_state.email_text,
-        file_name=f"{safe_client_name}_Executive_Summary_Email.txt",
-        mime="text/plain",
-        key="download_exec_email"
-    )
+        else:
+            st.error("Assessment generation failed.")
