@@ -444,20 +444,19 @@ client_search = st.text_input("Search Client")
 
 st.write("client_search:", client_search)
 
-company_options = []
-
 if client_search:
-    company_options = [client_search]
+    company_options = search_companies(client_search)
+else:
+    company_options = []
 
 st.write("company_options:", company_options)
 
 if company_options:
-
     client_name = st.selectbox(
         "Select Company",
-        company_options
+        company_options,
+        key="client_company_select"
     )
-
 else:
     client_name = client_search
     
