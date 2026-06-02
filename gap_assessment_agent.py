@@ -16,7 +16,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from tavily import TavilyClient
 from graphviz import Digraph
-#from anthropic import Anthropic
+from anthropic import Anthropic
 
 
 # --------------------
@@ -334,12 +334,12 @@ client = OpenAI(api_key=api_key)
 
 claude_client = None
 
-#anthropic_api_key = st.secrets.get("ANTHROPIC_API_KEY", None) or os.getenv("ANTHROPIC_API_KEY")
+anthropic_api_key = st.secrets.get("ANTHROPIC_API_KEY", None) or os.getenv("ANTHROPIC_API_KEY")
 
-#claude_client = None
+claude_client = None
 
-#if anthropic_api_key:
-#    claude_client = Anthropic(api_key=anthropic_api_key)
+if anthropic_api_key:
+    claude_client = Anthropic(api_key=anthropic_api_key)
 
 #----------------------
 # Tavili Setup
