@@ -1462,7 +1462,7 @@ TEXT:
 """
 
     response = claude_client.messages.create(
-        model="claude-3-5-sonnet-latest",
+        model="claude-sonnet-4-0"
         max_tokens=3000,
         temperature=0.2,
         messages=[
