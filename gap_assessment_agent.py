@@ -2489,12 +2489,12 @@ Rules:
 If no stakeholder information exists:
 
 Stakeholder="Not Provided"
-Role="Unknown"
-Key Concerns="Validation Required"
+Role="Not Identified in Provided Materials"
+Key Concerns="Stakeholder input was not included in the uploaded materials or notes."
 
 confidence=0
 validation_required=True
-source="Missing Input"
+source="No Stakeholder Input Provided"
 
 analytics_responsibility_model must be a table array.
 Columns: Department, Report Name, Responsibility
