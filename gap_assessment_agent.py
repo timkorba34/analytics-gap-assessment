@@ -2772,28 +2772,29 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
 # Download Buttons
 # --------------------
 
-if st.session_state.word_doc:
-
+if st.session_state.get("word_doc"):
     st.download_button(
-        "Download Word Document",
-        data=st.session_state.word_doc,
-        file_name=f"{safe_client_name}_Assessment.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        label="Download Word Document",
+        data=st.session_state.word_doc.getvalue() if hasattr(st.session_state.word_doc, "getvalue") else st.session_state.word_doc,
+        file_name=f"{safe_client_name}_Gap_Assessment_Report.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        key="download_word_doc"
     )
 
-if st.session_state.ppt_file:
-
+if st.session_state.get("ppt_file"):
     st.download_button(
-        "Download PowerPoint",
-        data=st.session_state.ppt_file,
-        file_name=f"{safe_client_name}_Assessment.pptx",
-        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        label="Download PowerPoint Deck",
+        data=st.session_state.ppt_file.getvalue() if hasattr(st.session_state.ppt_file, "getvalue") else st.session_state.ppt_file,
+        file_name=f"{safe_client_name}_Gap_Assessment_Deck.pptx",
+        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        key="download_ppt_file"
     )
 
-if st.session_state.email_text:
-
-    st.text_area(
-        "Executive Summary Email",
-        st.session_state.email_text,
-        height=250
+if st.session_state.get("email_text"):
+    st.download_button(
+        label="Download Executive Summary Email",
+        data=st.session_state.email_text,
+        file_name=f"{safe_client_name}_Executive_Summary_Email.txt",
+        mime="text/plain",
+        key="download_exec_email"
     )
