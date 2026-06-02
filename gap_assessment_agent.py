@@ -2746,11 +2746,31 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
             with st.spinner("Running Claude Executive Review..."):
 
                 review_fields = [
+                    "engagement_overview_text",
+                    "top_priorities_text",
                     "executive_summary_text",
+                    "assessment_assumptions",
+                    "transformation_context_summary",
+                    "current_data_flow_summary",
+                    "architecture_risk_summary",
+                    "analytics_complexity_text",
+                    "gap_observations_text",
+                    "reporting_inventory_text",
+                    "report_replacement_text",
+                    "s4_reporting_impact_text",
                     "key_gaps_text",
+                    "opportunity_areas_text",
                     "business_value_text",
+                    "s4_analytics_roadmap_text",
                     "recommended_next_steps_text",
-                    "s4_analytics_roadmap_text"
+                    "s4_analytics_roadmap_text",
+                    "appendix_reporting_inventory_text",
+                    "appendix_s4_impact_analysis_text",
+                    "appendix_reporting_overlap_analysis_text",
+                    "appendix_data_source_mapping_text",
+                    "appendix_critical_reports_text",
+                    "stakeholder_interview_summary",
+                    "key_observations_text"
                 ]
 
                 for field in review_fields:
