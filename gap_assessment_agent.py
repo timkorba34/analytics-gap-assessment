@@ -2025,7 +2025,9 @@ Must be 2 executive paragraphs interpreting the priority table.
 """,
 
    "Assessment Assumptions": """
-assessment_assumptions must be a JSON array of objects.
+Return assessment_assumptions as a JSON array of objects only.
+
+The value of assessment_assumptions must be an array, not a string.
 
 Each object must use exactly these keys:
 - Area
@@ -2037,12 +2039,14 @@ Rules:
 - Do not return markdown.
 - Do not return a pipe-delimited table.
 - Do not use | characters.
+- Do not wrap the array in a text block.
 - Never fabricate customer facts.
 - If information is unavailable, use "Unknown – Discovery Required".
 - Confidence must be one of: High, Medium, Low.
+- Validation Required must be one of: Yes, No.
 
-Example:
-"assessment_assumptions": [
+Example format only:
+[
   {
     "Area": "Current Reporting Risks",
     "Assumption": "Unknown – Discovery Required",
@@ -2051,7 +2055,7 @@ Example:
   }
 ]
 """,
-
+    
    "Current Architecture Diagram": """
 
 current_architecture_diagram must be an object containing:
