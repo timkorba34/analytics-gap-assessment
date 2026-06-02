@@ -443,7 +443,7 @@ client_search = st.text_input("Search Client")
 company_options = []
 
 if client_search:
-    company_options = search_companies(client_search)
+    company_options = [client_search]
 
 if company_options:
 
