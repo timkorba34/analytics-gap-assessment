@@ -1276,14 +1276,36 @@ def add_paragraph(doc, text):
 
     doc.add_paragraph(text)
 
+def parse_markdown_table(text):
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    table_lines = [line for line in lines if line.startswith("|") and line.endswith("|")]
+
+    if len(table_lines) < 3:
+        return None
+
+    headers = [h.strip() for h in table_lines[0].strip("|").split("|")]
+
+    records = []
+    for line in table_lines[2:]:
+        values = [v.strip() for v in line.strip("|").split("|")]
+        if len(values) == len(headers):
+            records.append(dict(zip(headers, values)))
+
+    return records if records else None
+
 
 def add_table_from_records(doc, records):
     if not records:
         return
 
     if isinstance(records, str):
-        doc.add_paragraph(records)
-        return
+        parsed = parse_markdown_table(records)
+
+        if parsed:
+            records = parsed
+        else:
+            doc.add_paragraph(records)
+            return
 
     if isinstance(records, dict):
         records = [records]
