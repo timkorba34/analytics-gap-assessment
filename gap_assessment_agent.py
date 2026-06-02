@@ -2758,7 +2758,7 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
     st.session_state.assessment_data = data
 
 
-        if data:
+     if data:
             with st.spinner("Creating Word document..."):
                 st.session_state.word_doc = build_docx(data, client_name, assessment_type)
 
