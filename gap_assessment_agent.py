@@ -16,6 +16,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from tavily import TavilyClient
 from graphviz import Digraph
+from anthropic import Anthropic
 
 
 # --------------------
@@ -331,6 +332,13 @@ if not api_key:
 
 client = OpenAI(api_key=api_key)
 
+anthropic_api_key = st.secrets.get("ANTHROPIC_API_KEY", None) or os.getenv("ANTHROPIC_API_KEY")
+
+claude_client = None
+
+if anthropic_api_key:
+    claude_client = Anthropic(api_key=anthropic_api_key)
+
 #----------------------
 # Tavili Setup
 #______________________
@@ -447,6 +455,11 @@ if company_options:
 
 else:
     client_name = client_search
+
+enable_claude_review = st.checkbox(
+    "Enable Claude Executive Review",
+    value=False
+)
     
 industry = st.selectbox(
     "Industry",
@@ -1414,6 +1427,52 @@ def build_architecture_diagram(data, key):
     )
 
     return output+".png"
+
+
+# --------------------
+# Claude Review Text
+# --------------------
+def claude_review_text(text, section_name=""):
+    if not claude_client:
+        return text
+
+    if not text or not str(text).strip():
+        return text
+
+    prompt = f"""
+You are reviewing a consulting executive deliverable.
+
+Section:
+{section_name}
+
+Improve the writing for:
+- executive tone
+- clarity
+- flow
+- grammar
+- boardroom-ready consulting language
+
+Do not add facts.
+Do not change meaning.
+Do not invent details.
+Do not add placeholders.
+
+Return only the revised text.
+
+TEXT:
+{text}
+"""
+
+    response = claude_client.messages.create(
+        model="claude-3-5-sonnet-latest",
+        max_tokens=3000,
+        temperature=0.2,
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    return response.content[0].text
 
 # --------------------
 # Build Word Document
@@ -2656,6 +2715,51 @@ if st.button("Generate Assessment Outputs", key="main_generate_btn"):
                 st.error("Validation failed — showing partial output")
 
         st.session_state.assessment_data = data
+
+        st.session_state.assessment_data = data
+
+    if enable_claude_review and data:
+    
+        with st.spinner("Running Claude Executive Review..."):
+    
+            review_fields = [
+                "engagement_overview_text",
+                "executive_summary_text",
+                "top_priorities_text",
+                "transformation_context_summary",
+                "current_data_flow_summary",
+                "architecture_risk_summary",
+                "analytics_complexity_text",
+                "gap_observations_text",
+                "reporting_inventory_text",
+                "report_replacement_text",
+                "s4_reporting_impact_text",
+                "key_gaps_text",
+                "opportunity_areas_text",
+                "business_value_text",
+                "s4_analytics_roadmap_text",
+                "recommended_next_steps_text",
+                "appendix_reporting_inventory_text",
+                "appendix_s4_impact_analysis_text",
+                "appendix_reporting_overlap_analysis_text",
+                "appendix_data_source_mapping_text",
+                "appendix_critical_reports_text",
+                "critical_report_summary",
+                "analytics_ownership_overview_text",
+                "key_observations_text"
+            ]
+    
+            for field in review_fields:
+    
+                if field in data and data[field]:
+    
+                    data[field] = claude_review_text(
+                        data[field],
+                        field
+                    )
+    
+    st.session_state.assessment_data = data
+
 
         if data:
             with st.spinner("Creating Word document..."):
